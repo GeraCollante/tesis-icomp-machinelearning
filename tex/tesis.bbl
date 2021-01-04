@@ -1,0 +1,142 @@
+\begin{thebibliography}{20}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Poole et~al.(1998)Poole, Goebel, and Mackworth]{poole1998}
+David~I Poole, Randy~G Goebel, and Alan~K Mackworth.
+\newblock \emph{Computational intelligence}.
+\newblock Oxford University Press New York, 1998.
+
+\bibitem[Bishop(2006)]{bishop2006pattern}
+Christopher~M Bishop.
+\newblock \emph{Pattern recognition and machine learning}.
+\newblock Springer, 2006.
+
+\bibitem[Norman and Bolivar(2019)]{norman2019aprendizaje}
+A.T. Norman and S.~Bolivar.
+\newblock \emph{Aprendizaje autom{\'a}tico en acci{\'o}n. Un libro para el
+  lego, gu{\'\i}a paso a paso para los novatos}.
+\newblock Tektime, 2019.
+
+\bibitem[Gutiérrez(2020)]{GitHubpa25:online}
+Pedro~Antonio Gutiérrez.
+\newblock Github - pagutierrez/tutorial-sklearn: Tutorial sobre scikit-learn
+  completo.
+\newblock \url{https://github.com/pagutierrez/tutorial-sklearn}, 2020.
+\newblock (Accessed on 12/28/2020).
+
+\bibitem[Trejo(2019)]{trejoml}
+B.~G. Trejo.
+\newblock \emph{Selección de herramientas de Machine Learning aplicado a
+  problemas de ingenier{\'i}a}.
+\newblock Facultad de Ciencias Exactas, Físicas y Naturales, Universidad
+  Nacional de Córdoba, 2019.
+
+\bibitem[Rosebrock(2017)]{rosebrock2017deep}
+A.~Rosebrock.
+\newblock \emph{Deep Learning for Computer Vision with Python: Starter Bundle}.
+\newblock PyImageSearch, 2017.
+
+\bibitem[Matich(2001)]{matich}
+D.~J. Matich.
+\newblock \emph{Redes neuronales: Conceptos básicos y aplicaciones}.
+\newblock Universidad Tecnológica Nacional, FRR, Departamento de Ing.
+  Química, 2001.
+
+\bibitem[freeCodeCamp.org(2018)]{sgd}
+freeCodeCamp.org.
+\newblock Demystifying gradient descent and backpropagation via logistic
+  regression based image..., Jul 2018.
+\newblock URL
+  \url{https://www.freecodecamp.org/news/demystifying-gradient-descent-and-backpropagation-via-logistic-regression-based-image-classification-9b5526c2ed46/}.
+
+\bibitem[Wikipedia(2020)]{gdanalogy}
+Wikipedia.
+\newblock Gradient descent - wikipedia.
+\newblock
+  \url{https://en.wikipedia.org/wiki/Gradient_descent#An_analogy_for_understanding_gradient_descent},
+  2020.
+\newblock (Accessed on 12/31/2020).
+
+\bibitem[Quora(2020)]{quora}
+Quora.
+\newblock What are the key trade-offs between overfitting and underfitting?,
+  2020.
+\newblock URL
+  \url{https://www.quora.com/What-are-the-key-trade-offs-between-overfitting-and-underfitting}.
+
+\bibitem[Keller(2010)]{keller}
+Frank Keller.
+\newblock \emph{Convolutions and Kernels}.
+\newblock School of Informatics, University of Edinburgh, Feb 2010.
+
+\bibitem[Cogneethi(2019)]{Cogneethi2019Aug}
+Cogneethi.
+\newblock {C 4.1 {$\vert$} 1D Convolution {$\vert$} CNN {$\vert$} Object
+  Detection {$\vert$} Machine Learning {$\vert$} EvODN}, Aug 2019.
+\newblock URL \url{https://www.youtube.com/watch?v=yd_j_zdLDWs}.
+\newblock [Online; accessed 4. Jan. 2021].
+
+\bibitem[StackOverflow(2021)]{SOOutputConv}
+StackOverflow.
+\newblock {How did they calculate the output volume for this convnet example in
+  Caffe?}, Jan 2021.
+\newblock URL
+  \url{https://stackoverflow.com/questions/32979683/how-did-they-calculate-the-output-volume-for-this-convnet-example-in-caffe}.
+\newblock [Online; accessed 4. Jan. 2021].
+
+\bibitem[Andrianaivo et~al.(2019)Andrianaivo, D'Autilia, and
+  Palma]{andrianaivo2019architecture}
+Louis~N Andrianaivo, Roberto D'Autilia, and Valerio Palma.
+\newblock Architecture recognition by means of convolutional neural networks.
+\newblock \emph{International Archives of the Photogrammetry, Remote Sensing \&
+  Spatial Information Sciences}, 2019.
+
+\bibitem[Saha(2020)]{Saha2020Oct}
+Sumit Saha.
+\newblock {A Comprehensive Guide to Convolutional Neural Networks
+  {\ifmmode---\else\textemdash\fi} the ELI5 way}.
+\newblock \emph{Medium}, Oct 2020.
+\newblock ISSN 3211-6453.
+\newblock URL
+  \url{https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53}.
+
+\bibitem[Karpathy(2020)]{karpathy:rnn}
+Andrej Karpathy.
+\newblock {The Unreasonable Effectiveness of Recurrent Neural Networks}, Jun
+  2020.
+\newblock URL \url{https://karpathy.github.io/2015/05/21/rnn-effectiveness}.
+\newblock [Online; accessed 3. Jan. 2021].
+
+\bibitem[Olah(2015)]{olahlstm}
+Christopher Olah.
+\newblock {Understanding LSTM Networks}, Aug 2015.
+\newblock URL \url{https://colah.github.io/posts/2015-08-Understanding-LSTMs}.
+\newblock [Online; accessed 4. Jan. 2021].
+
+\bibitem[Géron(2019)]{geron}
+Aurélien Géron.
+\newblock \emph{Hands-On Machine Learning with Scikit-Learn, Keras, and
+  TensorFlow: Concepts, Tools, and Techniques to Build Intelligent Systems}.
+\newblock O'Reilly Media, 2019.
+\newblock ISBN 9781492032595.
+
+\bibitem[Phi(2019)]{phi:rnn}
+Michael Phi.
+\newblock {Illustrated Guide to Recurrent Neural Networks - Towards Data
+  Science}.
+\newblock \emph{Medium}, Sep 2019.
+\newblock ISSN 7958-0499.
+\newblock URL
+  \url{https://towardsdatascience.com/illustrated-guide-to-recurrent-neural-networks-79e5eb8049c9}.
+
+\bibitem[had(2021)]{hadamard}
+{Producto de Hadamard (matrices) - Hadamard product (matrices) - qaz.wiki}, Jan
+  2021.
+\newblock URL \url{https://es.qaz.wiki/wiki/Hadamard_product_(matrices)}.
+\newblock [Online; accessed 4. Jan. 2021].
+
+\end{thebibliography}

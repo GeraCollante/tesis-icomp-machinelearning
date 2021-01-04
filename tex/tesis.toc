@@ -1,0 +1,46 @@
+\selectlanguage *{spanish}
+\contentsline {section}{\numberline {1}Motivación}{3}{section.1}%
+\contentsline {section}{\numberline {2}Objetivo}{4}{section.2}%
+\contentsline {section}{\numberline {3}Marco teórico}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Inteligencia Artificial}{5}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Aprendizaje automático}{5}{subsubsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.2}Preprocesamiento}{6}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Aprendizaje supervisado}{6}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Clasificación}{7}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}Regresión}{9}{subsubsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.4}Aprendizaje no supervisado}{11}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}Detección de anomalías}{11}{subsubsection.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.4.2}Reducción de dimensionalidad }{12}{subsubsection.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.4.3}\textit {Clustering}}{13}{subsubsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.5}Selección de algoritmo en base al \textit {dataset}}{15}{subsection.3.5}%
+\contentsline {subsubsection}{\numberline {3.5.1}Algoritmos supervisados}{17}{subsubsection.3.5.1}%
+\contentsline {subsubsection}{\numberline {3.5.2}Algoritmos no supervisados}{19}{subsubsection.3.5.2}%
+\contentsline {section}{\numberline {4}Redes neuronales}{20}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Relación con la biología}{21}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Modelos artificiales}{22}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Funciones de activación}{23}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Arquitecturas de redes \textit {feedforward}}{25}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Redes multicapa}{26}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Función pérdida}{27}{subsection.4.6}%
+\contentsline {subsection}{\numberline {4.7}Descenso de gradiente}{29}{subsection.4.7}%
+\contentsline {subsection}{\numberline {4.8}Backpropagation}{32}{subsection.4.8}%
+\contentsline {subsection}{\numberline {4.9}Descenso de gradiente estocástico (SGD)}{35}{subsection.4.9}%
+\contentsline {subsection}{\numberline {4.10}Sobreajuste y bajo-ajuste}{36}{subsection.4.10}%
+\contentsline {subsection}{\numberline {4.11}Regularización}{36}{subsection.4.11}%
+\contentsline {subsection}{\numberline {4.12}Los cuatro ingredientes de una red neuronal}{37}{subsection.4.12}%
+\contentsline {subsubsection}{\numberline {4.12.1}Conjunto de datos}{37}{subsubsection.4.12.1}%
+\contentsline {subsubsection}{\numberline {4.12.2}Función de pérdida}{37}{subsubsection.4.12.2}%
+\contentsline {subsubsection}{\numberline {4.12.3}Modelo/Arquitectura}{37}{subsubsection.4.12.3}%
+\contentsline {subsubsection}{\numberline {4.12.4}Método de optimización}{38}{subsubsection.4.12.4}%
+\contentsline {subsection}{\numberline {4.13}Redes Neuronales Convolucionales}{38}{subsection.4.13}%
+\contentsline {subsubsection}{\numberline {4.13.1}Convolución 1D}{39}{subsubsection.4.13.1}%
+\contentsline {subsubsection}{\numberline {4.13.2}Convolución 2D}{41}{subsubsection.4.13.2}%
+\contentsline {subsection}{\numberline {4.14}Redes Neuronales Recurrentes}{43}{subsection.4.14}%
+\contentsline {subsubsection}{\numberline {4.14.1}Arquitecturas}{44}{subsubsection.4.14.1}%
+\contentsline {subsubsection}{\numberline {4.14.2}Funcionamiento}{46}{subsubsection.4.14.2}%
+\contentsline {subsubsection}{\numberline {4.14.3}Entrenamiento}{49}{subsubsection.4.14.3}%
+\contentsline {subsubsection}{\numberline {4.14.4}Desvanecimiento del gradiente}{50}{subsubsection.4.14.4}%
+\contentsline {subsubsection}{\numberline {4.14.5}LSTM}{53}{subsubsection.4.14.5}%
+\contentsline {subsubsection}{\numberline {4.14.6}GRU}{58}{subsubsection.4.14.6}%
+\contentsline {section}{\numberline {5}Desarrollo}{59}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Limpieza de datos}{59}{subsection.5.1}%
