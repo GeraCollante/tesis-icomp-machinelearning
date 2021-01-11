@@ -2,6 +2,8 @@
 *.csv
 *.xlsm
 tests
+gitignore.bash
+remote:⁄.desktop
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
