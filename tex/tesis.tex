@@ -70,7 +70,7 @@ En funcionamiento es muy similar a lo que se conoce como \textit{forecasting}, u
 
 \clearpage
 
-\section{Marco teórico}
+\section{Clasificación de modelos de inteligencia artificial}
 
 Hagamos algunas definiciones para ponernos en contexto del campo sobre el cual este proyecto integrador será desarrollado.
 
@@ -83,6 +83,8 @@ Hagamos algunas definiciones para ponernos en contexto del campo sobre el cual e
 \end{quote}
 
 Esta definición nos da la idea de que la IA es un sistema reactivo, que reacciona a cambios externos y actúa en consecuencia.
+
+90000.
 
 \subsubsection{Aprendizaje automático} \label{machinelearning}
 
@@ -812,7 +814,7 @@ El ingrediente final es definir un método de optimización. El SGD se usa con b
 SGD sigue siendo el caballo de batalla del aprendizaje profundo: la mayoría de las redes neuronales se entrenan a través de SGD, aunque existen otros métodos de optimización como Adam.
 Luego debe establecer una tasa de aprendizaje adecuada, la fuerza de regularización y el número total de épocas para las que se debe entrenar la red.
 
-\subsection{Redes Neuronales Convolucionales}
+\section{Redes neuronales convolucionales}
 Las redes neuronales convolucionales \citep{rosebrock2017deep} (\textit{CNNs} en Inglés) son principalmente útiles si en la entrada los datos presentados son imágenes, permite el desarrollo de modelos supervisados y no supervisados.
 
 Podemos definir una \textit{CNN} como una red neuronal que cambia una capa totalmente conectada (\textit{fully-connected}) por una convolucional para al menos una de las capas de la red.
@@ -837,7 +839,7 @@ Las \textit{CNNs} nos dan dos beneficios claves con respecto al reconocimiento d
 
 Las convoluciones bi-dimensionales (2D) son usadas para tratar las imágenes, mientras que las convoluciones unidimensionales (1D) nos permiten analizar entradas secuenciales, obteniendo la información con dependencias temporales. Entonces al combinar estas dos técnicas, se puede apreciar cómo evolucionan en el tiempo las imágenes capturadas y así hacer predicciones a futuro.
 
-\subsubsection{Convolución 1D}
+\subsection{Convolución 1D}
 Si $f$ y $g$ son funciones discretas \citep{keller}, entonces $f * g$ es la convolución de $f$ y $g$ y está definida como:
 
 $$(f*g)(x)=\sum_{u=-\infty}^{\infty} f(u)g(x-u)$$
@@ -895,7 +897,7 @@ $$ output_{size} = \frac{W-F+2P}{S+1}$$
 
 donde $W = input_{size}$, $F=kernel_{size}$, $P$=\textit{padding} y $S$=\textit{stride}.
 
-\subsubsection{Convolución 2D}
+\subsection{Convolución 2D}
 
 A su vez podemos extender esto a convoluciones para funciones de dos variables.
 
@@ -942,14 +944,217 @@ Si consideramos la totalidad de la imagen como un prisma donde la profundidad co
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.3\textwidth]{kernelmove.png}
-  	\caption{Movimiento del kernel.}
+  	\caption{Movimiento del \textit{kernel}.}
   	\label{fig:kernelmove}
   	\end{center}
 \end{figure}
 
-\textbf{padding stride}
+\subsubsection{\textit{Padding}}
 
-\subsection{Redes Neuronales Recurrentes}
+Un problema a abordar al aplicar la convolución es que tendemos a perder píxeles en el perímetro de nuestra imagen (o vector). Dado que normalmente usamos núcleos pequeños, para cualquier convolución dada, es posible que solo perdamos unos pocos píxeles, pero esto puede sumarse a medida que aplicamos muchas capas convolucionales sucesivas. Una solución sencilla a este problema es agregar píxeles adicionales de relleno (\textit{padding}) alrededor del límite de nuestra imagen de entrada, aumentando así el tamaño efectivo de la imagen. Normalmente, establecemos los valores de los píxeles adicionales en cero. 
+
+En la figura~\ref{fig:padding}, rellenamos una entrada de $3 \times 3$, aumentando su tamaño a $5 \times 5$. La salida correspondiente aumenta entonces a una matriz de $4 \times 4$.
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=0.6\textwidth]{conv-pad.png}
+  	\caption{Relleno o \textit{padding}.}
+  	\label{fig:padding}
+  	\end{center}
+\end{figure}
+
+\subsubsection{\textit{Stride}}
+
+Al realizar la convolución, comenzamos con la ventana en la esquina superior izquierda del tensor de entrada y luego la deslizamos sobre todas las ubicaciones, tanto hacia abajo como hacia la derecha. Usualmente deslizamos un elemento a la vez. Sin embargo, a veces, ya sea por eficiencia computacional o porque deseamos reducir la resolución, movemos nuestra ventana más de un elemento a la vez, omitiendo las ubicaciones intermedias.
+
+Nos referimos al número de filas y columnas atravesadas por diapositiva como la zancada o \textit{stride}. Hasta ahora, hemos utilizado \textit{stride} de 1, tanto para altura como para ancho. A veces, es posible que deseemos usar un paso más grande, como en la figura~\ref{fig:stride}.
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=0.6\textwidth]{tesis_44.png}
+  	\caption{Convolución con \textit{stride} de 2.}
+  	\label{fig:stride}
+  	\end{center}
+\end{figure}
+
+\subsection{Tipos de capas}
+Existen varias tipos de capas usadas para construir \textit{CNNs} pero las más comunes incluyen:
+
+\begin{itemize}
+	\item Convolucional (\texttt{CONV})
+	\item Activación (\texttt{ACT})
+	\item \textit{Pooling} (\texttt{POOL})
+	\item \textit{Fully-connected} (\texttt{FC})
+	\item \texttt{\textit{Dropout}} (\texttt{DO})
+\end{itemize}
+
+Apilando estas capas de una manera específica producimos una \textit{CNN}. De estos tipos de capas, \texttt{CONV} y \texttt{FC} (y en menor medida, \texttt{BN}) son las únicas capas que contienen parámetros que se aprenden durante el proceso de entrenamiento.
+
+Las capas \texttt{ACT} y \texttt{DO} no se consideran verdaderas capas en sí mismas, pero a menudo se incluyen en los diagramas de red para que la arquitectura sea explícitamente clara.
+
+Las capas (\texttt{POOL}), de igual importancia que \texttt{CONV} y \texttt{FC}, también se incluyen en los diagramas de red, ya que tienen un impacto sustancial en las dimensiones espaciales de un
+imagen mientras se mueve a través de una \textit{CNN}.
+
+\subsubsection{Convolución}
+
+La capa convolucional (\texttt{CONV}) es el componente básico de una red neuronal convolucional. Los parámetros de la capa \texttt{CONV} consisten en un conjunto de $K$ \textit{kernels} entrenables, donde cada uno tiene un ancho y un alto, y casi siempre son cuadrados. 
+
+Una capa o filtro puede tener varios \textit{kernels} que al convolucionar con el vector de entrada (que podría ser una imagen) producen mapas de características (\textit{features map}).
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=0.45\textwidth]{layer-kernels.png}
+  	\caption{Una capa está compuesta de una colección de \textit{kernels}.}
+  	\label{fig:layer-kernel}
+  	\end{center}
+\end{figure}
+
+La diferencia entre filtro y \textit{kernel} es un poco complicada. A veces, se usan indistintamente, lo que podría crear confusiones. Esencialmente, estos dos términos tienen una sutil diferencia. Un "\textit{kernel}" se refiere a una matriz 2D de pesos. El término "filtro" se refiere a estructuras 3D de varios \textit{kernels} apilados juntos. Para un filtro 2D, el filtro es igual que el kernel. Pero para un filtro 3D y la mayoría de las convoluciones en el aprendizaje profundo, un filtro es una colección de \textit{kernels} (fig.~\ref{fig:layer-kernel}). Cada \textit{kernel} es único, enfatizando diferentes aspectos del canal de entrada.
+
+El funcionamiento de la capa convolucional se resume en pensar en cada uno de los $K$ \textit{kernels} deslizándose a través del vector de entrada, computando un producto de Hadamard, sumando cada uno de sus valores y luego almacenando el valor generado en un mapa 2D de activación. En la figura~\ref{fig:conv-mechanism} se puede observar una visualización de la secuencia.
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=1\textwidth]{feature-map-clean.png}
+  	\caption{\textbf{Izquierda:} en cada capa convolucional de una \textit{CNN}, hay $K$ \textit{kernels} distintos. \textbf{Medio:} Cada uno de los \textit{kernels} es convolucionado con el vector de entrada. \textbf{Derecha:} Cada \textit{kernel} produce una salida 2D, llamada mapa de activación o \textit{features}.}
+  	\label{fig:conv-mechanism}
+  	\end{center}
+\end{figure}
+
+Luego de aplicar los $K$ filtros al vector de entrada, ahora tenemos $K \times 2D$ mapas de activación. Luego apilamos nuestro $K$ mapas de activación a través de la dimensión de profundidad de nuestra matriz para formar el volumen final de salida (figura~\ref{fig:k-maps}).
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=0.8\textwidth]{k-activation-map.png}
+  	\caption{Luego de obtener los $K$ mapas de activación, son apilados juntos para formar el volumen de entrada a la siguiente capa en la red.}
+  	\label{fig:k-maps}
+  	\end{center}
+\end{figure}
+
+Cada entrada en el volumen de salida es, por tanto, una salida de una neurona que "mira" sólo una pequeña región de la entrada. De esta manera, la red "aprende" los filtros que se activan cuando ven un tipo específico de característica en una ubicación espacial determinada en el volumen de entrada.
+
+En las capas inferiores de la red, los filtros pueden activarse cuando ven regiones con forma de borde o de esquina. Luego, en las capas más profundas de la red, los filtros pueden activarse en presencia de características de alto nivel, como partes de la cara, la pata de un perro, el capó de un automóvil, etc.
+
+\subsubsection{Activación}
+
+Luego de cada capa \texttt{CONV} en una \textit{CNN}, normalmente aplicamos una función no lineal, como ReLU, ELU, etc (se ejemplifica en la figura~\ref{fig:relu-act}). Las capas \texttt{ACT} no son técnicamente "capas" (debido al hecho de que no se aprenden parámetros/pesos dentro de una capa de activación) y, a veces, se omiten en los diagramas de arquitectura de red, ya que se supone que una activación sigue inmediatamente a una convolución.
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=0.65\textwidth]{tesis_47.png}
+  	\caption{Un ejemplo de un volumen de entrada desplazándose a través de una \texttt{ACT} ReLU.}
+  	\label{fig:relu-act}
+  	\end{center}
+\end{figure}
+
+\subsubsection{\textit{Fully-connected}}
+Las neuronas en las capas \texttt{FC} están totalmente conectadas a todas las activaciones de la capa anterior, como en una red neuronal \textit{feed-forward}. Siempre se ubican al final de la red.
+
+\subsubsection{\textit{Pooling}}
+
+Similar a la capa convolucional, la capa de \texttt{POOL} es responsable de reducir el tamaño espacial de la entidad convolucionada. Esto es para disminuir la potencia computacional requerida para procesar los datos a través de la reducción de dimensionalidad. Además, es útil para extraer características dominantes que son invariantes rotacionales y posicionales, manteniendo así el proceso de entrenamiento efectivo del modelo.
+
+Existen dos tipos:
+\begin{itemize}
+	\item \textit{Max pooling} (\texttt{MPOOL}): devuelve el valor máximo de la parte de la imagen cubierta por el \textit{kernel} (figura \ref{fig:type-pooling} arriba).
+	\item \textit{Average pooling} (\texttt{APOOL}): devuelve el promedio de todos los valores de la parte de la imagen cubierta por el \textit{kernel} (figura \ref{fig:type-pooling} abajo).
+\end{itemize}
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=0.5\textwidth]{tesis_45.png}
+  	\caption{Tipos de \textit{pooling}.}
+  	\label{fig:type-pooling}
+  	\end{center}
+\end{figure}
+
+Cabe destacar que \texttt{MAXPOOL} también actúa como supresor de ruido ya que descarta las activaciones ruidosas por completo además de la reducción de dimensionalidad. Por otro lado, el \texttt{AVGPOOL} simplemente realiza la reducción de dimensionalidad como un mecanismo de supresión de ruido. Por lo tanto, podemos decir que \texttt{MAXPOOL} funciona mucho mejor que \texttt{AVGPOOL}.
+
+\subsubsection{\textit{Batch Normalization}}
+
+%Las capas de normalización por lotes o \textit{Batch Normalization} (\texttt{BN}), como su nombre indica, se utilizan para normalizar las activaciones de un volumen de entrada determinado antes de pasarlo a la siguiente capa de la red.
+
+Por lo general, para entrenar una red neuronal, realizamos un preprocesamiento de los datos de entrada, por ejemplo, normalizar todos los datos para que se parezcan a una distribución normal (es decir, media cero y una varianza unitaria). Algunas razones para realizar esto puede ser prevenir la saturación temprana de funciones de activación no lineales como la función sigmoidea, asegurar que todos los datos de entrada estén en el mismo rango de valores, etc.
+
+Pero el problema aparece en las capas intermedias porque la distribución de las activaciones cambia constantemente durante el entrenamiento. Esto ralentiza el proceso de entrenamiento porque cada capa debe aprender a adaptarse a una nueva distribución en cada paso del entrenamiento. Este problema se conoce como \textbf{cambio de covariables interno}.
+
+Podemos utilizar la normalización por lotes o \textit{Batch Normalization} (\texttt{BN}) como un método para normalizar las entradas de cada capa para así forzarlo a tener aproximadamente la misma distribución en cada paso de entrenamiento, con el fin de combatir el problema expresado anteriormente.
+
+Durante el tiempo de entrenamiento, una capa de normalización por lotes se obtiene el promedio y la varianza del lote:
+
+$$ \mu_{\beta} = \frac{1}{m} \sum_{i=1}^m x_i $$
+
+$$ \sigma_{\beta}^2 = \frac{1}{m}  \sum_{i=1}^m (x_i - \mu_{\beta} ) ^2$$
+
+Normalizamos las entradas de la capa usando las estadísticas del lote calculados previamente:
+
+$$ \bar{x_i} = \frac{x_i - \mu_{\beta}}{\sqrt{\sigma_{\beta}^2+\epsilon}} $$
+
+%Escalamos y \textit{shifteamos} en orden para obtener la salida de la capa:
+
+%$$ y_i = \gamma \hat{x_i} + \beta $$
+
+Establecemos $1e-7 \leq \epsilon \leq 0$ para evitar sacar la raíz cuadrada de cero. Aplicar esta ecuación implica que las activaciones que salen de una capa \texttt{BN} tendrán una media y una varianza unitaria aproximadamente cero (es decir, centrada en cero).
+Reemplazamos el mini-lote $\mu_{\beta}$ y $\sigma_{\beta}$ con promedios de $\mu_{\beta}$ y $\sigma_{\beta}$ calculados durante el proceso de entrenamiento. Esto asegura que podemos pasar vectores a través de nuestra red y aún así obtener predicciones precisas sin ser sesgados por $\mu_{\beta}$ y $\sigma_{\beta}$ del mini-lote final pasado a través de la red en el momento del entrenamiento. 
+
+La \texttt{BN} también tiene el beneficio adicional de ayudar a "estabilizar" el entrenamiento, lo que permite una mayor variedad de tasas de aprendizaje y fortalezas de regularización. Esto no alivia la necesidad de ajustar estos parámetros, por supuesto, pero le facilitará la vida al hacer que la tasa de aprendizaje y la regularización sean menos volátiles y más fáciles de ajustar. También tenderá a notar pérdidas finales más bajas y una curva de pérdida más estable en sus redes.
+
+\subsubsection{\textit{Dropout}}
+El \textit{dropout} (\texttt{DO}) es en realidad una forma de regularización que tiene como objetivo ayudar a prevenir el sobreajuste aumentando la precisión de las pruebas, quizás a expensas de la precisión del entrenamiento.
+
+La razón está en reducir el sobreajuste alterando de forma explicita la arquitectura de la red en tiempo de entrenamiento. La desconexión aleatoria de las conexiones garantiza que ningún nodo de la red sea responsable de la activación cuando se le presenta un patrón determinado. El \texttt{DO} garantiza que haya múltiples nodos redundantes que se activarán cuando se les presenten entradas similares (lo que a su vez ayuda a que nuestro modelo a generalizar).
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=1\textwidth]{tesis_46.png}
+  	\caption{\textbf{Izquierda:} Dos capas \texttt{FC} sin \texttt{DO}. \textbf{Derecha:} Las mismas dos capas luego de realizar \textit{dropout} sobre la mitad de las conexiones.}
+  	\label{fig:type-pooling}
+  	\end{center}
+\end{figure}
+
+\subsection{\textit{WaveNet} y capas convolucionales causales dilatadas}
+
+\textit{WaveNet} es una red neuronal profunda para generar audio muestra a muestra. La arquitectura de este modelo permite aprovechar las eficiencias de las capas de convolución al mismo tiempo que alivia el desafío de aprender las dependencias a largo plazo en una gran cantidad de pasos de tiempo (más de 1000) \citep{wavenet}.
+
+En el núcleo de \textit{WaveNet} se encuentra la \textbf{capa de convolución causal dilatada} (figura~\ref{fig:causal-conv}), que le permite tratar adecuadamente el orden temporal y manejar las dependencias a largo plazo sin una explosión en la complejidad del modelo. 
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=0.8\textwidth]{causal-conv.png}
+  	\caption{Paso de la información a través de la capa de convolución causal dilatada.}
+  	\label{fig:causal-conv}
+  	\end{center}
+\end{figure}
+
+En una capa de convolución unidimensional tradicional, deslizamos un filtro de pesos a través de una serie de entrada, aplicándolo secuencialmente a las regiones (generalmente superpuestas) de la serie. Pero cuando utilizamos el historial de una serie temporal para predecir su futuro, debemos tener cuidado. A medida que formamos capas que eventualmente conectan los pasos de entrada a las salidas, debemos asegurarnos de que las entradas no influyan en los pasos de salida que los siguen a tiempo. De lo contrario, estaríamos usando el futuro para predecir el pasado, lo que sería hacer trampa.
+
+Para asegurarnos de no hacer trampa de esta manera, ajustamos nuestro diseño de convolución para prohibir explícitamente que el futuro influya en el pasado. En otras palabras, solo permitimos que las entradas se conecten a salidas de pasos de tiempo futuros en una estructura \textbf{causal}, como se muestra a continuación en una visualización del documento WaveNet. En la práctica, esta estructura 1D causal es fácil de implementar \textit{shifteando} las salidas convolucionales tradicionales en varios pasos de tiempo.
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=1\textwidth]{stackcausal-conv.png}
+  	\caption{Visualización de una pila de capas causales convoluciones.}
+  	\label{fig:stackcausal-conv}
+  	\end{center}
+\end{figure}
+
+Las convoluciones causales proporcionan la herramienta adecuada para manejar el flujo temporal, pero necesitamos una modificación adicional para manejar adecuadamente las dependencias a largo plazo. En la figura \ref{fig:stackcausal-conv} de convolución causal simple, puede ver que solo los 5 pasos de tiempo más recientes pueden influir en la salida resaltada. De hecho, necesitaríamos una capa adicional por paso de tiempo para llegar más atrás en la serie (para usar la terminología adecuada, para aumentar el \textbf{campo receptivo de la salida}). Con una serie de tiempo que tiene una gran cantidad de pasos, el uso de convoluciones causales simples para aprender de toda la historia rápidamente haría un modelo demasiado complejo computacional y estadísticamente.
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=1\textwidth]{dilated-conv.png}
+  	\caption{Visualización de una pila de capas causales convoluciones dilatadas.}
+  	\label{fig:dilated-conv}
+  	\end{center}
+\end{figure}
+
+En lugar de cometer ese error, \textit{WaveNet} utiliza \textbf{convoluciones dilatadas}, que permiten que el campo receptivo aumente exponencialmente en función de la profundidad de la capa de convolución. 
+
+En una capa de convolución dilatada, los filtros no se aplican a las entradas de una manera secuencial simple, sino que omiten una entrada de tasa de dilatación constante entre cada una de las entradas que procesan, como en el diagrama \textit{WaveNet} a continuación. Al aumentar la tasa de dilatación multiplicativamente en cada capa (por ejemplo, 1, 2, 4, 8,…), podemos lograr la relación exponencial entre la profundidad de la capa y el tamaño del campo receptivo que deseamos. 
+
+En la figura~\ref{fig:dilated-conv}, puede ver cómo ahora solo necesitamos 4 capas para conectar los 16 valores de la serie de entrada a la salida resaltada (digamos, el valor de paso de tiempo 17). Por extensión, cuando se trabaja con una serie de tiempo diaria, se puede capturar más de un año de historia con solo 9 capas de convolución dilatadas de esta forma.
+
+\section{Redes neuronales recurrentes}
 Anteriormente hemos visto cómo las redes neuronales o convolucionales nos permiten clasificar un dato, por ejemplo una palabra, un sonido, o una imagen, pero tienen un inconveniente, y es que cuando tenemos una secuencia de datos, por ejemplo una secuencia de palabras, o una conversación, o una secuencia de imágenes, es decir un vídeo, este tipo de arquitecturas no pueden procesar ese tipo de datos. 
 
 Las Redes Neuronales Recurrentes \textit{(RNN)} \citep{karpathy:rnn} resuelven este inconveniente, porque son capaces de procesar diferentes tipos de secuencias, como textos, conversaciones, vídeos, música, y además de eso no sólo clasifican los datos como lo hacen las redes neuronales o convolucionales, sino que también están en capacidad de generar nuevas secuencias.
@@ -969,7 +1174,7 @@ Las \textit{RNN} resuelven los inconvenientes expresados anteriormente, pues pue
 
 Para ello este tipo de redes usan el concepto de recurrencia: para generar la salida, que también se conoce como activación, la red usa no sólo la entrada actual sino la activación generada en la iteración previa. En pocas palabras, las redes neuronales recurrentes usan un cierto tipo de memoria para generar la salida deseada. 
 
-\subsubsection{Arquitecturas}
+\subsection{Arquitecturas} \label{rnnarchitecture}
 Existen diversas arquitecturas disponibles para estas redes como observamos en la Figura~\ref{fig:rnnarch} \cite{karpathy:rnn}, donde cada rectángulo es un vector y cada fecha representa funciones. Los vectores de entrada están en rojo, los vectores de salida están en azul y los vectores verdes mantienen el estado de la \textit{RNN}.
 
 \begin{figure}[H]
@@ -1001,7 +1206,7 @@ Además, las \textit{RNN} combinan el vector de entrada con su vector de estado 
 
 \textbf{Si entrenar redes neuronales es optimización sobre funciones, entrenar redes recurrentes es optimización sobre programas.}
 
-\subsubsection{Funcionamiento}
+\subsection{Funcionamiento}
 
 Consideremos la Figura~\ref{fig:rnnunit} \citep{olahlstm}, aquí podemos observar como se define de manera gráfica una unidad funcional de una \textit{RNN} denominada $A$, que toma una entrada $x_t$ y genera un valor $h_t$.
 
@@ -1088,7 +1293,7 @@ Luego podemos realizar una actualización de parámetros, que empuja cada peso u
 
 Luego, repetimos este proceso una y otra vez hasta que la red converge y sus predicciones son finalmente consistentes con los datos de entrenamiento en el sentido de que los caracteres correctos siempre se predicen a continuación.
 
-\subsubsection{Entrenamiento}
+\subsection{Entrenamiento}
 Para entrenar una \textit{RNN}, el truco simplemente es desenrrollarla a través del tiempo y simplemente usar \textit{backpropagation} (estrategia que recibe el nombre de \textit{backpropagation} a través del tiempo (\textit{BPTT})) como observamos en la Fig.~\ref{fig:BPTT} \citep{geron}.
 
 \begin{figure}[H]
@@ -1106,7 +1311,7 @@ Los gradientes de esa función de costo luego son propagados hacía atrás a tra
 
 Finalmente los parámetros del modelo son actualizadas usando los gradientes calculados por \textit{BPTT}. Notar que los gradientes fluyen hacía atrás a través de todas las salidas utilizadas por la función de costo, no solamente a través de la salida final (notar que en el ejemplo no fluye a través de $Y_{(0)}$ e $Y_{(1)}$).
 
-\subsubsection{Desvanecimiento del gradiente}
+\subsection{Desvanecimiento del gradiente}
 
 Otra forma de alimentar una \textit{RNN} podría ser a través de las palabras individuales de una oración, dado que esto se realiza de forma secuencial, debemos proveerle de una palabra a la vez.
 
@@ -1174,24 +1379,25 @@ Nuevamente, el gradiente se utiliza para realizar ajustes en los pesos de las re
 
 Debido a los gradientes que desaparecen, la \textit{RNN} no aprende las dependencias de largo alcance en los pasos de tiempo. Eso significa que existe la posibilidad de que las palabras \texttt{"What"} y \texttt{"time"} no se consideren al intentar predecir la intención del usuario. Entonces, la red tiene que hacer la mejor suposición con \texttt{"is it?"}. Eso es bastante ambiguo y sería difícil incluso para un humano. Por lo tanto, no poder aprender en pasos de tiempo anteriores hace que la red tenga una memoria a corto plazo.
 
-Para mitigar la memoria a corto plazo, se crearon dos redes neuronales recurrentes especializadas. Las redes denominadas \textit{Long Short-Term Memory} o \textit{LSTM} para abreviar. El otro son Gated Recurrent Units o GRU. 
+\subsection{Tipos de \textit{RNNs}}
+Para mitigar la memoria a corto plazo, se crearon dos redes neuronales recurrentes especializadas. Las redes denominadas \textit{Long Short-Term Memory} o \textit{LSTM} para abreviar. Las otras se denominan \textit{Gated Recurrent Units} o \texttt{GRU}.
 
 \subsubsection{LSTM}
-Los \textit{LSTM} y \textit{GRU} funcionan esencialmente como los \textit{RNN}, pero son capaces de aprender las dependencias a largo plazo mediante mecanismos llamados "puertas". Estas puertas son diferentes operaciones de tensor que pueden aprender qué información agregar o quitar al estado oculto. Debido a esta capacidad, la memoria a corto plazo es un problema menor para ellos. \citep{olahlstm}
+Los \texttt{LSTM} y \texttt{GRU} funcionan esencialmente como los \textit{RNN}, pero son capaces de aprender las dependencias a largo plazo mediante mecanismos llamados "puertas". Estas puertas son diferentes operaciones de tensor que pueden aprender qué información agregar o quitar al estado oculto. Debido a esta capacidad, la memoria a corto plazo es un problema menor para ellos. \citep{olahlstm}
 
-Si consideramos la celda \textit{LSTM} como una caja negra, aparenta ser idéntica a una \textit{RNN} excepto que su estado se divide en dos vectores: $h_{(t)}$ y $c_{(t)}$ ("c" se mantiene por celda). Es posible pensar a $h_{(t)}$ como un estado de corto plazo y a $c_{(t)}$ como un estado de largo plazo.
+Si consideramos la celda \texttt{LSTM} como una caja negra, aparenta ser idéntica a una \textit{RNN} excepto que su estado se divide en dos vectores: $h_{(t)}$ y $c_{(t)}$ ("c" se mantiene por celda). Es posible pensar a $h_{(t)}$ como un estado de corto plazo y a $c_{(t)}$ como un estado de largo plazo.
 
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=1\textwidth]{lstmcell5.png}
-  	\caption{Celda \textit{LSTM}.}
+  	\caption{Celda \texttt{LSTM}.}
   	\label{fig:lstmcell}
   	\end{center}
 \end{figure}
 
-El diagrama completo del \textit{LSTM} lo podemos observar en la Fig.\ref{fig:lstmcell}, pero vamos a ir paso a paso analizando cada una de las partes que lo componen.
+El diagrama completo del \texttt{LSTM} lo podemos observar en la Fig.\ref{fig:lstmcell}, pero vamos a ir paso a paso analizando cada una de las partes que lo componen.
 
-La clave de los \textit{LSTM} es el estado de la celda, la línea horizontal que atraviesa la parte superior de la Fig.~\ref{fig:lstm1}. El estado de la celda es como una cinta transportadora. Corre directamente a lo largo de toda la cadena, con solo algunas interacciones lineales menores. Es muy fácil que la información fluya sin cambios.
+La clave de los \texttt{LSTM} es el estado de la celda, la línea horizontal que atraviesa la parte superior de la Fig.~\ref{fig:lstm1}. El estado de la celda es como una cinta transportadora. Corre directamente a lo largo de toda la cadena, con solo algunas interacciones lineales menores. Es muy fácil que la información fluya sin cambios.
 
 \begin{figure}[H]
 	\begin{center}				
@@ -1201,9 +1407,9 @@ La clave de los \textit{LSTM} es el estado de la celda, la línea horizontal que
   	\end{center}
 \end{figure}
 
-El \textit{LSTM} tiene la capacidad de eliminar o agregar información al estado de la celda, regulada cuidadosamente por estructuras llamadas puertas. Las puertas son una forma de dejar pasar información opcionalmente. Están compuestos por una capa de red neuronal sigmoidea y una operación de multiplicación.
+El \texttt{LSTM} tiene la capacidad de eliminar o agregar información al estado de la celda, regulada cuidadosamente por estructuras llamadas puertas. Las puertas son una forma de dejar pasar información opcionalmente. Están compuestos por una capa de red neuronal sigmoidea y una operación de multiplicación.
 
-La capa sigmoidea genera números entre $0$ y $1$, que describen cuánto de cada componente debe dejarse pasar. Un valor de $0$ significa "no dejar pasar nada", mientras que un valor de $1$ significa "dejar pasar todo". Un \textit{LSTM} tiene tres de estas puertas para proteger y controlar el estado de la celda.
+La capa sigmoidea genera números entre $0$ y $1$, que describen cuánto de cada componente debe dejarse pasar. Un valor de $0$ significa "no dejar pasar nada", mientras que un valor de $1$ significa "dejar pasar todo". Un \texttt{LSTM} tiene tres de estas puertas para proteger y controlar el estado de la celda.
 
 El primer paso es decidir qué información vamos a eliminar del estado de la celda. Esta decisión la toma una capa sigmoidea llamada \textbf{puerta del olvido} (Fig.~\ref{fig:lstm2}). Examina $h_{t-1}$ y $x_t$, y genera un número entre $0$ y $1$ para cada número en el estado de celda $C_{t-1}$. Un $1$ representa "mantener esto completamente", mientras que un $0$ representa "deshacerse de esto por completo".
 
@@ -1271,7 +1477,7 @@ $$ h_{(t)}=o_{(t)} \otimes tanh(C_{(t)})$$
 Pasando en limpio observando nuevamente la Fig.~\ref{fig:lstmcell}, tendremos nuestro vector de entradas $x_{(t)}$ y el estado anterior de corto plazo $h_{(t-1)}$ que alimenta 4 capas \texttt{FC}. Cada una de ellas sirve a un propósito diferente \citep{geron}:
 
 \begin{itemize}
-	\item La capa principal es la que genera $g_{(t)}$. Tiene la función habitual de analizar las entradas actuales $x_{(t)}$ y el estado anterior (a corto plazo) $h_{(t-1)}$. En una celda básica \textit{RNN}, no hay nada más que esta capa, y su salida va directamente hacia $y_{(t)}$ y $h_{(t)}$. Por el contrario, en una celda \textit{LSTM}, la salida de esta capa no sale directamente, sino que se almacena parcialmente en el estado a largo plazo.
+	\item La capa principal es la que genera $g_{(t)}$. Tiene la función habitual de analizar las entradas actuales $x_{(t)}$ y el estado anterior (a corto plazo) $h_{(t-1)}$. En una celda básica \textit{RNN}, no hay nada más que esta capa, y su salida va directamente hacia $y_{(t)}$ y $h_{(t)}$. Por el contrario, en una celda \texttt{LSTM}, la salida de esta capa no sale directamente, sino que se almacena parcialmente en el estado a largo plazo.
 	\item Las otras tres capas son controladores de puerta. Dado que usan la función de activación sigmoidea, sus salidas van entre 0 y 1. Sus salidas se alimentan a operaciones de multiplicación elemento a elemento (también conocido como producto de Hadamard \citep{hadamard}), por lo que si generan ceros, cierran la puerta, y si generan 1 la abre. Específicamente:
 	\begin{itemize}
 	\item La puerta de olvido (controlada por $f_{(t)}$) controla qué partes del estado a largo plazo $C_{(t-1)}$ deben borrarse.
@@ -1280,16 +1486,16 @@ Pasando en limpio observando nuevamente la Fig.~\ref{fig:lstmcell}, tendremos nu
 	\end{itemize}
 \end{itemize}
 
-En resumen, una celda LSTM puede aprender a reconocer una entrada importante (ese es el papel de la puerta de entrada), almacenarla en el estado a largo plazo, aprender a preservarla durante el tiempo que sea necesario (ese es el papel de la puerta del olvido) y aprender a extraerla siempre que sea necesario.
+En resumen, una celda \texttt{LSTM} puede aprender a reconocer una entrada importante (ese es el papel de la puerta de entrada), almacenarla en el estado a largo plazo, aprender a preservarla durante el tiempo que sea necesario (ese es el papel de la puerta del olvido) y aprender a extraerla siempre que sea necesario.
 
 \subsubsection{GRU}
 
-Otra variante popular es la celda \textit{GRU} (Unidad Recurrente Cerrada, \textit{Gated Recurrent Unit)}. \citep{olahlstm}
+Otra variante popular es la celda \texttt{GRU} (Unidad Recurrente Cerrada, \textit{Gated Recurrent Unit)}. \citep{olahlstm}
 
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.5\textwidth]{gru2.png}
-  	\caption{Celda \textit{GRU}.}
+  	\caption{Celda \texttt{GRU}.}
   	\label{fig:lstm5}
   	\end{center}
 \end{figure}
@@ -1310,7 +1516,170 @@ $$r_{(t)}=\sigma(W_{xr}x_{(t)} + W_{hr}h_{(t-1)} + b_r)$$
 $$g_{(t)}=\sigma(W_{xg}x_{(t)} + W_{hg}h_{(t-1)} + b_g)$$
 $$h_{(t)}=z_{(t)} \otimes h_{(t-1)} + (1-z_{(t)}) \otimes g_{(t)}$$
 
+\subsection{Secuencias de entradas y salida}
+
+Si bien en la Sección~\ref{rnnarchitecture} ya desglosamos los diferentes tipos de arquitecturas que puede tener una \textit{RNN}, sería de utilidad ahora que ya poseemos un marco teórico aceptable describirlas un poco más y ejemplificar en que casos sería provechosa su utilización. Tomaremos como referencia la Figura~\ref{fig:rnnnets} \citep{geron}.
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=1\textwidth]{tesis_42.png}
+  	\caption{\textbf{Superior-izquierda}: \textit{seq-to-seq}. \textbf{Superior-derecha}: \textit{sec-to-vector}. \textbf{Inferior-izquierda}: \textit{vector-to-sec}. \textbf{Inferior-derecha}: \textit{encoder-decoder}.}
+  	\label{fig:rnnnets}
+  	\end{center}
+\end{figure}
+
+\textbf{Secuencia a secuencia}
+
+Una \textit{RNN} puede tomar simultáneamente una secuencia de entradas y producir una secuencia de salidas (red \textbf{superior-izquierda}). Por ejemplo, este tipo de red es útil para predecir series de tiempo como los precios de las acciones: usted le da los precios de los últimos $N$ días y debe generar los precios desplazados un día en el futuro (es decir, de $N - 1$ días hace hasta mañana).
+
+\textbf{Secuencia a vector}
+
+Alternativamente, puede alimentar a la red con una secuencia de entradas e ignorar todas las salidas excepto la última (red \textbf{superior-derecha}). En otras palabras, esta es una red de secuencia a vector. Por ejemplo, podría alimentar a la red con una secuencia de palabras correspondiente a una crítica de película y la red generaría una puntuación de sentimiento (\textit{e.g.}, de 0 [odio] a 1 [amor]).
+
+\textbf{Vector a secuencia}
+
+Por el contrario, puede alimentar la red con una sola entrada en el primer paso de tiempo (y ceros para todos los demás pasos de tiempo) y dejar que genere una secuencia (red \textbf{inferior-izquierda}). Por ejemplo, la entrada podría ser una imagen y la salida podría ser un título para esa imagen.
+
+\textbf{Secuencia a secuencia con retardo}
+
+Por último, podría tener una red de secuencia a vector, llamada \textit{encoder}, seguida de una red de vector a secuencia, llamada \textit{decoder} (consulte la red de la parte inferior derecha). Por ejemplo, esto se puede utilizar para traducir una oración de un idioma a otro. Alimentaría la red con una oración en un idioma, el \textit{encoder} convertiría esta oración en una representación de vector único y luego el \textit{decoder} decodificaría este vector en una oración en otro idioma. Este modelo de dos pasos, llamado \textit{encoder-decoder}, funciona mucho mejor que intentar traducir sobre la marcha con un único \textit{RNN} secuencia a secuencia (red \textbf{Superior-izquierda}), ya que las últimas palabras de una oración pueden afectan las primeras palabras de la traducción, por lo que debe esperar hasta que haya escuchado la oración completa antes de traducirla.
+
+\section{Series temporales}
+
+\begin{quote}
+  Una serie temporal o cronológica es una sucesión de datos medidos en determinados momentos y ordenados cronológicamente.
+  
+  \hfill \citet{poole1998}
+\end{quote}
+
+\subsection{Clasificación del modelo}
+
+Los datos de entrada se pueden subdividir aún más para comprender mejor su relación con la variable de salida.
+
+\subsubsection{Tipo de variables de entrada}
+
+Una variable de entrada es:
+\begin{itemize}
+	\item \textbf{endógena} si se ve afectada por otras variables del sistema y la variable de salida depende de ella.
+	\item \textbf{exógena} si es independiente de otras variables del sistema y la variable de salida depende de ella.
+\end{itemize}
+
+En pocas palabras, las variables endógenas están influenciadas por otras variables del sistema (incluidas ellas mismas), mientras que las variables exógenas no lo están y se consideran fuera del sistema.
+
+Por lo general, un problema de pronóstico de series de tiempo tiene variables endógenas (por ejemplo, el resultado es una función de cierto número de pasos de tiempo anteriores) y puede tener o no variables exógenas.
+
+A menudo, las variables exógenas se ignoran debido al fuerte enfoque en las series de tiempo. Pensar explícitamente en ambos tipos de variables puede ayudar a identificar datos exógenos que se pasan por alto fácilmente o incluso características de ingeniería que pueden mejorar el modelo.
+
+\subsubsection{Objetivo}
+
+Los problemas de modelado predictivo de:
+
+\begin{itemize}
+	\item \textbf{regresión} son aquellos en los que se predice una cantidad.
+	\item  \textbf{clasificación} son aquellos en los que se predice una categoría.
+\end{itemize}
+
+\subsubsection{Estructura}
+
+Es útil trazar cada variable en una serie temporal e inspeccionar la trama en busca de posibles patrones.
+
+\begin{itemize}
+	\item \textbf{No estructurado}: No hay un patrón dependiente del tiempo sistemático obvio o discernible en una variable de serie temporal.
+
+	\item \textbf{Estructurado}: Patrones sistemáticos dependientes del tiempo en una variable de serie temporal (por ejemplo, tendencia y/o estacionalidad).
+\end{itemize}
+
+Podemos pensar en una serie sin patrón como \textbf{desestructurada}, ya que no existe una estructura discernible dependiente del tiempo.
+
+Alternativamente, una serie de tiempo puede tener patrones obvios, como una \textbf{tendencia} o \textbf{ciclos estacionales estructurados}.
+
+A menudo podemos simplificar el proceso de modelado identificando y eliminando las estructuras obvias de los datos, como una tendencia creciente o un ciclo repetido. Algunos métodos clásicos incluso le permiten especificar parámetros para manejar estas estructuras sistemáticas directamente.
+
+\subsubsection{Cantidad de variables utilizadas como características}
+
+Una serie temporal según la cantidad de variables medidas que serán utilizadas como entrada al modelo puede ser:
+\begin{itemize}
+	\item \textbf{Univariada:} una única variable.
+	\item \textbf{Multivariada:} múltiples variables. 
+\end{itemize}
+
+Es importante clasificar nuestra serie temporal en alguna de estos dos ya que los modelos a aplicar difieren de forma considerable en complejidad (multivariadas).
+
+\subsubsection{Horizonte de pronóstico}
+
+El horizonte de pronóstico es el período de tiempo en el futuro para el cual se nos propusimos predecir. Estos generalmente varían desde horizontes de pronóstico a corto plazo (menos de tres meses) hasta horizontes a largo plazo (más de dos años).
+
+Sin embargo eso es una cuestión relativa a como fueron medidos los datos de nuestro \textit{dataset} (segundos, minutos, horas, días, etc). Dado que nuestro \textit{dataset} está indexado según la marca de tiempo (\textit{timestamp}) nosotros podemos decidir cuantos pasos hacía adelante vamos a realizar nuestra predicción.
+
+\begin{itemize}
+	\item \textbf{Un paso:} requiere predecir el próximo paso de tiempo futuro.
+	\item \textbf{Varios pasos:} requiere predecir más de un paso de tiempo futuro.
+\end{itemize}
+
+Cuantos más pasos de tiempo se proyecten en el futuro, más desafiante será el problema dada la naturaleza agravada de la incertidumbre en cada paso de tiempo previsto.
+
+\subsubsection{Estático \textit{vs} Dinámico}
+Se refiere a la actualización del modelo para dar nuevos pronósticos.
+
+\textbf{Estático:} El modelo de pronóstico se ajusta una vez y se usa para hacer predicciones.
+
+\textbf{Dinámica:} El modelo de pronóstico se ajusta a los nuevos datos disponibles antes de cada predicción.
+
+\subsubsection{Uniformidad en el tiempo}
+
+\begin{itemize}
+	\item \textbf{Contiguo:} Las observaciones se hacen uniformes a lo largo del tiempo. Muchos problemas de series de tiempo tienen observaciones contiguas, como una observación cada hora, día, mes o año.
+	\item \textbf{Discontiguo:} Las observaciones no son uniformes a lo largo del tiempo. La falta de uniformidad de las observaciones puede deberse a valores perdidos o corruptos. También puede ser una característica del problema cuando las observaciones solo están disponibles esporádicamente o en intervalos de tiempo cada vez más o menos espaciados.
+\end{itemize}
+
+En el caso de observaciones no uniformes, es posible que se requiera un formato de datos específico al ajustar algunos modelos para que las observaciones sean uniformes a lo largo del tiempo.
+
 \section{Desarrollo}
+
+\subsection{Breve introducción}
+Los datos recabados provienen de la línea de fabricación de vehículos utilitarios en una usina de automotores, en la cual se utiliza un sistema de diversas auditorias para identificar defectos.
+
+\subsubsection{Organización de la usina}
+La usina se compone de departamentos, talleres y unidades de trabajo en ese orden jerárquico. A continuación listaremos los departamentos:
+
+\begin{itemize}
+	\item Calidad (\texttt{QLT})
+	\item Embutición (\texttt{EMBU})
+	\item Ingeniería (\texttt{DLI})
+	\item Logística (\texttt{SQF})
+	\item Montaje (\texttt{MONT})
+	\item Pintura (\texttt{PINT})
+	\item Soldadura (\texttt{SOLD})
+\end{itemize}
+
+La línea de fabricación consta de 4 departamentos que intervienen directamente en el ensamblaje del vehículo:
+
+\texttt{EMBU --> SOLD -> PINT -> MONT}
+
+Los demás departamentos son una parte vital de la producción pero intervienen indirectamente.
+
+\subsubsection{Nomenclatura de defectos}
+
+Un defecto (\texttt{DEF}) en su esencia se compone de un elemento (\texttt{ELE}), un incidente (\texttt{INC}) y opcionalmente una localización (\texttt{LOC}).
+
+\texttt{DEF = ELE + INC + LOC}
+
+Tanto \texttt{ELE} como \texttt{INC} están definido inequívocamente por un código de 4 caracteres mientras que \texttt{LOC} puede variar, lo que lleva a que un defecto posea al menos 8 caracteres.
+
+\subsubsection{Puntos de captaje}
+Los defectos son detectados en diversos puntos de captaje que pueden definir (o no) a que departamento o taller pertenece el defecto con un doble objetivo. En primer lugar para que los vehículos que ya poseen el defecto detectado sean derivados a puntos de retoque para ser reparados. Y además analizar y ejecutar diversas estrategias con el fin atacar el problema raíz para así erradicar el defecto.
+
+Los defectos detectados provienen de las siguientes fuentes de datos:
+\begin{itemize}
+	\item \textbf{Defectos por unidad} (\texttt{DPU}): los defectos se detectan en puntos de captaje a lo largo de toda la línea de producción.
+	\item \textbf{Carrocería pintura-soldadura} (\texttt{CAPS}): se realiza una auditoria al final de la línea de pintura sobre una muestra de carrocerías.
+	\item \textbf{Plan estático-dinámico} (\texttt{PESD}): una vez finalizado el proceso de fabricación del vehículo, se le realizan pruebas de estanqueidad, \textit{test-drive} y otros con objeto de encontrar defectos que en línea no serían detectables.
+	\item \texttt{SAVES}: Auditoria de 5 minutos de una muestra aleatoria de vehículos en línea final.
+\end{itemize}
+
+
+Sin embargo solo obtenemos datos a partir de los puntos de captaje de \texttt{SOLD} dado que en \texttt{EMBU} las partes aún no posee el identificador único del vehículo.
+
 \subsection{Limpieza de datos}
 Se tomarán datos principalmente de cuatro fuentes, las cuales debido a que difieren en su origen es necesario su normalización, tarea que se realiza a través de la librería \texttt{Pandas} (enfocada al manejo de tablas y datos). El entorno de trabajo será \texttt{Jupyter-Notebook} que soporta \texttt{Python} como lenguaje de programación.
 

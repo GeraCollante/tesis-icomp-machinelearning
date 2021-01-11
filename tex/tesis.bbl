@@ -1,4 +1,4 @@
-\begin{thebibliography}{20}
+\begin{thebibliography}{21}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -103,6 +103,14 @@ Sumit Saha.
 \newblock ISSN 3211-6453.
 \newblock URL
   \url{https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53}.
+
+\bibitem[Eddy(2019)]{wavenet}
+Joseph Eddy.
+\newblock {Time Series Forecasting with Convolutional Neural Networks - a Look
+  at WaveNet}.
+\newblock \url{https://jeddy92.github.io/JEddy92.github.io/ts_seq2seq_conv},
+  Feb 2019.
+\newblock [Online; accessed 9. Jan. 2021].
 
 \bibitem[Karpathy(2020)]{karpathy:rnn}
 Andrej Karpathy.

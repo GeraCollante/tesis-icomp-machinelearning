@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/Arch Linux) (preloaded format=xelatex 2021.1.2)  4 JAN 2021 20:27
+This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/Arch Linux) (preloaded format=xelatex 2021.1.2)  11 JAN 2021 04:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -593,6 +593,9 @@ LaTeX Info: Redefining \sffamily on input line 20.
 LaTeX Info: Redefining \ttfamily on input line 20.
 
 
+LaTeX Warning: Label `fig:type-pooling' multiply defined.
+
+
 LaTeX Warning: Label `fig:lstm5' multiply defined.
 
 )
@@ -703,7 +706,7 @@ File: img//tesis_1.png Graphic file (type bmp)
 
 ] [6]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
-29.
+31.
  (/usr/share/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -716,13 +719,14 @@ File: img//tesis_6.png Graphic file (type bmp)
  [8]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 169.
+               Default added (so using `tbp') on input line 171.
 
 File: img//tesis_9.png Graphic file (type bmp)
 <img//tesis_9.png>
+[9]
 File: img//tesis_10.png Graphic file (type bmp)
 <img//tesis_10.png>
-[9] [10]
+ [10]
 Missing character: There is no “ in font ec-lmr12!
 Missing character: There is no ” in font ec-lmr12!
  [11
@@ -797,7 +801,7 @@ File: img//026.png Graphic file (type bmp)
 Missing character: There is no “ in font ec-lmr12!
 Missing character: There is no ” in font ec-lmr12!
  [36] [37] [38]
-Overfull \hbox (12.48174pt too wide) in paragraph at lines 852--853
+Overfull \hbox (12.48174pt too wide) in paragraph at lines 854--855
 []\T1/lmr/m/n/12 Si las fun-cio-nes $\OML/lmm/m/it/12 f$ \T1/lmr/m/n/12 y $\OML
 /lmm/m/it/12 g$ \T1/lmr/m/n/12 son re-pre-sen-ta-das co-mo vec-to-res $\OML/lmm
 /m/it/12 a \OT1/lmr/m/n/12 = []$
@@ -809,7 +813,7 @@ File: img//tesis_24.png Graphic file (type bmp)
 File: img//tesis_25.png Graphic file (type bmp)
 <img//tesis_25.png>
 
-Overfull \hbox (1.35316pt too wide) in paragraph at lines 882--883
+Overfull \hbox (1.35316pt too wide) in paragraph at lines 884--885
 []\T1/lmr/m/n/12 Con ob-je-to de de-jar to-tal-men-te en cla-ro el al-go-rit-mo
  ob-ser-ve-mos la Fig. [][]30[][].
  []
@@ -824,60 +828,103 @@ File: img//imgrgb.png Graphic file (type bmp)
 <img//imgrgb.png>
 File: img//kernelmove.png Graphic file (type bmp)
 <img//kernelmove.png>
- [42] [43]
+ [42]
+File: img//conv-pad.png Graphic file (type bmp)
+<img//conv-pad.png>
+ [43]
+File: img//tesis_44.png Graphic file (type bmp)
+<img//tesis_44.png>
+ [44]
+File: img//layer-kernels.png Graphic file (type bmp)
+<img//layer-kernels.png>
+ [45]
+File: img//feature-map-clean.png Graphic file (type bmp)
+<img//feature-map-clean.png>
+File: img//k-activation-map.png Graphic file (type bmp)
+<img//k-activation-map.png>
+ [46]
+File: img//tesis_47.png Graphic file (type bmp)
+<img//tesis_47.png>
+ [47]
+File: img//tesis_45.png Graphic file (type bmp)
+<img//tesis_45.png>
+ [48] [49]
+File: img//tesis_46.png Graphic file (type bmp)
+<img//tesis_46.png>
+ [50]
+File: img//causal-conv.png Graphic file (type bmp)
+<img//causal-conv.png>
+ [51]
+File: img//stackcausal-conv.png Graphic file (type bmp)
+<img//stackcausal-conv.png>
+File: img//dilated-conv.png Graphic file (type bmp)
+<img//dilated-conv.png>
+ [52]
+Missing character: There is no … in font ec-lmr12!
+ [53] [54]
 File: img//rnnarch.jpg Graphic file (type bmp)
 <img//rnnarch.jpg>
- [44] [45]
+
+[55]
 File: img//tesis_27.png Graphic file (type bmp)
 <img//tesis_27.png>
 File: img//tesis_28.png Graphic file (type bmp)
 <img//tesis_28.png>
- [46]
+ [56]
 File: img//rnnunitv2.png Graphic file (type bmp)
 <img//rnnunitv2.png>
- [47]
+ [57]
 File: img//tesis_29.png Graphic file (type bmp)
 <img//tesis_29.png>
- [48]
+ [58] [59]
 File: img//tesis_40.png Graphic file (type bmp)
 <img//tesis_40.png>
- [49]
+ [60]
 File: img//vanishing1.png Graphic file (type bmp)
 <img//vanishing1.png>
- [50]
 File: img//vanishing2.png Graphic file (type bmp)
 <img//vanishing2.png>
+ [61]
 File: img//vanishin3.png Graphic file (type bmp)
 <img//vanishin3.png>
- [51]
 File: img//vanishing4.png Graphic file (type bmp)
 <img//vanishing4.png>
+ [62]
 File: img//vanishing5.png Graphic file (type bmp)
 <img//vanishing5.png>
- [52]
+ [63]
 File: img//lstmcell5.png Graphic file (type bmp)
 <img//lstmcell5.png>
- [53]
+ [64]
 File: img//lstm1.png Graphic file (type bmp)
 <img//lstm1.png>
- [54]
 File: img//lstm2.png Graphic file (type bmp)
 <img//lstm2.png>
-
-[55]
+ [65]
 File: img//lstm3.png Graphic file (type bmp)
 <img//lstm3.png>
+ [66]
 File: img//lstm4.png Graphic file (type bmp)
 <img//lstm4.png>
- [56]
 File: img//lstm5.png Graphic file (type bmp)
 <img//lstm5.png>
- [57]
+ [67]
 File: img//gru2.png Graphic file (type bmp)
 <img//gru2.png>
- [58] [59] (/usr/share/texmf-dist/tex/latex/listings/lstlang1.sty
+ [68] [69]
+File: img//tesis_42.png Graphic file (type bmp)
+<img//tesis_42.png>
+
+Underfull \hbox (badness 4144) in paragraph at lines 1526--1526
+\T1/lmr/m/it/12 vector\T1/lmr/m/n/12 . \T1/lmr/bx/n/12 Inferior-izquierda\T1/lm
+r/m/n/12 : \T1/lmr/m/it/12 vector-to-sec\T1/lmr/m/n/12 . \T1/lmr/bx/n/12 Inferi
+or-derecha\T1/lmr/m/n/12 : \T1/lmr/m/it/12 encoder-
+ []
+
+[70] [71] [72] [73] [74] [75]
+(/usr/share/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2020/03/24 1.8d listings language file
-) [60] (./tesis.bbl
+) [76] (./tesis.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 50--55
 []\T1/lmr/m/n/12 freeCodeCamp.org.  Demys-tif-ying gra-dient des-cent and
  []
@@ -946,7 +993,7 @@ Overfull \hbox (100.49217pt too wide) in paragraph at lines 84--90
 is-[]convnet-[]example-[]in-[]caffe$[][]\T1/lmr/m/n/12 .
  []
 
-[61
+[77
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 99--106
@@ -972,31 +1019,31 @@ rks-[]the-[]eli5-[]way-[]3bd2b1164a53$[][]\T1/lmr/m/n/12 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 115--119
+Underfull \hbox (badness 10000) in paragraph at lines 123--127
 [][]$\T1/lmtt/m/n/12 https : / / colah . github . io / posts / 2015-[]08-[]Unde
 rstanding-[]LSTMs$[][]\T1/lmr/m/n/12 .
  []
 
 
-Underfull \hbox (badness 7486) in paragraph at lines 128--135
+Underfull \hbox (badness 7486) in paragraph at lines 136--143
 []\T1/lmr/m/n/12 Michael Phi.  Illus-tra-ted Gui-de to Re-cu-rrent Neu-ral Net-
 
  []
 
 
-Underfull \hbox (badness 3229) in paragraph at lines 128--135
+Underfull \hbox (badness 3229) in paragraph at lines 136--143
 \T1/lmr/m/n/12 works - To-wards Da-ta Scien-ce.  \T1/lmr/m/it/12 Me-dium\T1/lmr
 /m/n/12 , Sep 2019.  ISSN
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 128--135
+Underfull \hbox (badness 10000) in paragraph at lines 136--143
 \T1/lmr/m/n/12 7958-0499.  URL [][]$\T1/lmtt/m/n/12 https : / / towardsdatascie
 nce . com /
  []
 
 
-Overfull \hbox (4.84612pt too wide) in paragraph at lines 128--135
+Overfull \hbox (4.84612pt too wide) in paragraph at lines 136--143
 \T1/lmtt/m/n/12 illustrated-[]guide-[]to-[]recurrent-[]neural-[]networks-[]79e5
 eb8049c9$[][]\T1/lmr/m/n/12 . 
  []
@@ -1037,27 +1084,22 @@ braces):
 >  {spanish/localnumeral}  =>  {polyglossia@C@localnumeral}
 >  {spanish/Localnumeral}  =>  {polyglossia@C@localnumeral}
 >  {spanish/totalhyphenmin}  =>  {5}.
- [62] (./tesis.aux
+ [78] (./tesis.aux
 LaTeX Info: Redefining \rmfamily on input line 20.
 LaTeX Info: Redefining \sffamily on input line 20.
 LaTeX Info: Redefining \ttfamily on input line 20.
-
-
-Package natbib Warning: Citation(s) may have changed.
-(natbib)                Rerun to get citations correct.
-
 )
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 17288 strings out of 477299
- 312676 string characters out of 5838339
- 877949 words of memory out of 5000000
- 36598 multiletter control sequences out of 15000+600000
- 461017 words of font info for 57 fonts, out of 8000000 for 9000
+ 17402 strings out of 477299
+ 314620 string characters out of 5838339
+ 881259 words of memory out of 5000000
+ 36699 multiletter control sequences out of 15000+600000
+ 461336 words of font info for 58 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 91i,12n,99p,756b,1482s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 91i,12n,99p,926b,1482s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on tesis.pdf (63 pages).
+Output written on tesis.pdf (79 pages).

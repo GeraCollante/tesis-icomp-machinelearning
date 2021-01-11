@@ -1,11 +1,11 @@
 \selectlanguage *{spanish}
 \contentsline {section}{\numberline {1}Motivación}{3}{section.1}%
 \contentsline {section}{\numberline {2}Objetivo}{4}{section.2}%
-\contentsline {section}{\numberline {3}Marco teórico}{5}{section.3}%
+\contentsline {section}{\numberline {3}Clasificación de modelos de inteligencia artificial}{5}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Inteligencia Artificial}{5}{subsection.3.1}%
 \contentsline {subsubsection}{\numberline {3.1.1}Aprendizaje automático}{5}{subsubsection.3.1.1}%
 \contentsline {subsection}{\numberline {3.2}Preprocesamiento}{6}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Aprendizaje supervisado}{6}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.3}Aprendizaje supervisado}{7}{subsection.3.3}%
 \contentsline {subsubsection}{\numberline {3.3.1}Clasificación}{7}{subsubsection.3.3.1}%
 \contentsline {subsubsection}{\numberline {3.3.2}Regresión}{9}{subsubsection.3.3.2}%
 \contentsline {subsection}{\numberline {3.4}Aprendizaje no supervisado}{11}{subsection.3.4}%
@@ -32,15 +32,40 @@
 \contentsline {subsubsection}{\numberline {4.12.2}Función de pérdida}{37}{subsubsection.4.12.2}%
 \contentsline {subsubsection}{\numberline {4.12.3}Modelo/Arquitectura}{37}{subsubsection.4.12.3}%
 \contentsline {subsubsection}{\numberline {4.12.4}Método de optimización}{38}{subsubsection.4.12.4}%
-\contentsline {subsection}{\numberline {4.13}Redes Neuronales Convolucionales}{38}{subsection.4.13}%
-\contentsline {subsubsection}{\numberline {4.13.1}Convolución 1D}{39}{subsubsection.4.13.1}%
-\contentsline {subsubsection}{\numberline {4.13.2}Convolución 2D}{41}{subsubsection.4.13.2}%
-\contentsline {subsection}{\numberline {4.14}Redes Neuronales Recurrentes}{43}{subsection.4.14}%
-\contentsline {subsubsection}{\numberline {4.14.1}Arquitecturas}{44}{subsubsection.4.14.1}%
-\contentsline {subsubsection}{\numberline {4.14.2}Funcionamiento}{46}{subsubsection.4.14.2}%
-\contentsline {subsubsection}{\numberline {4.14.3}Entrenamiento}{49}{subsubsection.4.14.3}%
-\contentsline {subsubsection}{\numberline {4.14.4}Desvanecimiento del gradiente}{50}{subsubsection.4.14.4}%
-\contentsline {subsubsection}{\numberline {4.14.5}LSTM}{53}{subsubsection.4.14.5}%
-\contentsline {subsubsection}{\numberline {4.14.6}GRU}{58}{subsubsection.4.14.6}%
-\contentsline {section}{\numberline {5}Desarrollo}{59}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Limpieza de datos}{59}{subsection.5.1}%
+\contentsline {section}{\numberline {5}Redes neuronales convolucionales}{38}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Convolución 1D}{39}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Convolución 2D}{41}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}\textit {Padding}}{43}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}\textit {Stride}}{44}{subsubsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.3}Tipos de capas}{44}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}Convolución}{45}{subsubsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}Activación}{47}{subsubsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.3}\textit {Fully-connected}}{48}{subsubsection.5.3.3}%
+\contentsline {subsubsection}{\numberline {5.3.4}\textit {Pooling}}{48}{subsubsection.5.3.4}%
+\contentsline {subsubsection}{\numberline {5.3.5}\textit {Batch Normalization}}{49}{subsubsection.5.3.5}%
+\contentsline {subsubsection}{\numberline {5.3.6}\textit {Dropout}}{50}{subsubsection.5.3.6}%
+\contentsline {subsection}{\numberline {5.4}\textit {WaveNet} y capas convolucionales causales dilatadas}{51}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Redes neuronales recurrentes}{53}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Arquitecturas}{55}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Funcionamiento}{56}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Entrenamiento}{60}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Desvanecimiento del gradiente}{61}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Tipos de \textit {RNNs}}{64}{subsection.6.5}%
+\contentsline {subsubsection}{\numberline {6.5.1}LSTM}{64}{subsubsection.6.5.1}%
+\contentsline {subsubsection}{\numberline {6.5.2}GRU}{69}{subsubsection.6.5.2}%
+\contentsline {subsection}{\numberline {6.6}Secuencias de entradas y salida}{70}{subsection.6.6}%
+\contentsline {section}{\numberline {7}Series temporales}{71}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Clasificación del modelo}{71}{subsection.7.1}%
+\contentsline {subsubsection}{\numberline {7.1.1}Tipo de variables de entrada}{71}{subsubsection.7.1.1}%
+\contentsline {subsubsection}{\numberline {7.1.2}Objetivo}{72}{subsubsection.7.1.2}%
+\contentsline {subsubsection}{\numberline {7.1.3}Estructura}{72}{subsubsection.7.1.3}%
+\contentsline {subsubsection}{\numberline {7.1.4}Cantidad de variables utilizadas como características}{73}{subsubsection.7.1.4}%
+\contentsline {subsubsection}{\numberline {7.1.5}Horizonte de pronóstico}{73}{subsubsection.7.1.5}%
+\contentsline {subsubsection}{\numberline {7.1.6}Estático \textit {vs} Dinámico}{73}{subsubsection.7.1.6}%
+\contentsline {subsubsection}{\numberline {7.1.7}Uniformidad en el tiempo}{74}{subsubsection.7.1.7}%
+\contentsline {section}{\numberline {8}Desarrollo}{74}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Breve introducción}{74}{subsection.8.1}%
+\contentsline {subsubsection}{\numberline {8.1.1}Organización de la usina}{74}{subsubsection.8.1.1}%
+\contentsline {subsubsection}{\numberline {8.1.2}Nomenclatura de defectos}{75}{subsubsection.8.1.2}%
+\contentsline {subsubsection}{\numberline {8.1.3}Puntos de captaje}{75}{subsubsection.8.1.3}%
+\contentsline {subsection}{\numberline {8.2}Limpieza de datos}{76}{subsection.8.2}%
