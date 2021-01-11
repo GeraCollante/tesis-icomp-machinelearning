@@ -951,7 +951,7 @@ Si consideramos la totalidad de la imagen como un prisma donde la profundidad co
 
 \subsubsection{\textit{Padding}}
 
-Un problema a abordar al aplicar la convolución es que tendemos a perder píxeles en el perímetro de nuestra imagen (o vector). Dado que normalmente usamos núcleos pequeños, para cualquier convolución dada, es posible que solo perdamos unos pocos píxeles, pero esto puede sumarse a medida que aplicamos muchas capas convolucionales sucesivas. Una solución sencilla a este problema es agregar píxeles adicionales de relleno (\textit{padding}) alrededor del límite de nuestra imagen de entrada, aumentando así el tamaño efectivo de la imagen. Normalmente, establecemos los valores de los píxeles adicionales en cero. 
+Un problema a abordar al aplicar la convolución es que tendemos a perder píxeles en el perímetro de nuestra imagen (o vector). Dado que normalmente usamos núcleos pequeños, para cualquier convolución dada, es posible que solo perdamos unos pocos píxeles, pero esto puede sumarse a medida que aplicamos muchas capas convolucionales sucesivas. Una solución sencilla a este problema es agregar píxeles adicionales de relleno (\textit{padding}) alrededor del límite de nuestra imagen de entrada, aumentando así el tamaño efectivo de la imagen. Normalmente, establecemos los valores de los píxeles adicionales en cero. \citep{padding}
 
 En la figura~\ref{fig:padding}, rellenamos una entrada de $3 \times 3$, aumentando su tamaño a $5 \times 5$. La salida correspondiente aumenta entonces a una matriz de $4 \times 4$.
 
@@ -967,7 +967,7 @@ En la figura~\ref{fig:padding}, rellenamos una entrada de $3 \times 3$, aumentan
 
 Al realizar la convolución, comenzamos con la ventana en la esquina superior izquierda del tensor de entrada y luego la deslizamos sobre todas las ubicaciones, tanto hacia abajo como hacia la derecha. Usualmente deslizamos un elemento a la vez. Sin embargo, a veces, ya sea por eficiencia computacional o porque deseamos reducir la resolución, movemos nuestra ventana más de un elemento a la vez, omitiendo las ubicaciones intermedias.
 
-Nos referimos al número de filas y columnas atravesadas por diapositiva como la zancada o \textit{stride}. Hasta ahora, hemos utilizado \textit{stride} de 1, tanto para altura como para ancho. A veces, es posible que deseemos usar un paso más grande, como en la figura~\ref{fig:stride}.
+Nos referimos al número de filas y columnas atravesadas por diapositiva como la zancada o \textit{stride}. Hasta ahora, hemos utilizado \textit{stride} de 1, tanto para altura como para ancho. A veces, es posible que deseemos usar un paso más grande, como en la figura~\ref{fig:stride} \citep{Saha2020Oct}.
 
 \begin{figure}[H]
 	\begin{center}				
@@ -978,7 +978,7 @@ Nos referimos al número de filas y columnas atravesadas por diapositiva como la
 \end{figure}
 
 \subsection{Tipos de capas}
-Existen varias tipos de capas usadas para construir \textit{CNNs} pero las más comunes incluyen:
+Existen varias tipos de capas usadas \citep{rosebrock2017deep} para construir \textit{CNNs} pero las más comunes incluyen:
 
 \begin{itemize}
 	\item Convolucional (\texttt{CONV})
@@ -1074,7 +1074,7 @@ Cabe destacar que \texttt{MAXPOOL} también actúa como supresor de ruido ya que
 
 %Las capas de normalización por lotes o \textit{Batch Normalization} (\texttt{BN}), como su nombre indica, se utilizan para normalizar las activaciones de un volumen de entrada determinado antes de pasarlo a la siguiente capa de la red.
 
-Por lo general, para entrenar una red neuronal, realizamos un preprocesamiento de los datos de entrada, por ejemplo, normalizar todos los datos para que se parezcan a una distribución normal (es decir, media cero y una varianza unitaria). Algunas razones para realizar esto puede ser prevenir la saturación temprana de funciones de activación no lineales como la función sigmoidea, asegurar que todos los datos de entrada estén en el mismo rango de valores, etc.
+Por lo general, para entrenar una red neuronal, realizamos un preprocesamiento de los datos de entrada, por ejemplo, normalizar todos los datos para que se parezcan a una distribución normal (es decir, media cero y una varianza unitaria). Algunas razones para realizar esto puede ser prevenir la saturación temprana de funciones de activación no lineales como la función sigmoidea, asegurar que todos los datos de entrada estén en el mismo rango de valores, etc. \citep{bn}
 
 Pero el problema aparece en las capas intermedias porque la distribución de las activaciones cambia constantemente durante el entrenamiento. Esto ralentiza el proceso de entrenamiento porque cada capa debe aprender a adaptarse a una nueva distribución en cada paso del entrenamiento. Este problema se conoce como \textbf{cambio de covariables interno}.
 
@@ -1100,7 +1100,7 @@ Reemplazamos el mini-lote $\mu_{\beta}$ y $\sigma_{\beta}$ con promedios de $\mu
 La \texttt{BN} también tiene el beneficio adicional de ayudar a "estabilizar" el entrenamiento, lo que permite una mayor variedad de tasas de aprendizaje y fortalezas de regularización. Esto no alivia la necesidad de ajustar estos parámetros, por supuesto, pero le facilitará la vida al hacer que la tasa de aprendizaje y la regularización sean menos volátiles y más fáciles de ajustar. También tenderá a notar pérdidas finales más bajas y una curva de pérdida más estable en sus redes.
 
 \subsubsection{\textit{Dropout}}
-El \textit{dropout} (\texttt{DO}) es en realidad una forma de regularización que tiene como objetivo ayudar a prevenir el sobreajuste aumentando la precisión de las pruebas, quizás a expensas de la precisión del entrenamiento.
+El \textit{dropout} (\texttt{DO}) es en realidad una forma de regularización que tiene como objetivo ayudar a prevenir el sobreajuste aumentando la precisión de las pruebas, quizás a expensas de la precisión del entrenamiento. \citep{rosebrock2017deep}
 
 La razón está en reducir el sobreajuste alterando de forma explicita la arquitectura de la red en tiempo de entrenamiento. La desconexión aleatoria de las conexiones garantiza que ningún nodo de la red sea responsable de la activación cuando se le presenta un patrón determinado. El \texttt{DO} garantiza que haya múltiples nodos redundantes que se activarán cuando se les presenten entradas similares (lo que a su vez ayuda a que nuestro modelo a generalizar).
 
@@ -1114,9 +1114,9 @@ La razón está en reducir el sobreajuste alterando de forma explicita la arquit
 
 \subsection{\textit{WaveNet} y capas convolucionales causales dilatadas}
 
-\textit{WaveNet} es una red neuronal profunda para generar audio muestra a muestra. La arquitectura de este modelo permite aprovechar las eficiencias de las capas de convolución al mismo tiempo que alivia el desafío de aprender las dependencias a largo plazo en una gran cantidad de pasos de tiempo (más de 1000) \citep{wavenet}.
+\textit{WaveNet} es una red neuronal profunda para generar audio muestra a muestra. La arquitectura de este modelo permite aprovechar las eficiencias de las capas de convolución al mismo tiempo que alivia el desafío de aprender las dependencias a largo plazo en una gran cantidad de pasos de tiempo (más de 1000) \citep{wavenet2}.
 
-En el núcleo de \textit{WaveNet} se encuentra la \textbf{capa de convolución causal dilatada} (figura~\ref{fig:causal-conv}), que le permite tratar adecuadamente el orden temporal y manejar las dependencias a largo plazo sin una explosión en la complejidad del modelo. 
+En el núcleo de \textit{WaveNet} se encuentra la \textbf{capa de convolución causal dilatada} (figura~\ref{fig:causal-conv}), que le permite tratar adecuadamente el orden temporal y manejar las dependencias a largo plazo sin una explosión en la complejidad del modelo. \citep{wavenet}
 
 \begin{figure}[H]
 	\begin{center}				
@@ -1683,13 +1683,9 @@ Sin embargo solo obtenemos datos a partir de los puntos de captaje de \texttt{SO
 \subsection{Limpieza de datos}
 Se tomarán datos principalmente de cuatro fuentes, las cuales debido a que difieren en su origen es necesario su normalización, tarea que se realiza a través de la librería \texttt{Pandas} (enfocada al manejo de tablas y datos). El entorno de trabajo será \texttt{Jupyter-Notebook} que soporta \texttt{Python} como lenguaje de programación.
 
-
-
 \begin{python}
 
 \end{python}
-
-\clearpage
 
 \bibliography{tesis}{}
 \bibliographystyle{unsrtnat}

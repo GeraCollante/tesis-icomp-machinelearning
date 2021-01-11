@@ -2,6 +2,7 @@
 *.csv
 *.xlsm
 *.xlsx
+*.sh
 tests
 gitignore.bash
 remote:⁄.desktop
