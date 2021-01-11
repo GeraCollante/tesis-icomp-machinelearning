@@ -1,6 +1,7 @@
 ## Protect data
 *.csv
 *.xlsm
+*.xlsx
 tests
 gitignore.bash
 remote:⁄.desktop
