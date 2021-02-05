@@ -4,6 +4,7 @@
 \setmainlanguage{spanish}
 \usepackage{pythonhighlight}
 \usepackage{multirow}
+\usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage[bookmarks = true, colorlinks=true, linkcolor = black, citecolor = black, menucolor = black, urlcolor = black]{hyperref}
@@ -17,7 +18,7 @@
 \usepackage[square,sort,comma,numbers]{natbib}
 \usepackage{mathtools}
 \usepackage{fancyhdr}
-\fancyhead[R]{2020}\fancyhead[L]{UNC - FCEFyN} \fancyfoot[C]{\thepage}
+\fancyhead[R]{2021}\fancyhead[L]{UNC - FCEFyN} \fancyfoot[C]{\thepage}
 \pagestyle{fancy}
 \usepackage[numbered]{bookmark} % Para que figure las secciones en el PDF
 \graphicspath{ {img/} }
@@ -1643,13 +1644,14 @@ Los datos recabados provienen de la línea de fabricación de vehículos utilita
 La usina se compone de departamentos, talleres y unidades de trabajo en ese orden jerárquico. A continuación listaremos los departamentos:
 
 \begin{itemize}
-	\item Calidad (\texttt{QLT})
+	\item Calidad (\texttt{CALI})
 	\item Embutición (\texttt{EMBU})
 	\item Ingeniería (\texttt{DLI})
 	\item Logística (\texttt{SQF})
 	\item Montaje (\texttt{MONT})
 	\item Pintura (\texttt{PINT})
 	\item Soldadura (\texttt{SOLD})
+	\item Soldadura (\texttt{DIVD})
 \end{itemize}
 
 La línea de fabricación consta de 4 departamentos que intervienen directamente en el ensamblaje del vehículo:
@@ -1657,6 +1659,8 @@ La línea de fabricación consta de 4 departamentos que intervienen directamente
 \texttt{EMBU --> SOLD -> PINT -> MONT}
 
 Los demás departamentos son una parte vital de la producción pero intervienen indirectamente.
+
+Cabe destacar a su vez que cada departamento posee talleres, que a su vez poseen unidades de trabajo obteniendo una estructura jerárquica de tipo árbol.
 
 \subsubsection{Nomenclatura de defectos}
 
@@ -1666,7 +1670,25 @@ Un defecto (\texttt{DEF}) en su esencia se compone de un elemento (\texttt{ELE})
 
 Tanto \texttt{ELE} como \texttt{INC} están definido inequívocamente por un código de 4 caracteres mientras que \texttt{LOC} puede variar, lo que lleva a que un defecto posea al menos 8 caracteres.
 
-\subsubsection{Puntos de captaje}
+\subsubsection{Tipo}
+A su vez los defectos están categorizados por familia o tipo de defectos:
+
+\begin{itemize}
+	\item \texttt{APR}: aprietes.
+	\item \texttt{ASP}: aspecto.
+	\item \texttt{DGRC}: degradaciones.
+	\item \texttt{ELEC}: eléctrico.
+	\item \texttt{ESTQ}: estanqueidad.
+	\item \texttt{FCIO}: funcionamiento.
+	\item \texttt{FLDS}: fluidos.
+	\item \texttt{FTES}: faltantes.
+	\item \texttt{GMTR}: geometría.
+	\item \texttt{MOP}: modo operatorio.
+	\item \texttt{NCON}: no conforme.
+	\item \texttt{RDOS}: ruidos.
+\end{itemize}
+
+\subsubsection{Puntos de captaje} \label{ptocptj}
 Los defectos son detectados en diversos puntos de captaje que pueden definir (o no) a que departamento o taller pertenece el defecto con un doble objetivo. En primer lugar para que los vehículos que ya poseen el defecto detectado sean derivados a puntos de retoque para ser reparados. Y además analizar y ejecutar diversas estrategias con el fin atacar el problema raíz para así erradicar el defecto.
 
 Los defectos detectados provienen de las siguientes fuentes de datos:
@@ -1677,15 +1699,323 @@ Los defectos detectados provienen de las siguientes fuentes de datos:
 	\item \texttt{SAVES}: Auditoria de 5 minutos de una muestra aleatoria de vehículos en línea final.
 \end{itemize}
 
+Sin embargo solo obtenemos datos a partir de los puntos de captaje de \texttt{SOLD} dado que en \texttt{EMBU} las partes aún no poseen el identificador único del vehículo.
 
-Sin embargo solo obtenemos datos a partir de los puntos de captaje de \texttt{SOLD} dado que en \texttt{EMBU} las partes aún no posee el identificador único del vehículo.
+\subsection{Procesamiento de datos}
 
-\subsection{Limpieza de datos}
-Se tomarán datos principalmente de cuatro fuentes, las cuales debido a que difieren en su origen es necesario su normalización, tarea que se realiza a través de la librería \texttt{Pandas} (enfocada al manejo de tablas y datos). El entorno de trabajo será \texttt{Jupyter-Notebook} que soporta \texttt{Python} como lenguaje de programación.
+Es vital realizar el procesamiento de los datos para alimentar el modelo, para ello se ha divido la tarea en las etapas que se muestran en la figura \ref{fig:dataproc}.
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=1\textwidth]{dataproc.png}
+  	\caption{Procesamiento de datos segmentado en etapas.}
+  	\label{fig:dataproc}
+  	\end{center}
+\end{figure}
+
+El entorno de trabajo será \texttt{Jupyter-Notebook} que soporta \texttt{Python} como lenguaje de programación y las librerías utilizadas serán: 
+\begin{itemize}
+	\item \texttt{Pandas}: manejo de tablas y datos.
+	\item \texttt{Numpy}: operaciones matriciales.
+	\item \texttt{Matplotlib}, \texttt{Seaborn}: visualización de datos.
+\end{itemize}
+
+\subsubsection{Recolección de datos}
+Etapa de búsqueda y recolección de los datos que serán utilizados para el modelo. En nuestro caso se dividió en recolectar en la organización los datos de defectos y paradas de línea (se obtuvieron para los departamentos \texttt{SOLD}, \texttt{PINT} y \texttt{MONT}).
+
+Los datos fueron obtenidos desde 4 auditorias diferentes que fueron presentadas en \ref{ptocptj}.
+
+\subsubsection{Limpieza de datos}
+Consiste en inspeccionar los datos obtenidos en búsqueda de posibles errores o datos que quizás es posible obtener pero por diversas razones se han perdido y debemos intentar recuperar.
+
+Ambos casos sucedieron, por tanto se procedió a recuperar los datos cuando fue posible, y en los que no se procedió al descarte debido a que no eran útiles para la tarea.
+
+\subsubsection{Preprocesamiento de datos}
+
+En este punto es donde debemos ponernos finos a la hora de inspeccionar nuestro \textit{dataset} para homogeneizar los datos, detectar incongruencias o datos sin sentido.
+
+En primer lugar se realizó una homogeneización de los datos, \textit{i.e.} quizás el mismo dato se puede estar refiriendo a lo mismo pero tienen \textit{tags} diferentes, por tanto es necesario revisar los datos columna por columna. Esto sucedió debido a que provenir los datos de diversas fuentes cada una tenía una forma de tratarlos. 
+
+Luego fue necesario la detección de incongruencias, y ahí nos topamos con inconvenientes tales como departamentos inexistentes. Además todos los defectos que no hayan sido catalogados en el campo \texttt{GVD} pasaron a ser \texttt{V2}.
+
+Debido a la estructura jerárquica de la usina, si tenemos definido la UET a la que pertenece el defecto, escalando hacía arriba podemos obtener el taller y el departamento correspondiente. Esta operación se realizó para todo el \textit{dataset}.
+
+Finalmente tenemos nuestro \textit{dataset} en condiciones para su análisis.
+
+\subsubsection{Análisis y visualización de datos}
+
+Haremos una parada en nuestro procesamiento de datos para visualizarlos y dimensionar en que posición nos encontramos.
+Nuestro \textit{dataset} se compone de $229934$ filas que cada una representa un defecto y 17 columnas.
+
+Algunas estadísticas a \textit{grosso modo} que podemos sacar del mismo son:
+
+\begin{itemize}
+	\item 10780 vehículos fueron fabricados durante 2020.
+	\item 5224 defectos diferentes fueron registrados en el sistema.
+	\item Se registran en promedio 19,6 defectos por vehículo.
+\end{itemize}
+
+Además si verificamos de donde provienen nuestros datos caeremos en cuenta que casi la totalidad de ellos provienen de \texttt{DPU}, disputándose el pequeño margen restante \texttt{PESD}, \texttt{CAPS} y \texttt{SAVES}.
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=0.7\textwidth]{audidist.png}
+  	\caption{Distribución de los defectos según auditoria.}
+  	\label{fig:distaudi}
+  	\end{center}
+\end{figure}
+
+Sin embargo no debemos perder el foco que es predecir la cantidad de defectos graves que ocurrirán en función a todos los defectos anteriores. En la fig.~\ref{fig:distgvddpto} observamos que la gran mayoría de defectos registrados son \texttt{V2} lo que podría ser útil para nuestro modelo.
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=0.5\textwidth]{tesis_51.png}
+  	\caption{Distribución de los defectos según gravedad.}
+  	\label{fig:distgvd}
+  	\end{center}
+\end{figure}
+
+La distribución por departamento nos muestra que los defectos principalmente ocurren en 3: \texttt{PINT}, \texttt{SOLD} y \texttt{MONT}, un poco más atrás en la participación está \texttt{SQF}.
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=0.7\textwidth]{tesis_53.png}
+  	\caption{Distribución de los defectos por departamento.}
+  	\label{fig:distgvddpto}
+  	\end{center}
+\end{figure}
+
+La distribución resume que casi 7 decimos de los defectos totales son de tipo \texttt{ASP}, seguido muy por detrás por \texttt{DGRC} y en tercer lugar los de \texttt{MOP}.
+
+\begin{figure}[H]
+	\begin{center}				
+	\includegraphics[width=0.7\textwidth]{tesis_55.png}
+  	\caption{Distribución de los defectos por tipo.}
+  	\label{fig:distgvdtype}
+  	\end{center}
+\end{figure}
+
+A través de un mapa de calor (fig.~\ref{fig:heatmapdptotype}) intentaremos cruzar esta información para obtener de manera visual la correlación que existe entre los departamentos y los tipos de defectos.
+Notamos que existe una cierta correlación entre algunos tipos de defectos y los departamentos, a tal en punto que en algunos departamentos ni siquiera existen determinados tipos de defectos. Sería provechoso que nuestro modelo pueda aprender esta característica para maximizar sus posibilidades.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tesis_56.png}
+  	\caption{Cantidad de defectos cruzando familias y tipos.}
+  	\label{fig:heatmapdptotype}
+  	\end{center}
+\end{figure}
+
+Sin embargo no hay que pensar que debido a que un determinado departamento y defecto posee muchos defectos la muchos son \texttt{V1}, la fig.~\ref{fig:heatmapfractionv1} se encarga de ilustrar el concepto. Así dilucidamos que hay determinadas combinaciones de \texttt{TIPO} y \texttt{DPTO} que son más probable que sean \texttt{V1}.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tesis_58.png}
+  	\caption{Fracción de \texttt{V1} por cantidad de defectos.}
+  	\label{fig:heatmapfractionv1}
+  	\end{center}
+\end{figure}
+
+Sin embargo el análisis más importante de manera visual que podemos realizar es el gráfico temporal de la cantidad de defectos según su gravedad como se muestra en la figura~\ref{fig:defectsperday}. 
+
+El 19 de marzo de 2020 se decretó la cuarentena debido a la pandemia provocada por el virus \textit{SARS-CoV-2}, por tanto no se fabricaron vehículos. Los defectos registrados durante esa fecha y el reinicio de la producción en junio se deben a la recuperación de vehículos por retoques. Por esto para que el flujo de los datos hacía el modelo sea continuo solo se tomará desde junio a diciembre (6 meses).
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tesis_64.png}
+  	\caption{Defectos diarios agrupados por gravedad.}
+  	\label{fig:defectsperday}
+  	\end{center}
+\end{figure}
+
+Sin embargo, aún no podemos notar un patrón especifico debido al ruido, por tanto aumentaremos la ventana de tiempo a una semana (fig.~\ref{fig:defectsperweek}). Afortunadamente para nuestro modelo (aunque la escala del eje de ordenadas es logarítmico) la cantidad de defectos \texttt{V2} sigue la curva de \texttt{V1} de forma muy similar. Esto es positivo ya que podemos intuir que existe una correlación entre los mismos del cúal nuestro modelo podrá obtener provecho.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tesis_63.png}
+  	\caption{Defectos semanales agrupados por gravedad.}
+  	\label{fig:defectsperweek}
+  	\end{center}
+\end{figure}
+
+Si al gráfico anterior lo desglosamos por auditoria y gravedad (fig.~\ref{fig:defectsperaudigvdweek}) veremos que en las demás auditorias que no sean \texttt{DPU} no hay patrones claros definidos, quizás se deba a la baja densidad de datos.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{audigvd.png}
+  	\caption{Defectos semanales agrupados por auditoria/gravedad.}
+  	\label{fig:defectsperaudigvdweek}
+  	\end{center}
+\end{figure}
+
+\subsubsection{Imputación de datos}
+En estadística, la imputación es el proceso de reemplazar los datos faltantes (\textit{missing values}) con valores sustituidos. En nuestro \textit{dataset} tenemos 2 \textit{features} con faltantes, una es \texttt{UET} (lo que conlleva a faltantes de \texttt{DPTO} y \texttt{TALL}) y la otra es \texttt{TIPO}.
+
+Como se observa en la fig.~\ref{fig:missingvalue}, los datos faltantes no son demasiados, más precisamente $1052$ de \texttt{UET} y $1228$ de \texttt{TIPO}. Debido a la gran cantidad de datos disponibles podemos rellenar estos valores con algún algoritmo de \textit{Machine Learning} visto con anterioridad.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tesis_66.png}
+  	\caption{Datos faltantes por \textit{feature}.}
+  	\label{fig:missingvalue}
+  	\end{center}
+\end{figure}
+
+Luego de revisar los valores faltantes se optó por usar como estimador diversos tipos de clasificadores para así seleccionar el de mejor rendimiento, para posteriormente rellenar los valores.
+
+Los siguientes clasificadores fueron seleccionados:
+
+\begin{itemize}
+	\item \textit{KNeighborsClassifier} \texttt{(KNC)}
+	\item \textit{SGDClassifier} \texttt{(SGDC)}
+	\item \textit{RidgeClassifier} \texttt{(RC)}
+    \item \textit{LogisticRegression} \texttt{(LR)}
+    \item \textit{XGBClassifier} \texttt{(XGBC)}
+    \item \textit{DecisionTreeClassifier} \texttt{(DTC)}
+    \item \textit{RandomForestClassifier} \texttt{(RFC)}
+    \item \textit{BaggingClassifier} \texttt{(BC)}
+\end{itemize}
+
+Se optó por utilizar como \textit{feature} \texttt{ELE}, \texttt{INC}, \texttt{LOC} y \texttt{GVD}, dejando como \textit{target} \texttt{TIPO}.
+
+\hfill
+
+\textbf{Estimación de la precisión del modelo}
+
+Para estimar la precisión de los modelos seleccionados se utilizó \textit{K-fold Cross-Validation} (\texttt{KFCV}) \citep{kfolds}.
+
+Una iteración de \texttt{KFCV} se realiza de la siguiente manera: 
+
+\begin{enumerate}
+	\item Se genera una permutación aleatoria del conjunto de muestra y se divide en $K$ subconjuntos (pliegues o \textit{folds}) de aproximadamente el mismo tamaño.
+	\item De esos $K$ subconjuntos, un solo subconjunto se retiene como datos de validación para probar el modelo (este subconjunto se llama \textit{testset}), y los restantes $K-1$ subconjuntos juntos se utilizan como datos de entrenamiento (\textit{trainset}).
+	\item Luego, se entrena un modelo en el \textit{trainset} y se evalúa su precisión en el \textit{testset}. 
+	\item El entrenamiento y la evaluación del modelo se repiten $K$ veces, y cada uno de los $K$ subconjuntos se utiliza exactamente una vez como \textit{trainset}.
+\end{enumerate}
+
+En la fig.~\ref{fig:kfolds} se ejemplifica parte del proceso.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.75\textwidth]{tesis_67.png}
+  	\caption{Ejemplo de validación cruzada de 5 veces con 30 muestras.}
+  	\label{fig:kfolds}
+  	\end{center}
+\end{figure}
+
+La estimación de precisión resultante depende de la permutación aleatoria que se generó al comienzo del proceso, ya que afecta la forma en que se particiona el conjunto de muestras. 
+
+Por lo tanto, para obtener una estimación más exacta de la precisión, tiene sentido repetir la validación cruzada varias veces y tomar el promedio de todas las estimaciones de precisión obtenidas después de cada iteración como estimación de precisión resultante.
 
 \begin{python}
 
 \end{python}
+
+\textbf{Matriz de correlación}
+
+En un \textit{dataset} con muchos atributos, el conjunto de valores de correlación entre pares de sus atributos forma una matriz que se denomina matriz de correlación.
+
+Existen varios métodos para calcular un valor de correlación. El más popular es el coeficiente de correlación de \textit{Pearson}. Sin embargo, debe notarse que mide solo la relación lineal entre dos variables. En otras palabras, es posible que no pueda revelar una relación no lineal. El valor de la correlación de \textit{Pearson} varía de $-1$ a $+1$, donde $\pm1$ describe una correlación positiva/negativa perfecta y $0$ significa que no hay correlación. \citep{corrmatrix}
+
+La matriz de correlación es una matriz simétrica con todos los elementos diagonales iguales a $+1$. Nos gustaría enfatizar que una matriz de correlación solo brinda información sobre la correlación y NO es una herramienta confiable para estudiar la causalidad. 
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{corrmatrix.png}
+  	\caption{Matriz de correlación de nuestro \textit{dataset}.}
+  	\label{fig:corrmatrix}
+  	\end{center}
+\end{figure}
+
+En la fig.~\ref{fig:corrmatrix} nos posaremos sobre las dos \textit{features} que nos propusimos predecir.
+
+\begin{itemize}
+	\item \texttt{TIPO}: en este caso notamos que las features \texttt{ELE} y \texttt{INC}, tienen una relación notable con \texttt{TIPO}, por tanto esas serán utilizadas y el resto descartadas.
+	\item \texttt{UET}: aquí las relaciones están mucho más difusas, por tanto usaremos \textit{features} que estén en las filas a las cuales queremos predecir su \texttt{UET}. Por tanto se usará \texttt{ELE}, \texttt{INC}, \texttt{LOC}, \texttt{GVD} y \texttt{TIPO}.
+\end{itemize}
+
+\begin{table}[]
+\centering
+\begin{tabular}{lccc}
+\textbf{Modelo} & \textbf{Tiempo de ejecución} & \textbf{Rendimiento} & \textbf{Rend. por tiempo} \\ \hline
+\texttt{KNC}  & 0,37  & 99,42 \% & 2,71 \\
+\texttt{SGDC} & 1,24  & 98,76 \% & 0,79 \\
+\texttt{RC}   & 3,08  & 97,99 \% & 0,32 \\
+\texttt{LR}   & 21,95 & 99,25 \% & 0,05 \\
+\texttt{XGBC} & 23,20 & 96,72 \% & 0,04 \\
+\texttt{DTC}  & 1,53  & 99,72 \% & 0,65 \\
+\texttt{RFC}  & 20,05 & 99,73 \% & 0,05 \\
+\texttt{BC}   & 11,00 & 99,71 \% & 0,09
+\end{tabular}
+\caption{Ranking de clasificadores para \texttt{TIPO}}
+\label{tab:classifiers-table}
+\end{table}
+
+\textbf{Predicción de \texttt{TIPO}}
+
+El tiempo de ejecución se considera un parámetro importante debido a que si nuestro \textit{dataset} creciera y poseemos el mismo poder de cómputo quizás deberíamos optar por entrenar un modelo que dé un buen rendimiento por poco tiempo de entrenamiento, \textit{e.g.} \texttt{DTC} (fig.~\ref{fig:modeltxtipo}).
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tipotimes.png}
+  	\caption{Gráfico de caja del rendimiento de cada modelo para \texttt{TIPO}.}
+  	\label{fig:modeltxtipo}
+  	\end{center}
+\end{figure}
+
+Los resultados de rendimiento de cada modelo se presentan en el cuadro~\ref{tab:classifiers-table} y los interpretaremos de manera visual en la fig.~\ref{fig:boxplotmodeltype}. Hay una leve ventaja de \texttt{RandomForestClassifier} por sobre los demás modelos, así que será el seleccionado para imputar los datos faltantes de \texttt{TIPO}.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tipoperf.png}
+  	\caption{Gráfico de caja del rendimiento de cada modelo para \texttt{TIPO}.}
+  	\label{fig:boxplotmodeltype}
+  	\end{center}
+\end{figure}
+
+\textbf{Predicción de \texttt{UET}}
+
+Utilizando un \textit{miniset} (\textit{i.e.} una fracción de nuestro \textit{dataset}) se fueron probando diferentes \textit{features} para nuestro modelo (debido a que las pruebas requieren menor tiempo de cálculo y se supone que la muestra representa al menos la mayor parte del \textit{dataset}). Tener en cuenta que para que este enfoque funcione es necesario setear el \texttt{random-state} de las funciones con una \textit{seed} que es un número entero, esto es para quitar el componente de azar de los modelos y poder realizar las pruebas sobre los mismos datos.
+
+Así llegamos a la conclusión que los mejores rendimientos se obtenían con \texttt{ELE}, \texttt{INC} y \texttt{LOC}, por tanto descartamos \texttt{GVD} y \texttt{TIPO}.
+
+Una vez más \texttt{DTC} se lleva la mejor relación entre tiempo de entrenamiento y rendimiento como observamos en la fig.~\ref{fig:timesmodeluet}. El mejor rendimiento lo obtiene \texttt{RFC} (fig.~\ref{fig:perfmodeluet}).
+
+Finalmente imputaremos los datos en nuestro dataset con el mejor clasificador para cada \textit{feature}, así logrando el objetivo de completar los datos faltantes.
+
+\begin{table}[]
+\centering
+\begin{tabular}{lccc}
+\textbf{Modelo} & \textbf{Tiempo de ejecución} & \textbf{Rendimiento} & \textbf{Rendimiento por tiempo} \\ \hline
+\texttt{KNC}  & 0,42   & 76,45 \% & 1,80 \\
+\texttt{SGDC} & 6,01   & 73,39 \% & 0,12 \\
+\texttt{RC}   & 19,45  & 68,54 \% & 0,04 \\
+\texttt{LR}   & 74,98  & 74,88 \% & 0,01 \\
+\texttt{XGBC} & 193,92 & 73,52 \% & 0,00 \\
+\texttt{DTC}  & 2,29   & 79,60 \% & 0,35 \\
+\texttt{RFC}  & 157,46 & 79,74 \% & 0,01 \\
+\texttt{BC}   & 22,36  & 79,61 \% & 0,04
+\end{tabular}
+\caption{Ranking de clasificadores para \texttt{UET}}
+\label{tab:ranking-uet-table}
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tesis_71.png}
+  	\caption{Gráfico de caja del rendimiento de cada modelo para \texttt{TIPO}.}
+  	\label{fig:timesmodeluet}
+  	\end{center}
+\end{figure}
+
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tesis_72.png}
+  	\caption{Gráfico de caja del rendimiento de cada modelo para \texttt{TIPO}.}
+  	\label{fig:perfmodeluet}
+  	\end{center}
+\end{figure}
 
 \bibliography{tesis}{}
 \bibliographystyle{unsrtnat}

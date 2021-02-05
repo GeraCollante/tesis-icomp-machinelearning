@@ -6,6 +6,12 @@
 tests
 gitignore.bash
 remote:⁄.desktop
+smp/data
+thrash/
+data/
+misc/
+models/
+.ipynb_checkpoints
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
