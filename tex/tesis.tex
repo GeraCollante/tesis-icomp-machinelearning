@@ -1760,7 +1760,7 @@ Además si verificamos de donde provienen nuestros datos caeremos en cuenta que 
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.7\textwidth]{audidist.png}
-  	\caption{Distribución de los defectos según auditoria.}
+  	\caption{Distribución de los defectos según \texttt{AUDI}.}
   	\label{fig:distaudi}
   	\end{center}
 \end{figure}
@@ -1780,7 +1780,7 @@ La distribución por departamento nos muestra que los defectos principalmente oc
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.7\textwidth]{tesis_53.png}
-  	\caption{Distribución de los defectos por departamento.}
+  	\caption{Distribución de los defectos por \texttt{DPTO}.}
   	\label{fig:distgvddpto}
   	\end{center}
 \end{figure}
@@ -1790,7 +1790,7 @@ La distribución resume que casi 7 decimos de los defectos totales son de tipo \
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.7\textwidth]{tesis_55.png}
-  	\caption{Distribución de los defectos por tipo.}
+  	\caption{Distribución de los defectos por \texttt{TIPO}.}
   	\label{fig:distgvdtype}
   	\end{center}
 \end{figure}
@@ -1801,7 +1801,7 @@ Notamos que existe una cierta correlación entre algunos tipos de defectos y los
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=1\textwidth]{tesis_56.png}
-  	\caption{Cantidad de defectos cruzando familias y tipos.}
+  	\caption{Cantidad de defectos cruzando \texttt{DPTO} y \texttt{TIPO}.}
   	\label{fig:heatmapdptotype}
   	\end{center}
 \end{figure}
@@ -1823,7 +1823,7 @@ El 19 de marzo de 2020 se decretó la cuarentena debido a la pandemia provocada 
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=1\textwidth]{tesis_64.png}
-  	\caption{Defectos diarios agrupados por gravedad.}
+  	\caption{Defectos diarios agrupados por \texttt{GVD}.}
   	\label{fig:defectsperday}
   	\end{center}
 \end{figure}
@@ -1833,7 +1833,7 @@ Sin embargo, aún no podemos notar un patrón especifico debido al ruido, por ta
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=1\textwidth]{tesis_63.png}
-  	\caption{Defectos semanales agrupados por gravedad.}
+  	\caption{Defectos semanales agrupados por \texttt{GVD}.}
   	\label{fig:defectsperweek}
   	\end{center}
 \end{figure}
@@ -1843,7 +1843,7 @@ Si al gráfico anterior lo desglosamos por auditoria y gravedad (fig.~\ref{fig:d
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=1\textwidth]{audigvd.png}
-  	\caption{Defectos semanales agrupados por auditoria/gravedad.}
+  	\caption{Defectos semanales agrupados por \texttt{AUDI}/\texttt{GVD}.}
   	\label{fig:defectsperaudigvdweek}
   	\end{center}
 \end{figure}
@@ -1934,7 +1934,23 @@ En la fig.~\ref{fig:corrmatrix} nos posaremos sobre las dos \textit{features} qu
 	\item \texttt{UET}: aquí las relaciones están mucho más difusas, por tanto usaremos \textit{features} que estén en las filas a las cuales queremos predecir su \texttt{UET}. Por tanto se usará \texttt{ELE}, \texttt{INC}, \texttt{LOC}, \texttt{GVD} y \texttt{TIPO}.
 \end{itemize}
 
-\begin{table}[]
+\textbf{\textit{scikit-learn}}
+
+Los algoritmos utilizados están implementados en la librería \textit{sk-learn}, que nos permite a través de \textit{pipelines} realizar un preprocesamiento de los datos para posteriormente entrenar al modelo. En nuestro caso debido a que todas las \textit{features} son de tipo categoría usamos la codificación \texttt{one-hot encoder}, como observamos en la fig.~\ref{fig:sklearn}.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.45\textwidth]{tesis_74.png}
+  	\caption{Gráfico de caja del rendimiento de cada modelo para \texttt{TIPO}.}
+  	\label{fig:sklearn}
+  	\end{center}
+\end{figure}
+
+\textbf{Predicción de \texttt{TIPO}}
+
+El tiempo de ejecución se considera un parámetro importante debido a que si nuestro \textit{dataset} creciera y poseemos el mismo poder de cómputo quizás deberíamos optar por entrenar un modelo que dé un buen rendimiento por poco tiempo de entrenamiento, \textit{e.g.} \texttt{DTC} (fig.~\ref{fig:modeltxtipo}).
+
+\begin{table}[H]
 \centering
 \begin{tabular}{lccc}
 \textbf{Modelo} & \textbf{Tiempo de ejecución} & \textbf{Rendimiento} & \textbf{Rend. por tiempo} \\ \hline
@@ -1950,10 +1966,6 @@ En la fig.~\ref{fig:corrmatrix} nos posaremos sobre las dos \textit{features} qu
 \caption{Ranking de clasificadores para \texttt{TIPO}}
 \label{tab:classifiers-table}
 \end{table}
-
-\textbf{Predicción de \texttt{TIPO}}
-
-El tiempo de ejecución se considera un parámetro importante debido a que si nuestro \textit{dataset} creciera y poseemos el mismo poder de cómputo quizás deberíamos optar por entrenar un modelo que dé un buen rendimiento por poco tiempo de entrenamiento, \textit{e.g.} \texttt{DTC} (fig.~\ref{fig:modeltxtipo}).
 
 \begin{figure}[H]
 	\begin{center}
@@ -1983,7 +1995,7 @@ Una vez más \texttt{DTC} se lleva la mejor relación entre tiempo de entrenamie
 
 Finalmente imputaremos los datos en nuestro dataset con el mejor clasificador para cada \textit{feature}, así logrando el objetivo de completar los datos faltantes.
 
-\begin{table}[]
+\begin{table}[H]
 \centering
 \begin{tabular}{lccc}
 \textbf{Modelo} & \textbf{Tiempo de ejecución} & \textbf{Rendimiento} & \textbf{Rendimiento por tiempo} \\ \hline
@@ -2008,7 +2020,6 @@ Finalmente imputaremos los datos en nuestro dataset con el mejor clasificador pa
   	\end{center}
 \end{figure}
 
-
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=1\textwidth]{tesis_72.png}
@@ -2016,6 +2027,8 @@ Finalmente imputaremos los datos en nuestro dataset con el mejor clasificador pa
   	\label{fig:perfmodeluet}
   	\end{center}
 \end{figure}
+
+\clearpage
 
 \bibliography{tesis}{}
 \bibliographystyle{unsrtnat}
