@@ -22,6 +22,9 @@
 \pagestyle{fancy}
 \usepackage[numbered]{bookmark} % Para que figure las secciones en el PDF
 \graphicspath{ {img/} }
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+
 
 \begin{document}
 
@@ -1635,6 +1638,55 @@ Se refiere a la actualización del modelo para dar nuevos pronósticos.
 
 En el caso de observaciones no uniformes, es posible que se requiera un formato de datos específico al ajustar algunos modelos para que las observaciones sean uniformes a lo largo del tiempo.
 
+\subsection{Modelos disponibles}
+
+Se realizó una investigación de los modelos de \textit{forecasting} disponibles de forma gratuita y los resultados se reflejan en el Cuadro~\ref{tab:ts-models}. Se realizará una breve síntesis de cada uno de ellos, sin embargo no se puede responder a la pregunta de cual es mejor ya que según el tipo de problema a abordar alguno tendrá mejor rendimiento que el otro.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|ccccccc}
+\textbf{Librería} & \textbf{Creador/es}   & \textbf{Estrellas} & Versión     & Licencia     & Framework ML \\ \hline
+\texttt{Prophet}          & Facebook                      & 12000              & 0.7.1          & MIT          & \textit{PyTorch}      \\
+\texttt{Sktime}           & ATI  & 3400               & 0.5.1          & BSD-3-Clause & -            \\
+\texttt{GluonTS}          & AWSlabs                           & 1700               & 0.6.4        & Apache-2.0   & \textit{mxnet}        \\
+\texttt{pmdarima}         & Alkaline-ml                          & 780                & 1.8.0          & MIT          & -            \\
+\texttt{arch}             & bashtage                                    & 630                & 4.15           & Propia       & -            \\
+\texttt{DCRNN}            & liyaguang                                  & 600          &  ?                    & MIT          & \textit{TensorFlow}   \\
+\texttt{Sktime-dl}        & ATI                    & 340                & 0.1.0   & BSD-3-Clause & \textit{Keras}       
+\end{tabular}
+\caption{Comparativo de modelos de series temporales.}
+\label{tab:ts-models}
+\end{table}
+
+Se explorarán los 3 más populares de \href{http://www.github.com}{Github} 
+
+\subsubsection{\texttt{Prophet}}
+\texttt{Prophet} es un modelo desarrollado por \textit{Facebook AI} para pronosticar datos de series de tiempo basado en un modelo aditivo donde las tendencias no lineales se ajustan a la estacionalidad anual, semanal y diaria, más los efectos de las vacaciones. \citep{prophet}
+
+\begin{itemize}
+	\item Funciona mejor con series de tiempo que tienen fuertes efectos estacionales y varias temporadas de datos históricos.
+	\item Robusto ante los datos faltantes y los cambios de tendencia, y normalmente maneja bien los valores atípicos.
+	\item Incluye muchas posibilidades para que los usuarios modifiquen y ajusten los pronósticos. Puede utilizar parámetros interpretables por humanos para mejorar su pronóstico agregando su conocimiento del dominio.
+	\item Está pensado para series temporales bursátiles en primera instancia, pero es posible utilizarlo en otros campos.
+\end{itemize}
+
+\subsubsection{\texttt{GluonTS}}
+\textit{Gluon Time Series} (\texttt{GluonTS}) es el kit de herramientas desarrollado por \textit{AWSlabs} para el modelado probabilístico de series de tiempo, que se centra en modelos basados ​​en el aprendizaje profundo. Proporciona utilidades para cargar e iterar sobre conjuntos de datos de series de tiempo, modelos de última generación listos para ser entrenados y bloques de construcción para definir sus propios modelos y experimentar rápidamente con diferentes soluciones. \citep{gluonts}
+
+\subsubsection{\texttt{sktime}}
+Kit de herramientas desarrollado por \textit{Alan Turing Institute}, que proporciona algoritmos de series temporales especializados y herramientas compatibles con \textit{scikit-learn} para construir, ajustar y validar modelos de series de tiempo para múltiples problemas de aprendizaje, que incluyen: \citep{sktime}
+
+\begin{itemize}
+	\item \textbf{Pronóstico de series temporales}: predecir el mañana dado datos pasados.
+	\item \textbf{Clasificación de series temporales}: dada una serie temporal, asignar una etiqueta,
+\end{itemize}
+
+No utiliza aprendizaje profundo, pero \textit{ATI} está desarrollando una librería que si lo hace denominada \texttt{sktime-dl}. Se encuentra en fase de desarrollo actualmente.
+
+\subsubsection{Conclusión}
+
+Debido a la naturaleza de nuestra serie temporal (que es de tipo intermitente) no podemos ajustarnos a algunos de estos modelos ya que necesitan series temporales continuas.
+
 \section{Desarrollo}
 
 \subsection{Breve introducción}
@@ -2027,6 +2079,222 @@ Finalmente imputaremos los datos en nuestro dataset con el mejor clasificador pa
   	\label{fig:perfmodeluet}
   	\end{center}
 \end{figure}
+
+\subsubsection{Formateo de datos}
+El paso final antes de alimentar nuestro modelos es obtener rodajas de tiempo con funciones de agregación de tipo \texttt{sum}, \texttt{count}, etc de nuestros datos. 
+
+\textbf{Serie temporal univariada}
+
+Pero como observamos en la Fig.~\ref{fig:graf_cantdef_antes}, nuestra serie temporal dista mucho de ser continua. Esto es un inconveniente ya que se ha demostrado que a los modelos les cuesta mucho aprender sobre series temporales intermitentes.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tesis_78.png}
+  	\caption{Gráfico temporal de cantidad de defectos.}
+  	\label{fig:graf_cantdef_antes}
+  	\end{center}
+\end{figure}
+
+Por tanto tomaremos las siguientes consideraciones:
+
+\begin{itemize}
+	\item tomar el periodo posterior a la cuarentena por \textit{Sars-CoV-2}.
+	\item quitar los días sin o con baja producción.
+	\item quitar horarios no laborales.
+\end{itemize}
+
+En la Fig.~\ref{fig:graf_inter_antes} donde aplicamos la función escalón, notamos los huecos que tenemos en nuestra serie, por tanto aplicaremos diversas funciones sobre la misma para obtener la serie continua deseada.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tesis_79.png}
+  	\caption{Gráfico temporal de detección de intermitencia.}
+  	\label{fig:graf_inter_antes}
+  	\end{center}
+\end{figure}
+
+Una vez aplicado los filtros necesarios obtenemos la siguiente serie de la Fig.~\ref{fig:graf_cantdef_desp}. En la Fig.~\ref{fig:graf_inter_desp} si bien siguen apareciendo ceros son mucho menores y se originan en horarios de producción mínima como el horario de inicio y finalización.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tesis_80.png}
+  	\caption{Gráfico temporal de cantidad de defectos procesado.}
+  	\label{fig:graf_cantdef_desp}
+  	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tesis_81.png}
+  	\caption{Gráfico temporal de detección de intermitencia  procesado.}
+  	\label{fig:graf_inter_desp}
+  	\end{center}
+\end{figure}
+
+\textbf{Serie temporal multivariada}
+
+El mismo análisis realizado para la serie univariada debe extrapolarse a la cantidad de dimensiones que consideremos necesarias. 
+
+En la fig.~\ref{fig:graf_mult_dpto} observamos la cantidad de defectos que luego son desglosados por departamento, lo que nos daría 8 \textit{features}. En la fig.~\ref{fig:graf_mult_tipo} los defectos son desglosados por tipo, lo que nos daría 11 \textit{features}. Lo que resultaría en 19 \textit{features} que van a alimentar nuestro modelo.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{multi_dpto.png}
+  	\caption{Gráfico temporal por departamentos.}
+  	\label{fig:graf_mult_dpto}
+  	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{multi_flia.png}
+  	\caption{Gráfico temporal por tipo de defecto.}
+  	\label{fig:graf_mult_tipo}
+  	\end{center}
+\end{figure}
+
+Tal como se realizó en la serie temporal univariada, se aplican los mismos pasos a estas series temporales de lo cual resultan las figuras \ref{fig:graf_post_mult_dpto} y \ref{fig:graf_post_mult_tipo}.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{multi_post_dpto.png}
+  	\caption{Gráfico temporal procesado por departamentos.}
+  	\label{fig:graf_post_mult_dpto}
+  	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{multi_post_flia.png}
+  	\caption{Gráfico temporal procesado por tipo de defecto.}
+  	\label{fig:graf_post_mult_tipo}
+  	\end{center}
+\end{figure}
+
+Ya tenemos los \textit{datasets} definitivos formateados de una manera correcta para alimentar nuestros modelos.
+
+\section{Modelos}
+
+Los modelos serán creados combinando las diferentes capas que se han visto con anterioridad, en dónde la tabla nos resumirá cada capa en una breve descripción además detallando los parámetros de cada una de ellas. Los parámetros de cada capa son importantes ya que en nuestra búsqueda del mejor modelo en la próxima sección implementaremos el \textit{tuning} de hiperparámetros.
+
+\subsection{Métricas}
+
+Es importante definir métricas para determinar el rendimiento de nuestro modelo de una manera empírica, más allá de que nuestro modelos serán entrenados utilizando como métrica de pérdida \texttt{MAE} (error absoluto medio).
+
+\subsubsection{\texttt{MAPE}}
+
+Una de las métricas más comunes que se utilizan para medir la precisión del pronóstico de un modelo es \texttt{MAPE}, que significa error porcentual absoluto medio (\textit{mean absolute percentage error}). \citep{MAPE}
+
+La fórmula para calcular \texttt{MAPE} es la siguiente:
+
+$$ \texttt{MAPE} = \frac{100}{N} \times \sum_{i=1}^{N} |\frac{y_i - \hat{y_i}}{y_i}| $$
+
+dónde:
+
+\begin{itemize}
+	\item $ y_i$: valores de los datos reales.
+	\item $ \hat{y_i}$: valor de datos pronosticados.
+	\item $ N $: cantidad de puntos.
+\end{itemize}
+
+\texttt{MAPE} se usa comúnmente porque es fácil de interpretar y de explicar. Por ejemplo, un valor \texttt{MAPE} de $11,5\%$ significa que la diferencia promedio entre el valor pronosticado y el valor real es $11,5\%$. Cuanto menor sea el valor de \texttt{MAPE}, mejor podrá un modelo pronosticar valores.
+
+Sin embargo esta métrica no nos será de utilidad ya que si alguno de los valores reales es $0$ (como sucede) entonces el valor será incalculable por la división por $0$. 
+
+\subsubsection{\texttt{MASE}}
+En el pronóstico de series de tiempo, el \texttt{MASE} es el error medio absoluto escalado (\textit{Mean Absolute Scaled Error}) es una medida para determinar la efectividad de los pronósticos generados a través de un algoritmo al comparar las predicciones con el resultado de un enfoque de pronóstico ingenuo o \textit{naive forecast}. \citep{MASE}
+
+El \textit{naive forecast} se genera en cualquier paso equiparando el pronóstico actual con la salida del último paso de tiempo. Por ejemplo, la predicción de las ventas de una empresa al comienzo de un mes se realiza comparándola con las ventas reales del último mes sin considerar ningún patrón estacional.
+
+El \texttt{MAE} para \textit{naive forecast} se calcula de la siguiente forma:
+
+$$
+\texttt{MAE}_{naive} = \frac{1}{N-1} \sum_{i=2}^N |y_i - y_{i-1}|
+$$
+
+Para determinar la efectividad de un algoritmo de pronóstico, el \texttt{MASE} se calcula de la siguiente manera:
+
+\begin{enumerate}
+	\item Calcular el \texttt{MAE} (\textit{Mean Absolute Error}) para los prónosticos del algoritmo.
+	
+	$$
+	\texttt{MAE} = \frac{1}{N} \sum_{i=1}^N |\hat{y_i} - y_i|	
+	$$	
+	\item \texttt{MASE} está dado por el ratio entre el \texttt{MAE} del algoritmo y el \texttt{MAE} del \textit{naive forecast}.
+	
+	$$
+	\texttt{MASE} = \frac{\texttt{MAE}}{\texttt{MAE}_{naive}}	
+	$$
+	
+\end{enumerate}
+
+\textbf{Características}
+\begin{itemize}
+	\item \texttt{MASE} da una indicación de la eficacia del algoritmo de pronóstico con respecto a un \textit{naive forecast}. Su valor mayor que uno indica que el algoritmo está funcionando mal en comparación con el \textit{naive forecast}.
+
+	\item \texttt{MASE} es inmune al problema que enfrenta el Error de porcentaje absoluto medio \texttt{MAPE} cuando la salida de la serie de tiempo real en cualquier paso de tiempo es cero. En esta situación, \texttt{MAPE} da una salida infinita, que no es significativa. Sin embargo, se observa que para una serie de tiempo con todos los valores iguales a cero en todos los pasos, la salida de \texttt{MASE} tampoco se definirá, pero tales series de tiempo no son realistas.
+	
+	\item \texttt{MASE} es independiente de la escala del pronóstico, ya que se define utilizando la proporción de errores en el pronóstico. Esto significa que los valores de \texttt{MASE} serán similares si pronosticamos series de tiempo de alto valor, como el número de paquetes de tráfico de Internet que cruzan un router por hora, en comparación con el número de peatones que cruzan un semáforo ocupado cada hora.
+\end{itemize}
+
+\subsection{\textit{Framework}}
+
+Se utilizó \textit{Keras}, una biblioteca de redes neuronales de código abierto escrita en \texttt{Python}. Es capaz de ejecutarse sobre \textit{TensorFlow}, M\textit{icrosoft Cognitive Toolkit} o \textit{Theano}. Su autor principal y mantenedor ha sido el ingeniero de François Chollet.
+
+Está especialmente diseñada para posibilitar la experimentación en más o menos poco tiempo con redes de Aprendizaje Profundo. Sus fuertes se centran en ser amigable para el usuario, modular y extensible. \citep{keras-wiki}
+
+\subsubsection{Callbacks}
+Una característica muy interesante que nos ofrece \textit{Keras} son las \textit{callbacks}. Se define como un objeto que puede realizar acciones en varias etapas del entrenamiento (por ejemplo, al comienzo o al final de una época, antes o después de un solo lote, etc.). Repasaremos algunas de las que fueron utilizadas en el entrenamiento del modelo. \citep{callbacks}
+
+\begin{itemize}
+	\item \texttt{EarlyStopping}: detiene el entrenamiento cuando una métrica monitoreada haya dejado de mejorar. Asumimos que el objetivo de un entrenamiento es minimizar la pérdida, \textit{e.g.} la métrica a monitorear sería \texttt{loss} y el modo sería \texttt{min}. Un ciclo de entrenamiento verificará al final de cada época si la pérdida ya no está disminuyendo, considerando el \texttt{min\_delta} y la paciencia (cantidad de épocas sin mejorar). Una vez que se encuentra que ya no disminuye, el entrenamiento termina. Esto es de utilidad para ahorrar tiempo de entrenamiento.
+	\item \texttt{ReduceLROnPlateau}: reducir la tasa de aprendizaje cuando una métrica ha dejado de mejorar. Los modelos a menudo se benefician de la reducción de la tasa de aprendizaje en un factor de 2 a 10 una vez que el aprendizaje se estanca. Esta \textit{callback} monitorea una métrica y si no se ve ninguna mejora en un número de épocas de "paciencia", la tasa de aprendizaje se reduce. Ha demostrado ser de gran utilidad.
+	\item \texttt{ModelCheckpoint}: se usa junto con el entrenamiento para guardar un modelo o pesos (en un archivo de punto de control) en algún intervalo, por lo que el modelo o los pesos se pueden cargar más tarde para continuar el entrenamiento desde el estado guardado.
+	Algunas opciones que ofrece esta devolución de llamada incluyen:
+	\begin{itemize}
+		\item Ya sea para mantener solo el modelo que ha logrado el "mejor desempeño" hasta ahora, o si para guardar el modelo al final de cada época sin importar el desempeño.
+		\item La frecuencia a la que debería guardar. Actualmente, la devolución de llamada permite guardar al final de cada época o después de un número fijo de lotes de entrenamiento.
+		\item Si solo se guardan los pesos o se guarda todo el modelo.
+	\end{itemize}
+\end{itemize}
+
+\subsection{Arquitecturas}
+Se define como la arquitectura del modelo a la disposición del mismo en lo que concierne a sus capas y al flujo de la información a través de las mismas.
+
+En \textit{Keras} es posible definir un modelo \texttt{Sequential}, lo que significa que cada salida alimentará a la siguiente y no habrá bifurcaciones entre el flujo de los tensores. También se podría resumir que \texttt{Sequential} agrupa una pila lineal de capas, lo que para nuestro propósito es suficiente. Esto sería una arquitectura de tipo lineal.
+
+Utilizando \textit{TensorFlow} es posible crear arquitecturas no-lineales que admitan múltiples flujos de datos entre las diferentes capas.
+
+Por tanto en función a las capas explicadas en el marco teórico con anterioridad serán probados 5 arquitecturas de modelo para determinar cual es la mejor utilizando como métrica \texttt{MASE} con respecto a los datos de prueba.
+
+\begin{itemize}
+	\item CNN: \texttt{CNN -> FC}
+	\item LSTM: \texttt{LSTM -> FC}
+	\item GRU: \texttt{GRU -> FC}
+	\item CNNLSTM: \texttt{CNN -> LSTM -> FC}
+	\item CNNGRU: \texttt{CNN -> GRU -> FC}
+\end{itemize}
+
+\subsubsection{Hiperpárametros de capas}
+
+Detallaremos los hiperpárametros que será posible \textit{tunear} de cada capa.
+
+\begin{itemize}
+	\item \texttt{CNN}
+	\begin{itemize}
+		\item Cantidad de capas: podemos escalar en la profundidad de \texttt{CNN}s.
+		\item Filtros.
+		\item Tamaño del \textit{kernel}.
+	\end{itemize}
+	\item \texttt{GRU} y \texttt{LSTM}
+	\begin{itemize}
+		\item Unidades de la celda.
+	\end{itemize}
+	\item \texttt{FC}
+	\begin{itemize}
+		\item Función de activación.
+	\end{itemize}
+\end{itemize}
 
 \clearpage
 
