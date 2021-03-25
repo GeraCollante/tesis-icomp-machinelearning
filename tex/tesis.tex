@@ -2265,36 +2265,66 @@ En \textit{Keras} es posible definir un modelo \texttt{Sequential}, lo que signi
 
 Utilizando \textit{TensorFlow} es posible crear arquitecturas no-lineales que admitan múltiples flujos de datos entre las diferentes capas.
 
-Por tanto en función a las capas explicadas en el marco teórico con anterioridad serán probados 5 arquitecturas de modelo para determinar cual es la mejor utilizando como métrica \texttt{MASE} con respecto a los datos de prueba.
+\subsubsection{Hiperpárametros de capas}
+En la figura~\ref{fig:layer_types} podemos observar las capas disponibles para crear nuestra arquitectura.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics{model_types.eps}
+  	\caption{Tipos de capas disponibles.}
+  	\label{fig:layer_types}
+  	\end{center}
+\end{figure}
+
+Detallaremos los hiperpárametros que será posible \textit{tunear} de cada capa.
+
+\begin{itemize}
+	\item \texttt{INPUT}:
+	\begin{itemize}
+		\item \texttt{ts}: \textit{timestamps}.
+		\item \texttt{features}: características.
+		\item \texttt{samples}: cantidad de muestras.
+	\end{itemize}
+	\item \texttt{CNN-CAUSAL}
+	\begin{itemize}
+		\item \texttt{n-layers}: cantidad de capas, podemos escalar en la profundidad de \texttt{CNN}s.
+		\item \texttt{filters}: filtros.
+		\item \texttt{kernelsize}: tamaño del \textit{kernel}.
+		\item \texttt{ts} = \textit{timestamps} o rodajas de tiempo.
+	\end{itemize}
+	\item \texttt{GRU} y \texttt{LSTM}
+	\begin{itemize}
+		\item \texttt{units}: unidades de la celda.
+	\end{itemize}
+	\item \texttt{MAXPOOL}:
+	\begin{itemize}		
+		\item \texttt{poolsize}: tamaño de \textit{pool}.
+	\end{itemize}
+	\item \texttt{FC}
+	\begin{itemize}
+		\item \texttt{func}: función de activación.
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{Tipos}
+
+Por tanto en función a las capas explicadas en el marco teórico con anterioridad serán probados 5 arquitecturas de modelo representadas de forma visual en la fig.~\ref{fig:arch_types} para determinar cual es la mejor utilizando como métrica \texttt{MASE} con respecto a los datos de prueba.
 
 \begin{itemize}
 	\item CNN: \texttt{CNN -> FC}
 	\item LSTM: \texttt{LSTM -> FC}
 	\item GRU: \texttt{GRU -> FC}
-	\item CNNLSTM: \texttt{CNN -> LSTM -> FC}
-	\item CNNGRU: \texttt{CNN -> GRU -> FC}
+	\item CNNLSTM: \texttt{CNN -> MAXPOOL -> LSTM -> FC}
+	\item CNNGRU: \texttt{CNN -> MAXPOOL -> GRU -> FC}
 \end{itemize}
 
-\subsubsection{Hiperpárametros de capas}
-
-Detallaremos los hiperpárametros que será posible \textit{tunear} de cada capa.
-
-\begin{itemize}
-	\item \texttt{CNN}
-	\begin{itemize}
-		\item Cantidad de capas: podemos escalar en la profundidad de \texttt{CNN}s.
-		\item Filtros.
-		\item Tamaño del \textit{kernel}.
-	\end{itemize}
-	\item \texttt{GRU} y \texttt{LSTM}
-	\begin{itemize}
-		\item Unidades de la celda.
-	\end{itemize}
-	\item \texttt{FC}
-	\begin{itemize}
-		\item Función de activación.
-	\end{itemize}
-\end{itemize}
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.45\textwidth]{layers.eps}
+  	\caption{Tipos de arquitecturas.}
+  	\label{fig:arch_types}
+  	\end{center}
+\end{figure}
 
 \clearpage
 
