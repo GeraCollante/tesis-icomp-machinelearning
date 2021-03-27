@@ -25,7 +25,6 @@
 \usepackage[normalem]{ulem}
 \useunder{\uline}{\ul}{}
 
-
 \begin{document}
 
 \begin{titlepage}
@@ -2318,11 +2317,74 @@ Por tanto en función a las capas explicadas en el marco teórico con anteriorid
 	\item CNNGRU: \texttt{CNN -> MAXPOOL -> GRU -> FC}
 \end{itemize}
 
+En el caso de las últimas dos redes se utilizó la capa de \texttt{MAXPOOL} para evitar el cuello de la botella de los datos, corroborando que no se afectó el rendimiento del modelo y mejoraron los tiempos de entrenamiento.
+
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=0.45\textwidth]{layers.eps}
   	\caption{Tipos de arquitecturas.}
   	\label{fig:arch_types}
+  	\end{center}
+\end{figure}
+
+\subsection{Entrenamiento}
+Ya tenemos todos los ingredientes necesarios para empezar el entrenamiento de nuestra red neuronal, sin embargo sería coherente utilizar datos de prueba o \textit{dummy data} para corroborar que todo funcione según lo esperado.
+
+Usaremos un \textit{dataset} de la calidad del aire, más precisamente uno que informa sobre el clima y el nivel de contaminación cada hora durante cinco años en la embajada de Estados Unidos en Beijing, China.
+
+Los datos incluyen la fecha y hora, la contaminación denominada concentración de PM2.5 y la información meteorológica, incluido el punto de rocío, la temperatura, la presión, la dirección del viento, la velocidad del viento y la cantidad acumulada de horas de nieve y lluvia. La lista completa de características en los datos brutos es la siguiente:
+
+\begin{itemize}
+	\item \texttt{pollution}: concentración de PM2.5, son partículas muy pequeñas suspendidas en el aire que tienen un diámetro de menos de 2.5 micras. Será nuestro \textit{target}.
+	\item \texttt{dew}: punto de rocío, es la más alta temperatura a la que empieza a condensarse el vapor de agua contenido en el aire, produciendo rocío, neblina, cualquier tipo de nube o, en caso de que la temperatura sea lo suficientemente baja, escarcha.
+	\item \texttt{temp}: temperatura.
+	\item \texttt{press}: presión.
+	\item \texttt{wnd\_dir}: dirección del viento combinada.
+	\item \texttt{wnd\_spd}: velocidad del viento acumulada.
+	\item \texttt{snow}: horas acumuladas de nieve.
+	\item \texttt{rain}: horas acumuladas de lluvia.
+\end{itemize}
+
+Podemos usar estos datos y enmarcar un problema de pronóstico en el que, dadas las condiciones climáticas y la contaminación de las horas anteriores, pronosticamos la contaminación para la próxima hora.
+
+En la fig.~\ref{fig:pollution_dataset} podemos observar que nuestros datos son bastante armoniosos notando 3 ondas sinusoidales, lo que resultará en que nuestro modelo aprenda mejor (pero la mayoría de las series temporales en la vida real no serán tan convenientes).
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{pollution.png}
+  	\caption{\textit{Dataset} de contaminación del aire.}
+  	\label{fig:pollution_dataset}
+  	\end{center}
+\end{figure}
+
+Luego deberemos dividir nuestro \textit{dataset} como vimos con anterioridad en 3 sets en la siguiente proporción:
+\begin{itemize}
+	\item \texttt{train} (\textit{entrenamiento}): $70\%$.
+	\item \texttt{validation} (\textit{validación}): $20\%$.
+	\item \texttt{test} (\textit{prueba}): $10\%$.
+\end{itemize}
+
+Recordar que la métrica \texttt{val\_loss} será aplicada sobre el set de validación y \texttt{MASE} sobre el set de prueba.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tvt_pollution.png}
+  	\caption{\textit{Dataset} de contaminación del aire.}
+  	\label{fig:tvt_pollution}
+  	\end{center}
+\end{figure}
+
+Una operación importante a realizar en nuestro dataset es el \textit{shifteo} temporal para lograr que nuestra red pueda aprender sobre los \textit{timesteps} pasados de nuestras features y comparar su salida contra los \textit{timesteps} futuros en caso de ser la \textit{target feature}.
+
+Para aclarar esta idea pongamos nuestro enfoque en la figura \ref{fig:shift_explain}. Definiremos \texttt{T} a la cantidad de \textit{timesteps} que queremos que nuestro modelo utilice para extraer información pasada, además del actual.
+
+Y definiremos \texttt{HORIZON} como al horizonte de pronóstico, \textit{i.e.} la cantidad de \textit{timesteps} futuros que queremos predecir de nuestra característica objetivo o \textit{target feature}.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{shift_explain.png}
+  	\caption{\textit{Shifteo} temporal.}
+  	\label{fig:shift_explain}
   	\end{center}
 \end{figure}
 
