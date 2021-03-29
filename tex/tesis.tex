@@ -7,6 +7,7 @@
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{svg}
 \usepackage[bookmarks = true, colorlinks=true, linkcolor = black, citecolor = black, menucolor = black, urlcolor = black]{hyperref}
 %\usepackage[spanish,activeacute]{babel}
 \usepackage{lmodern}
@@ -2257,7 +2258,7 @@ Una característica muy interesante que nos ofrece \textit{Keras} son las \texti
 	\end{itemize}
 \end{itemize}
 
-\subsection{Arquitecturas}
+\subsection{Arquitecturas} \label{archs}
 Se define como la arquitectura del modelo a la disposición del mismo en lo que concierne a sus capas y al flujo de la información a través de las mismas.
 
 En \textit{Keras} es posible definir un modelo \texttt{Sequential}, lo que significa que cada salida alimentará a la siguiente y no habrá bifurcaciones entre el flujo de los tensores. También se podría resumir que \texttt{Sequential} agrupa una pila lineal de capas, lo que para nuestro propósito es suficiente. Esto sería una arquitectura de tipo lineal.
@@ -2382,11 +2383,65 @@ Y definiremos \texttt{HORIZON} como al horizonte de pronóstico, \textit{i.e.} l
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.8\textwidth]{shift_explain.png}
+	\includegraphics[width=0.9\textwidth]{time-shift.pdf}
   	\caption{\textit{Shifteo} temporal.}
   	\label{fig:shift_explain}
   	\end{center}
 \end{figure}
+
+Un punto importante a aclarar es que es diferente la arquitectura a implementar según si nuestra \textit{target feature} es de horizonte único o multi-horizonte.
+
+\textbf{Horizonte único}
+
+Veremos en una perspectiva más amplia el funcionamiento de nuestro modelo para tomar noción de donde nos encontramos y para esta tarea nos será útil la fig.~\ref{fig:unihorizon_model}. Básicamente tomamos los \texttt{T} \textit{timesteps} de nuestras \textit{features} para alimentar a la arquitectura (que fueron presentadas en la sección \ref{archs}), en este caso compuesta de celdas \texttt{RNN}, que luego la salida alimenta una neurona que determina el valor de \texttt{t+1}.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.75\textwidth]{unihorizon-model.pdf}
+  	\caption{Modelo de horizonte único.}
+  	\label{fig:unihorizon_model}
+  	\end{center}
+\end{figure}
+
+\textbf{Horizonte múltiple}
+
+Observemos la fig.~\ref{fig:multihorizon_model}. Si determinamos que nuestra \textit{target feature} será de horizonte múltiple, debemos aumentar la complejidad de nuestra arquitectura lo que se traduce en menor maniobrabilidad en lo que se refiere a adición de capas.
+
+Debemos contar con dos capas \texttt{encoder} y \texttt{decoder}, donde una se encargará de procesar los datos de entrada y la otra de decodificar la salida de la primera para obtener la forma de tensor deseada a la salida de la red, lo que sería \texttt{t+1}, \texttt{t+2} y \texttt{t+3} en nuestro ejemplo.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{multihorizon-model.pdf}
+  	\caption{Modelo de horizonte múltiple.}
+  	\label{fig:multihorizon_model}
+  	\end{center}
+\end{figure}
+
+En la fig.~\ref{fig:multihorizon_plot} podemos observar la salida de un pronóstico de horizonte múltiple con \texttt{T=16} y \texttt{HORIZON=4}. Notamos que a medida que queremos predecir pasos más lejanos perdemos precisión, en la tabla~\ref{tab:multi-horizon-results} se corrobora de manera numérica esta observación.
+
+Además cuando veamos los resultados de los modelos de horizonte único notaremos que \texttt{t+1} tiene mayor precisión que en este tipo de modelos.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{multi-horizon-plot.png}
+  	\caption{Pronóstico de horizonte múltiple.}
+  	\label{fig:multihorizon_plot}
+  	\end{center}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+\hline
+\texttt{t} & \texttt{MAE} & \texttt{MASE} \\ \hline
+\texttt{t+1}        & 0.00527     & 0.454      \\
+\texttt{t+2}        & 0.00728     & 0.628      \\
+\texttt{t+3}        & 0.00953     & 0.822      \\
+\texttt{t+4}        & 0.01167     & 1.006      \\ \hline
+\end{tabular}
+\caption{Resultados del modelo de horizonte múltiple.}
+\label{tab:multi-horizon-results}
+\end{table}
 
 \clearpage
 
