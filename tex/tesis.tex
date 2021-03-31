@@ -5,6 +5,7 @@
 \usepackage{pythonhighlight}
 \usepackage{multirow}
 \usepackage{booktabs}
+\usepackage{amsfonts}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{svg}
@@ -2248,7 +2249,7 @@ Una característica muy interesante que nos ofrece \textit{Keras} son las \texti
 
 \begin{itemize}
 	\item \texttt{EarlyStopping}: detiene el entrenamiento cuando una métrica monitoreada haya dejado de mejorar. Asumimos que el objetivo de un entrenamiento es minimizar la pérdida, \textit{e.g.} la métrica a monitorear sería \texttt{loss} y el modo sería \texttt{min}. Un ciclo de entrenamiento verificará al final de cada época si la pérdida ya no está disminuyendo, considerando el \texttt{min\_delta} y la paciencia (cantidad de épocas sin mejorar). Una vez que se encuentra que ya no disminuye, el entrenamiento termina. Esto es de utilidad para ahorrar tiempo de entrenamiento.
-	\item \texttt{ReduceLROnPlateau}: reducir la tasa de aprendizaje cuando una métrica ha dejado de mejorar. Los modelos a menudo se benefician de la reducción de la tasa de aprendizaje en un factor de 2 a 10 una vez que el aprendizaje se estanca. Esta \textit{callback} monitorea una métrica y si no se ve ninguna mejora en un número de épocas de "paciencia", la tasa de aprendizaje se reduce. Ha demostrado ser de gran utilidad.
+	\item \texttt{ReduceLROnPlateau} \label{plateau}: reducir la tasa de aprendizaje cuando una métrica ha dejado de mejorar. Los modelos a menudo se benefician de la reducción de la tasa de aprendizaje en un factor de 2 a 10 una vez que el aprendizaje se estanca. Esta \textit{callback} monitorea una métrica y si no se ve ninguna mejora en un número de épocas de "paciencia", la tasa de aprendizaje se reduce. Ha demostrado ser de gran utilidad.
 	\item \texttt{ModelCheckpoint}: se usa junto con el entrenamiento para guardar un modelo o pesos (en un archivo de punto de control) en algún intervalo, por lo que el modelo o los pesos se pueden cargar más tarde para continuar el entrenamiento desde el estado guardado.
 	Algunas opciones que ofrece esta devolución de llamada incluyen:
 	\begin{itemize}
@@ -2329,6 +2330,7 @@ En el caso de las últimas dos redes se utilizó la capa de \texttt{MAXPOOL} par
 \end{figure}
 
 \subsection{Entrenamiento}
+\subsubsection{Datos de prueba}
 Ya tenemos todos los ingredientes necesarios para empezar el entrenamiento de nuestra red neuronal, sin embargo sería coherente utilizar datos de prueba o \textit{dummy data} para corroborar que todo funcione según lo esperado.
 
 Usaremos un \textit{dataset} de la calidad del aire, más precisamente uno que informa sobre el clima y el nivel de contaminación cada hora durante cinco años en la embajada de Estados Unidos en Beijing, China.
@@ -2375,6 +2377,7 @@ Recordar que la métrica \texttt{val\_loss} será aplicada sobre el set de valid
   	\end{center}
 \end{figure}
 
+\subsubsection{\textit{Shifteo} temporal}
 Una operación importante a realizar en nuestro dataset es el \textit{shifteo} temporal para lograr que nuestra red pueda aprender sobre los \textit{timesteps} pasados de nuestras features y comparar su salida contra los \textit{timesteps} futuros en caso de ser la \textit{target feature}.
 
 Para aclarar esta idea pongamos nuestro enfoque en la figura \ref{fig:shift_explain}. Definiremos \texttt{T} a la cantidad de \textit{timesteps} que queremos que nuestro modelo utilice para extraer información pasada, además del actual.
@@ -2389,11 +2392,12 @@ Y definiremos \texttt{HORIZON} como al horizonte de pronóstico, \textit{i.e.} l
   	\end{center}
 \end{figure}
 
+\subsubsection{Tipo de horizonte}
 Un punto importante a aclarar es que es diferente la arquitectura a implementar según si nuestra \textit{target feature} es de horizonte único o multi-horizonte.
 
 \textbf{Horizonte único}
 
-Veremos en una perspectiva más amplia el funcionamiento de nuestro modelo para tomar noción de donde nos encontramos y para esta tarea nos será útil la fig.~\ref{fig:unihorizon_model}. Básicamente tomamos los \texttt{T} \textit{timesteps} de nuestras \textit{features} para alimentar a la arquitectura (que fueron presentadas en la sección \ref{archs}), en este caso compuesta de celdas \texttt{RNN}, que luego la salida alimenta una neurona que determina el valor de \texttt{t+1}.
+Veremos en una perspectiva más amplia el funcionamiento de nuestro modelo para tomar noción de donde nos encontramos y para esta tarea nos será útil la fig.~\ref{fig:unihorizon_model} \citep{rnn_azure}. Básicamente tomamos los \texttt{T} \textit{timesteps} de nuestras \textit{features} para alimentar a la arquitectura (que fueron presentadas en la sección \ref{archs}), en este caso compuesta de celdas \texttt{RNN}, que luego la salida alimenta una neurona que determina el valor de \texttt{t+1}.
 
 \begin{figure}[H]
 	\begin{center}
@@ -2405,7 +2409,7 @@ Veremos en una perspectiva más amplia el funcionamiento de nuestro modelo para 
 
 \textbf{Horizonte múltiple}
 
-Observemos la fig.~\ref{fig:multihorizon_model}. Si determinamos que nuestra \textit{target feature} será de horizonte múltiple, debemos aumentar la complejidad de nuestra arquitectura lo que se traduce en menor maniobrabilidad en lo que se refiere a adición de capas.
+Observemos la fig.~\ref{fig:multihorizon_model} \citep{rnn_ed_azure}. Si determinamos que nuestra \textit{target feature} será de horizonte múltiple, debemos aumentar la complejidad de nuestra arquitectura lo que se traduce en menor maniobrabilidad en lo que se refiere a adición de capas.
 
 Debemos contar con dos capas \texttt{encoder} y \texttt{decoder}, donde una se encargará de procesar los datos de entrada y la otra de decodificar la salida de la primera para obtener la forma de tensor deseada a la salida de la red, lo que sería \texttt{t+1}, \texttt{t+2} y \texttt{t+3} en nuestro ejemplo.
 
@@ -2442,6 +2446,88 @@ Además cuando veamos los resultados de los modelos de horizonte único notaremo
 \caption{Resultados del modelo de horizonte múltiple.}
 \label{tab:multi-horizon-results}
 \end{table}
+
+\subsubsection{Resultados}
+Se entrenaron los 4 modelos principales (posteriormente se mostrarán los resultados de la \texttt{CNN} causal dilatada, ya que requiere un tratamiento diferente) con los siguientes hiper-parámetros:
+\begin{itemize}
+	\item \texttt{EPOCHS}=200
+	\item \texttt{UNITS}=250
+	\item \texttt{BATCH\_SIZE}=64
+	\item \texttt{T}=8
+	\item \texttt{HORIZON}=1
+	\item \texttt{CNN\_LAYERS}=3
+\end{itemize}
+
+Se obtuvieron los resultados de la fig.~\ref{fig:training_plot}. Los saltos que observamos en el \texttt{val\_loss} (el más notorio en \texttt{CNNLSTM}) se deben a la callback de \texttt{ReduceLROnPlateau} (sección \ref{plateau}), siendo una función de \textit{Keras} muy provechosa para nuestro objetivo.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{training_plots.png}
+  	\caption{Resultados de entrenamiento de los modelos \texttt{GRU/LSTM}.}
+  	\label{fig:training_plot}
+  	\end{center}
+\end{figure}
+
+Para el entrenamiento de modelos compuestos exclusivamente de capas \texttt{CNN} dilatadas causales se utilizaron los siguientes hiper-parámetros:
+\begin{itemize}
+	\item \texttt{KERNEL\_SIZE}=$2$
+	\item \texttt{DEEP\_LAYERS}=$1+i$ dónde $i \in \mathbb{N}: 1 \leq i \leq 8$.
+	\item \texttt{dilation\_rate}=$i^2$ dónde $i \in \mathbb{N}: 1 \leq i \leq 8$.
+\end{itemize}
+
+En la fig.~\ref{fig:train_cnn} representamos , en las cuáles fuimos variando en cada modelo el valor de \texttt{dilation\_rate}.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{train_cnn.png}
+  	\caption{Resultados de entrenamiento de los modelos \texttt{CNN}.}
+  	\label{fig:train_cnn}
+  	\end{center}
+\end{figure}
+
+Las diferencias que podemos notar entre la fig.~\ref{fig:training_plot} y la fig.~\ref{fig:train_cnn} es que los modelos que poseen un componente \texttt{RNN} tienden a ser mucho más caóticos en su entrenamiento pero si la cantidad de épocas es suficiente terminan llegando a buen puerto. En cambio en los modelos \texttt{CNNs} puros el entrenamiento es mucho más armonioso y continuo.
+
+En la tabla~\ref{tab:metrics-models} y en la fig.~\ref{fig:mase_per_model} verificamos que el modelo con el mejor \texttt{MASE} es el \texttt{CNNGRU}, sin embargo esto lo realizamos con valores fijos y estándares para los hiper-parámetros de los modelos.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc}
+\hline
+\multicolumn{1}{r}{modelname} & \texttt{val\_loss} & \texttt{MASE} \\ \hline
+GRU                                    & 0.0121    & 0.2894        \\
+LSTM                                   & 0.0123    & 0.2777        \\
+\textbf{CNNGRU}                                 & \textbf{0.0123}    & \textbf{0.2775}        \\
+CNNLSTM                                & 0.0123    & 0.2793        \\
+CNN-1                                  & 0.0144    & 0.6526        \\
+CNN-2                                  & 0.0124    & 0.3476        \\
+CNN-4                                  & 0.0126    & 0.3242        \\
+CNN-8                                  & 0.0133    & 0.4389        \\
+CNN-16                                 & 0.0124    & 0.3172        \\
+CNN-32                                 & 0.0127    & 0.3318        \\
+CNN-64                                 & 0.0126    & 0.3597        \\
+CNN-128                                & 0.0122    & 0.3121        \\ \hline
+\end{tabular}
+\caption{Métricas de los modelos.}
+\label{tab:metrics-models}
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.75\textwidth]{mase_per_model.png}
+  	\caption{\texttt{MASE} por modelo.}
+  	\label{fig:mase_per_model}
+  	\end{center}
+\end{figure}
+
+Para una mejor visualización de los resultados del mejor modelo, en la fig.~\ref{fig:fore_best_model} se toman las 200 primeras muestras. En el mismo podemos observar que la precisión del modelo es bastante alta, pronosticando valores muy cercanos a los reales. Por tanto, para estos datos el modelo ha resultado exitoso.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{cnngru_final.png}
+  	\caption{Pronóstico del mejor modelo.}
+  	\label{fig:fore_best_model}
+  	\end{center}
+\end{figure}
 
 \clearpage
 
