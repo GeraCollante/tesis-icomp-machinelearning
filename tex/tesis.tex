@@ -2529,6 +2529,53 @@ Para una mejor visualización de los resultados del mejor modelo, en la fig.~\re
   	\end{center}
 \end{figure}
 
+\subsection{Ajuste de hiperparámetros}
+Los parámetros que definen la arquitectura del modelo se denominan hiperparámetros y, por lo tanto, este proceso de búsqueda de la arquitectura del modelo ideal se denomina ajuste de hiperparámetros o \textit{hyperparameters tuning}. \citep{medium-hpt}
+
+Los hiperparámetros no son parámetros del modelo y no se pueden entrenar directamente a partir de los datos. Mientras que los parámetros del modelo especifican cómo transformar los datos de entrada en la salida deseada a través del entrenamiento optimizando una función de pérdida, los hiperparámetros definen cómo está realmente estructurado nuestro modelo.
+
+Los métodos de ajuste de hiperparámetros se relacionan con cómo muestreamos posibles candidatos a la arquitectura del modelo a partir del espacio de posibles valores de hiperparámetros. Esto se denomina a menudo "buscar" en el espacio de hiperparámetros los valores óptimos.
+
+En general, este proceso incluye:
+
+\begin{enumerate}
+	\item Definir los modelos.
+	\item Definir el rango de valores posibles para todos los hiperparámetros, es decir el espacio de búsqueda o \textit{search space}.
+	\item Definir un método para muestrear valores de hiperparámetros.
+	\item Definir un criterio evaluativo para juzgar el modelo.
+\end{enumerate}
+
+En nuestro caso ya cumplimos los pasos 1 y 4, necesitaríamos definir lo que necesitamos en los pasos restantes, pero para ello necesitaremos una librería de ajuste de hiperparámetros.
+
+Existen múltiples librerías disponibles para esta tarea tanto de uso comercial como gratuitas, tales como \textit{Ray-Tune, Optuna, Hyperopt, mlmachine, Polyaxon, BayesianOptimization, Talos, SHERPA, Scikit-Optimize, GPyOpt}, etc. Sin embargo por facilidad de uso optamos por \textit{Keras-tuner}, que además cuenta con el respaldo de \textit{TensorFlow}.
+
+\subsubsection{\textit{Keras-tuner}}
+
+\textbf{Clase \texttt{HyperParameters}}
+
+La librería nos permite definir esta clase que sirve como contenedor de hiperparámetros. Una instancia de \texttt{HyperParameters} contiene información sobre el espacio de búsqueda y los valores actuales de cada hiperparámetro.
+
+Además nos provee diversos métodos para decidir de que manera queremos explorar el espacio de búsqueda de un determinado hiperparámetro:
+
+\begin{itemize}
+	\item \texttt{Boolean}: elige entre \texttt{True} o \texttt{False}.
+	\item \texttt{Choice}: elige entre una lista de opciones.
+	\item \texttt{Fixed}: fijo, no permite cambiar su valor.
+	\item \texttt{Int}: explora números enteros entre el valor inicial y final, es posible seleccionar el modo y el paso.
+	\item \texttt{Float}: \textit{ídem} al ítem anterior, pero con números reales.
+\end{itemize}
+
+\textbf{Clase \texttt{Oracle}}
+
+Cada clase \texttt{Oracle} (óraculo) implementa un algoritmo de ajuste de hiperparámetros particular. Un \texttt{Oracle} se pasa como argumento a un \texttt{Tuner} (clase cuyo objetivo es realizar la búsqueda de hiperpárametros). \texttt{Oracle} le dice al \texttt{Tuner} qué hiperparámetros deben probarse a continuación.
+
+La mayoría de las clases de \texttt{Oracle} se pueden combinar con cualquier subclase de \texttt{Tuner} definida por el usuario. Si no se necesita una subclase de \texttt{Tuner} (el caso más común), también se proporciona una serie de clases que empaquetan un \texttt{Tuner} y un \texttt{Oracle} juntos (cómo veremos a continuación).
+
+
+\textbf{Clase \texttt{Tuner}}
+
+Su propósito es realizar la búsqueda de hiperparámetros en el espacio de búsqueda definido, y como se aclaró en la sección anterior es posible crearlos de forma personalizada pero los métodos ofrecidos son más que suficientes para nuestra tarea.
+
 \clearpage
 
 \bibliography{tesis}{}
