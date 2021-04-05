@@ -5,6 +5,7 @@
 \usepackage{pythonhighlight}
 \usepackage{multirow}
 \usepackage{booktabs}
+\usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{graphicx}
 \usepackage{amsmath}
@@ -26,6 +27,8 @@
 \graphicspath{ {img/} }
 \usepackage[normalem]{ulem}
 \useunder{\uline}{\ul}{}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
 
 \begin{document}
 
@@ -1549,13 +1552,367 @@ Por el contrario, puede alimentar la red con una sola entrada en el primer paso 
 
 Por último, podría tener una red de secuencia a vector, llamada \textit{encoder}, seguida de una red de vector a secuencia, llamada \textit{decoder} (consulte la red de la parte inferior derecha). Por ejemplo, esto se puede utilizar para traducir una oración de un idioma a otro. Alimentaría la red con una oración en un idioma, el \textit{encoder} convertiría esta oración en una representación de vector único y luego el \textit{decoder} decodificaría este vector en una oración en otro idioma. Este modelo de dos pasos, llamado \textit{encoder-decoder}, funciona mucho mejor que intentar traducir sobre la marcha con un único \textit{RNN} secuencia a secuencia (red \textbf{Superior-izquierda}), ya que las últimas palabras de una oración pueden afectan las primeras palabras de la traducción, por lo que debe esperar hasta que haya escuchado la oración completa antes de traducirla.
 
+\section{Optimización de hiperparámetros} \label{tuning-hp}
+Los parámetros que definen la arquitectura del modelo se denominan hiperparámetros y, por lo tanto, este proceso de búsqueda de la arquitectura del modelo ideal se denomina ajuste de hiperparámetros o \textit{hyperparameters tuning}. \citep{Koehrsen2018Jul}
+
+Los hiperparámetros no son parámetros del modelo y no se pueden entrenar directamente a partir de los datos. Mientras que los parámetros del modelo especifican cómo transformar los datos de entrada en la salida deseada a través del entrenamiento optimizando una función de pérdida, los hiperparámetros definen cómo está realmente estructurado nuestro modelo.
+
+Los métodos de ajuste de hiperparámetros se relacionan con cómo muestreamos posibles candidatos a la arquitectura del modelo a partir del espacio de posibles valores de hiperparámetros. Esto se denomina a menudo "buscar" en el espacio de hiperparámetros los valores óptimos.
+
+En general, este proceso incluye:
+
+\begin{enumerate}
+	\item Definir los modelos.
+	\item Definir el rango de valores posibles para todos los hiperparámetros, es decir el espacio de búsqueda o \textit{search space}.
+	\item Definir un algoritmo para obtener valores de hiperparámetros.
+	\item Definir un criterio evaluativo para juzgar el modelo.
+\end{enumerate}
+
+La optimización de hiperparámetros se representa en forma de ecuación como:
+
+$$x^* = \operatorname*{argmin}_{x \in X} f(x)$$
+
+Aquí $f(x)$ representa una puntuación objetivo para minimizar (usualmente una métrica), evaluada en el set de validación; $x^*$ es el conjunto de hiperparámetros que produce el menor valor para la función objetivo, y $x$ puede tomar cualquier valor en el dominio $X$. En términos simples, queremos encontrar los hiperparámetros del modelo que producen la mejor puntuación en la métrica del conjunto de validación.
+
+El problema con la optimización de hiperparámetros es que evaluar la función objetivo para encontrar la puntuación es extremadamente costoso. Cada vez que probamos diferentes hiperparámetros, tenemos que entrenar un modelo con los datos de entrenamiento, hacer predicciones sobre los datos de validación y luego calcular la métrica de validación. Con una gran cantidad de hiperparámetros y modelos complejos, como conjuntos o redes neuronales profundas que pueden tardar días en entrenarse, y el problema no escala.
+
+\subsection{Algoritmos} \label{algo-hp}
+
+Los algoritmos de optimización de hiperparámetros se pueden dividir en tres categorías principales:
+\begin{itemize}
+	\item \textbf{Búsqueda exhaustiva del espacio}: estos métodos son una primera opción atractiva para la optimización, ya que son muy fáciles de codificar, se pueden ejecutar en paralelo y no necesitan ningún tipo de ajuste. Su inconveniente es que no hay garantía de encontrar un mínimo local con cierta precisión, excepto si el espacio de búsqueda se muestrea a fondo. Esto no supone ningún problema si el modelo es muy rápido de ejecutar y el número de hiperparámetros es bajo. Si el modelo tarda mucho en ejecutarse utilizando una gran cantidad de recursos computacionales estos métodos son ineficaces, ya que no utilizan la información obtenida de todos los intentos anteriores.
+	\item \textbf{Modelos subrogados:} un modelo subrogado de la función de hiperparámetros puede ajustarse a los intentos anteriores y decir dónde podría estar el mínimo local. Estos métodos se denominan optimización basada en modelos secuenciales (SMBO, \textit{Sequential Model-Based Optimization}).
+	\item \textbf{Reducciones sucesivas a la mitad:} son algoritmos que se encargan de seleccionar dos configuraciones de hiperparámetros e irlas descartando tempranamente para así converger a la mejor.
+\end{itemize}
+
+Para todos los algoritmos, se debe definir un espacio de búsqueda de antemano para así establecer límites para todos los hiperparámetros.
+
+\subsubsection{Búsqueda exhaustiva del espacio}
+\textbf{Búsqueda por grilla (\textit{Grid search})}
+
+El espacio de búsqueda de cada hiperparámetro se discretiza, y el espacio de búsqueda total se discretiza como los productos cartesianos de ellos. Luego, el algoritmo lanza un aprendizaje para cada una de las configuraciones de hiperparámetros y selecciona la mejor al final. Es un problema paralelo (siempre que uno tenga la potencia de cálculo necesaria para entrenar varios modelos al mismo tiempo) pero sufre la maldición de la dimensionalidad (el número de configuraciones a probar es exponencial con respecto al número de hiperparámetros a ser optimizado).
+
+\textbf{Búsqueda aleatoria (\textit{Random search})}
+
+Una variación del algoritmo anterior, que muestrea aleatoriamente el espacio de búsqueda en lugar de discretizarlo con una cuadrícula cartesiana. El algoritmo no tiene fin. En su lugar, se debe especificar un presupuesto de tiempo (en otras palabras, una número de \textit{trials} o pruebas). Este algoritmo también sufre la maldición de la dimensionalidad para alcanzar una densidad de muestreo fija preestablecida. Una de las ventajas de la búsqueda aleatoria es que si dos hiperparámetros están poco correlacionados, la búsqueda aleatoria permite encontrar con mayor precisión los óptimos de cada parámetro, como se muestra en la fig.~\ref{fig:grid_vs_search}. 
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{grid_vs_search_v3.png}
+  	\caption{Comparación de \textit{Grid Search} vs \textit{Random Search}.}
+  	\label{fig:grid_vs_search}
+  	\end{center}
+\end{figure}
+
+\subsubsection{Modelos subrogados}
+
+\textbf{Optimización bayesiana (\textit{Bayesian Optimization})} 
+
+Tenemos una función $f(x)$, que es costosa de calcular, no es necesariamente una expresión analítica y no conoce su derivada. Y nuestro objetivo es encontrar los mínimos globales. \citep{Ye2020Oct}
+
+Esta es, sin duda, una tarea difícil, más difícil que otros problemas de optimización dentro del aprendizaje automático. El descenso de gradiente, por ejemplo, tiene acceso a las derivadas de una función y aprovecha los atajos matemáticos para una evaluación de expresiones más rápida.
+
+Alternativamente, en algunos escenarios de optimización, la función es simple de evaluar. Si podemos obtener cientos de resultados para variantes de una entrada $x$ en unos pocos segundos, se puede emplear una simple \textit{grid search} con buenos resultados.
+
+Desafortunadamente, no contamos con estas bondades y estamos limitados en nuestra optimización por varios frentes, en particular:
+\begin{itemize}
+	\item \textbf{Es costoso de calcular}. Idealmente, podríamos consultar la función lo suficiente como para replicarla, pero nuestro método de optimización debe funcionar con una muestra limitada de entradas.
+	\item \textbf{Se desconoce la derivada}. Por tanto no podemos aplicar el descenso del gradiente y sus derivados.
+	\item \textbf{Necesitamos encontrar los mínimos globales}. Esta es una tarea difícil incluso para un método sofisticado como el descenso de gradiente, entonces nuestro modelo de alguna manera necesitará un mecanismo para evitar quedar atrapado en los mínimos locales.
+\end{itemize}
+
+La solución es \textbf{optimización bayesiana} (\textit{Bayesian Optimization}), que proporciona un marco elegante para abordar problemas que se asemejan al escenario descrito para encontrar el mínimo global en el menor número de pasos.
+
+Construyamos un ejemplo hipotético de la función objetivo $c(x)$, o el costo de un modelo dado una entrada $x$. Por supuesto, el aspecto de la función estará oculto al optimizador; la verdadera forma de $c(x)$ es la de la fig~\ref{fig:cx}.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.7\textwidth]{bayes_opt_1.png}
+  	\caption{Representación gráfica de la función $c(x)$.}
+  	\label{fig:cx}
+  	\end{center}
+\end{figure}
+
+La optimización bayesiana aborda esta tarea mediante un método conocido como optimización subrogada. Por contexto, una maternidad subrogada es la práctica por la que, previo acuerdo con otra persona, una mujer se queda embarazada, lleva la gestación a término y da a luz a un bebé para esa otra persona o pareja \citep{vientre_alquiler}; en ese contexto, una función subrogada es una aproximación de la función objetivo y se forma sobre la base de puntos muestreados tal como muestra la fig.~\ref{fig:bayes2}.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{bayes_opt_2.png}
+  	\caption{Función subrogada.}
+  	\label{fig:bayes2}
+  	\end{center}
+\end{figure}
+
+Basándonos en la función subrogada, podemos identificar qué puntos son mínimos prometedores. Decidimos tomar más muestras de estas regiones prometedoras y actualizar la función subrogada en consecuencia (fig.~\ref{fig:bayes3}).
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{bayes_opt_3.png}
+  	\caption{Función subrogada.}
+  	\label{fig:bayes3}
+  	\end{center}
+\end{figure}
+
+En cada iteración, continuamos examinando la función subrogada actual, aprendemos más sobre las áreas de interés mediante el muestreo y actualizamos la función. Tenga en cuenta que la función subrogada se expresará matemáticamente de una manera significativamente menos costosa de evaluar (por ejemplo, $y=x$ es una aproximación de una función más costosa, $y = arcsin \left( \frac{1-cos^2x}{sen x} \right)$ dentro de un cierto rango).
+
+Después de un cierto número de iteraciones, estamos destinados a llegar a un mínimo global, a menos que la forma de la función sea muy extraña (en el sentido de que tiene grandes y salvajes oscilaciones hacia arriba y hacia abajo) en la que se debería hacer más foco sobre sus datos que en la optimización.
+
+Tómese un momento para maravillarse con la belleza de este enfoque. No hace ninguna suposición sobre la función (excepto que es optimizable en primer lugar), no requiere información sobre derivadas y es capaz de utilizar el razonamiento de sentido común mediante el uso ingenioso de una función de aproximación continuamente actualizada. La costosa evaluación de nuestra función objetivo original no es un problema en absoluto.
+
+La esencia de las estadísticas y modelos bayesianos es la actualización de una creencia previa (previa) a la luz de nueva información para producir una creencia posterior ("después") actualizada. Esto es exactamente lo que hace la optimización subrogada en este caso, por lo que se puede representar mejor a través de sistemas, fórmulas e ideas bayesianos.
+
+Echemos un vistazo más de cerca a la función subrogada, que generalmente está representada por \textbf{procesos gaussianos}, que se puede considerar como una tirada de dados que devuelve funciones ajustadas a puntos de datos dados (por ejemplo, $sin$, $log$) en lugar de números del 1 al 6 (fig.~\ref{fig:bayes4}). El proceso devuelve varias funciones, que tienen probabilidades asociadas.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{bayes_opt_4.png}
+  	\caption{Varias funciones generadas por procesos gaussianos para cuatro puntos de datos.}
+  	\label{fig:bayes4}
+  	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{bayes_opt_5.png}
+  	\caption{Las funciones agregadas.}
+  	\label{fig:bayes5}
+  	\end{center}
+\end{figure}
+
+Hay una buena razón por la que se utilizan procesos gaussianos, y no algún otro método de ajuste de curvas, para modelar la función subrogada: es de naturaleza bayesiana. Un proceso gaussiano es una distribución de probabilidad, como una distribución de los resultados finales de un evento (por ejemplo, 1/2 probabilidad de lanzar una moneda), pero sobre todas las funciones posibles.
+
+Por ejemplo, podemos definir el conjunto actual de puntos de datos como 40\% representable por la función $a(x)$, 10\% por la función $b(x)$, etc. Al representar la función sustituta como una distribución de probabilidad, se puede actualizar con nueva información a través de procesos bayesianos intrínsecamente probabilísticos. Quizás cuando se introduce nueva información, los datos solo son representables en un 20\% por la función $a(x)$. Estos cambios se rigen por fórmulas bayesianas.
+
+La función subrogada, representada como una distribución de probabilidad se actualiza con una \textbf{función de adquisición}. Esta función es responsable de impulsar la propuesta de nuevos puntos para probar, en una compensación de exploración y explotación:
+\begin{itemize}
+	\item \textbf{Explotación:} busca muestrear dónde el modelo subrogada predice un buen objetivo. Esto está aprovechando los lugares prometedores conocidos. Sin embargo, si ya hemos explorado una determinada región lo suficiente, la explotación continua de información conocida producirá poca ganancia.
+	\item \textbf{Exploración}: busca muestrear en lugares donde la incertidumbre es alta. Esto asegura que no quede ninguna región importante del espacio sin explorar; es posible que los mínimos globales se encuentren allí.
+\end{itemize}
+
+Una función de adquisición que fomente demasiada explotación y muy poca exploración hará que el modelo resida solo un mínimo que encuentre primero (generalmente local). Una función de adquisición que fomente lo contrario no se quedará en mínimos, locales o globales, en primer lugar. Dando buenos resultados en un delicado equilibrio.
+
+La función de adquisición, que denotaremos $a(x)$, debe considerar tanto la explotación como la exploración. Las funciones de adquisición comunes incluyen la mejora esperada y la probabilidad máxima de mejora, todas las cuales miden la probabilidad de que una entrada específica pueda dar resultados en el futuro, dada la información sobre el anterior (el proceso gaussiano). Existen diversas funciones de adquisición tales como \textit{Upper Confidence Bound (UCB)}, \textit{Probability of Improvement (PI)}, \textit{Expected Improvement (EI)}, etc. \citep{Agnihotri2020May}
+
+Juntemos las piezas. La optimización bayesiana se puede realizar como tal:
+\begin{enumerate}
+	\item Inicializar una distribución previa de función subrogada del proceso gaussiano.
+	\item Elija varios puntos de datos $x$ de modo que se maximice la función de adquisición $a(x)$ que opera en la distribución anterior actual.
+	\item Evalúe los puntos de datos $x$ en la función de costo objetivo $c(x)$ y obtenga los resultados, $y$.
+	\item Actualice la distribución previa del proceso gaussiano con los nuevos datos para producir un posterior (que se convertirá en el anterior en el siguiente paso).
+	\item Repita los pasos 2 a 5 para varias iteraciones.
+	\item Interprete la distribución actual del proceso gaussiano (que es poco costoso de realizar) para encontrar los mínimos globales.
+\end{enumerate}
+
+La optimización bayesiana se trata de poner ideas probabilísticas detrás de la idea de optimización subrogada. La combinación de estas dos ideas crea un sistema poderoso con muchas aplicaciones, desde el desarrollo de productos farmacéuticos hasta vehículos autónomos. Sin embargo, más comúnmente en el aprendizaje automático, la optimización bayesiana se usa para la optimización de hiperparámetros. Por ejemplo, si estamos entrenando un clasificador de aumento de gradiente, hay docenas de parámetros, desde la tasa de aprendizaje hasta la profundidad máxima y el valor mínimo de división de impurezas. En este caso, $x$ representa los hiperparámetros del modelo y $c(x)$ representa el rendimiento del modelo.
+
+La principal motivación para utilizar la optimización bayesiana se encuentra en escenarios en los que es muy costoso evaluar la salida, tal como el entrenamiento de múltiples arquitecturas de modelos para encontrar la mejor.
+
+Para dejar en limpio:
+
+\begin{itemize}
+	\item La optimización subrogada utiliza una función subrogada o aproximada para estimar la función objetivo a través del muestreo.
+	\item La optimización bayesiana coloca la optimización sustituta en un marco probabilístico al representar funciones sustitutas como distribuciones de probabilidad, que pueden actualizarse a la luz de nueva información.
+	\item Las funciones de adquisición se utilizan para evaluar la probabilidad de que la exploración de un determinado punto en el espacio produzca un rendimiento "bueno" dado lo que se conoce actualmente de la exploración y la explotación anteriores, equilibrando la exploración.
+	\item Utilice la optimización bayesiana principalmente cuando la función objetivo sea costosa de evaluar, comúnmente utilizada en el ajuste de hiperparámetros.
+\end{itemize}
+
+Ahora extrapolemos el conocimiento adquirido al ajuste de hiperparámetros teniendo en cuenta que la optimización bayesiana crea un modelo de probabilidad de la función objetivo. \citep{Wang2020Apr}
+
+La función objetivo real es una función fija. Supongamos que se parece a la figura~\ref{fig:bayes6}, pero obviamente desconocemos su forma.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.7\textwidth]{bayes_opt_6.png}
+  	\caption{Función objetivo real.}
+  	\label{fig:bayes6}
+  	\end{center}
+\end{figure}
+
+Dado que calcular la métrica de nuestro modelo es costoso, digamos que solo tenemos 10 muestras, representada como círculos negros en la figura~·\ref{fig:bayes7}.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.7\textwidth]{bayes_opt_7.png}
+  	\caption{Muestras de la función objetivo real.}
+  	\label{fig:bayes7}
+  	\end{center}
+\end{figure}
+
+Usando estas 10 muestras, necesitamos construir un modelo subrogado (también llamado modelo de superficie de respuesta) para aproximarnos a la función objetivo real. Observemos la fig.~\ref{fig:bayes8}, el modelo subrogado se representa como la línea azul y la sombra azul representa la desviación.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.55\textwidth]{bayes_opt_8.png}
+  	\caption{Modelo subrogado.}
+  	\label{fig:bayes8}
+  	\end{center}
+\end{figure}
+
+Un modelo (o función) subrogado es un modelo probabilístico que asigna hiperparámetros a una probabilidad de la puntuación de una métrica en la función objetivo real. Entonces queda formalmente definido como:
+
+$$ P(y|x) $$
+
+Dónde $y$ representa la puntuación de la métrica y $x$ el conjunto de hiperparámetros seleccionado.
+
+Ahora tenemos 10 muestras de la función objetivo, para decidir qué parámetro probar como la undécima muestra necesitamos construir la función de adquisición. El siguiente hiperparámetro de elección es donde se maximiza la función de adquisición.
+
+En la fig.~\ref{fig:bayes9} abajo, el tono verde es la función de adquisición y la línea recta roja es donde se maximiza. Por lo tanto, el hiperparámetro correspondiente y su puntuación de función objetivo, representada como un círculo rojo, se utiliza como la undécima muestra para actualizar el modelo subrogado (fig.~\ref{fig:bayes9} arriba).
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.50\textwidth]{bayes_opt_9.png}
+  	\caption{\textbf{Arriba}: modelo subrogado. \textbf{Abajo:} función de adquisición.}
+  	\label{fig:bayes9}
+  	\end{center}
+\end{figure}
+
+Luego de usar una función de adquisición para determinar el siguiente hiperparámetro, se obtiene la puntuación de la función objetiva real de este nuevo hiperparámetro. Dado que el modelo subrogado se entrena en $P(y|x)$, la adición de un nuevo punto de datos actualiza el modelo subrogado.
+
+Ahora se deben repetir los pasos anteriores hasta que se alcance el tiempo máximo o la iteración máxima. Ahora posee una aproximación precisa de la función objetivo real y puede encontrar fácilmente el mínimo global de las muestras evaluadas en el pasado para así completar la optimización bayesiana.
+
+Finalmente vamos a desglosar el siguiente pseudo-código propuesto en \textit{"Algorithms for Hyper-Parameter Optimization"} \citep{smbo}.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.55\textwidth]{smbo.png}
+  	\caption{El pseudocódigo genérico de la optimización  basada en modelos secuenciales.}
+  	\label{fig:smbo}
+  	\end{center}
+\end{figure}
+
+\textit{SMBO} significa optimización basada en modelos secuenciales, que es otro nombre de optimización bayesiana. Es "secuencial" porque los hiperparámetros se agregan para actualizar el modelo subrogado uno por uno; está "basado en modelos" porque se aproxima a la función objetivo real con un modelo subrogado que es más barato de evaluar.
+
+Otras representaciones en el pseudocódigo:
+\begin{itemize}
+	\item{$\mathcal{H}$: historial de observación del par(puntuación, hiperparámetro).}
+	\item{$T$: número máximo de iteraciones.}
+	\item{$f$: función objetiva real (la puntuación de la métrica del modelo).}
+	\item{$M$: modelo subrogado, que se actualiza cada vez que se agrega una nueva muestra.}
+	\item{$S$: función de adquisición.}
+	\item{$x^*$: el siguiente hiperparámetro elegido para evaluar.}
+\end{itemize}
+
+La secuencia se desarrolla de la siguiente manera:
+\begin{itemize}
+	\item Primero, iniciamos un modelo subrogado y una función de adquisición.
+	\item Línea 3: luego, para cada iteración, encuentre el hiperparámetro $x^*$ donde se encuentra el mínimo de la función de adquisición $S$. La función de adquisición es una función del modelo subrogado, lo que significa que se construye utilizando el modelo subrogado en lugar de la verdadera función objetivo real.
+	\item Línea 4: Obtenga la puntuación de la función objetivo de $x^*$ para ver cómo se desempeña realmente este punto
+	\item Línea 5: Incluya el par (hiperparámetro $x^*$, puntuación de función objetivo real) en el historial de otras muestras.
+	\item Línea 6: entrene el modelo subrogado utilizando el último historial de muestras.
+	\item Repita hasta alcanzar el número máximo de iteraciones. Al final, se devuelve el historial de (hiperparámetro, puntuación de función objetiva real). Tenga en cuenta que el último registro no es necesariamente el mejor puntaje logrado. Tendría que ordenar la puntuación para encontrar el mejor hiperparámetro.
+\end{itemize}
+
+Ya que la Optimización Bayesiana necesita tiempo para construir un buen modelo que conducirá a configuraciones de mejor rendimiento, en su versión básica,se comporta de manera similar a la búsqueda aleatoria al principio. Sin embargo, con el aumento de los presupuestos, el modelo recopila cada vez más información sobre el espacio de búsqueda, lo que genera grandes ventajas sobre la Búsqueda Aleatoria (fig.~\ref{fig:rs_vs_bo}). \citep{automl-bohb}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{comparison_rs_bo.png}
+  	\caption{Rendimiento de Búsqueda Aleatoria \textit{vs} Optimización Bayesiana.}
+  	\label{fig:rs_vs_bo}
+  	\end{center}
+\end{figure}
+
+\subsubsection{Sucesivas reducciones a la mitad}
+A menudo, en la práctica, las configuraciones prometedoras tienden a obtener puntuaciones más altas, en relación con las peores, incluso en las primeras etapas del proceso. A este hecho se aferran los algoritmos de sucesivas reducciones a la mitad \textit{SuccessiveHalving}.
+
+Y proceden de la siguiente forma:
+\begin{enumerate}
+	\item Muestra aleatoriamente un conjunto de $n$ configuraciones de hiperparámetros.
+	\item Evalua el desempeño de todas las configuraciones restantes actualmente.
+	\item Desecha la mitad inferior de las peores configuraciones de puntuación y duplica el presupuesto para el resto hasta que alcanza el presupuesto máximo.
+	\item Vuelva al paso 2 y repita hasta que quede una configuración.
+\end{enumerate}
+
+La secuencia se ejemplifica en la fig.~\ref{fig:sh} donde cada línea paralela al eje de ordenadas es una iteración y cada línea de color corresponde a una configuración.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.9\textwidth]{sucessive_halving.png}
+  	\caption{Secuencia de algoritmo de \textit{SucessiveHalving}.}
+  	\label{fig:sh}
+  	\end{center}
+\end{figure}
+
+En lugar de perder mucho tiempo de entrenamiento en configuraciones que no nos llevarán a ninguna parte, \textit{SuccessiveHalving} los descarta lo antes posible. Por lo tanto, se puede asignar más tiempo de entrenamiento, es decir, recursos, a modelos más potencialmente valiosos.
+
+Sin embargo, el \textit{Successive Halving} sufre lo que se denomina el \textit{trade-off} $n$ \textit{vs} $B/n$ \citep{Bissuel2019Apr}, dónde:
+\begin{itemize}
+	\item $B$ es el presupuesto total que se asignará para la búsqueda de hiperparámetros.
+	\item $n$ es el número de configuraciones que se explorarán.
+	\item $B/n$ es la cantidad promedio de recursos asignados a una configuración específica.
+\end{itemize}
+
+Para un presupuesto dado, no está claro si buscar muchas configuraciones ($n$ grande) por un tiempo pequeño, o explorar pocas configuraciones pero asignándoles muchos recursos ($B/n$ grande). Para un problema dado, si las configuraciones de hiperparámetros se pueden discriminar rápidamente (si el conjunto de datos converge rápidamente, si las malas configuraciones se revelan rápidamente, o si el espacio de búsqueda de hiperparámetros no se elige lo suficientemente bien como para que uno elegido al azar sea muy malo), entonces $n$ debe elegirse grande. Por el contrario, si son lentos para diferenciar (o si el espacio de búsqueda es pequeño, pero se busca la mejor configuración con alta confianza), entonces $B/n$ debe ser grande (a expensas del número de configuraciones probadas).
+
+Los inconvenientes de estas estrategias son los siguientes:
+\begin{itemize}
+	\item Si $n$ es grande, algunas buenas configuraciones que pueden tardar en converger al principio se eliminarán pronto.
+	\item Si $B/n$ es grande, entonces se asignarán muchos recursos a las malas configuraciones, aunque podrían haberse detenido antes.
+\end{itemize}
+
+El algoritmo que veremos a continuación elimina este dilema al considerar varios valores posibles de $n$ para un $B$ fijo, en esencia realizando una \textit{Grid Search} sobre el valor factible de $n$.
+
+\hfill
+
+\textbf{\textit{Hyperband}} \label{hyperband}
+
+El algoritmo de \textit{Hyperband} se presenta en \textit{ Hyperband: A Novel Bandit-Based Approach to Hyperparameter Optimization} \citep{li2018hyperband} y el enfoque se basa en una estrategia de detención temprana para algoritmos iterativos de algoritmos de aprendizaje automático.
+
+El principio subyacente del procedimiento explota la intuición de que si una configuración de hiperparámetros está destinada a ser la mejor después de una gran cantidad de iteraciones, es más probable que funcione en la mitad superior de las configuraciones después de una pequeña cantidad de iteraciones. Es decir, incluso si el rendimiento después de un pequeño número de iteraciones es muy poco representativo del rendimiento absoluto de las configuraciones, su rendimiento relativo en comparación con muchas alternativas entrenadas con el mismo número de iteraciones aproximadamente se mantiene.
+
+\textit{Hyperband} es un método que tiene como objetivo encontrar los mejores hiperparámetros para un modelo y un presupuesto (\textit{budget}) determinado. 
+
+Al conjunto de valores para cada hiperparámetro se denomina configuración. Se entiende por presupuesto a la cantidad de recursos disponibles, ya sea para entrenar un modelo una determinada cantidad de épocas (\textit{epochs}) o probar diversas configuraciones del mismo (\textit{trials)}. 
+
+Además \textit{Hyperband} es una extensión del \textit{Successive Halving}, y el problema con estos algoritmos es que a menudo no podemos saber cuál es la compensación correcta entre el número de pruebas y el número de épocas como vimos anteriormente. En ciertos casos, algunas configuraciones de hiperparámetros pueden tardar más en converger, por lo que comenzar con muchas pruebas pero una pequeña cantidad de épocas no será lo ideal; en otros casos, la convergencia es rápida y la cantidad de pruebas es el cuello de botella. \citep{Rosenberg2020Aug}
+
+Ahí es donde entra en juego \textit{Hyperband}, que es básicamente una \textit{Grid Search} sobre la estrategia de asignación óptima. Entonces, en cada prueba individual, el conjunto de hiperparámetros se elige al azar.
+
+\textit{Hyperband} se basa en dos bucles \texttt{for} anidados. El bucle exterior itera de $0$ a $s_{max}$ y ejecuta un procedimiento de \textit{Successive Halving} cada vez. El bucle interno también ejecuta \textit{Successive Halving}, (lo denominamos \texttt{bracket}) repitiendosé $s$ veces. Comienza con $n$ modelos que se ejecutan con un presupuesto $r$, y en cada ciclo, el número de modelos se reduce en $\eta$ mientras que el mismo factor aumenta el presupuesto. \citep{Abraham2021Feb}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.9\textwidth]{hyperband_algo.png}
+  	\caption{Secuencia de algoritmo de \textit{SucessiveHalving}.}
+  	\label{fig:hyper_algo}
+  	\end{center}
+\end{figure}
+
+Dentro del algoritmo:
+\begin{itemize}
+	\item $\eta$, el factor de poda, es el factor de modelos eliminados en cada paréntesis. Por ejemplo, en el procedimiento de \textit{Successive Halving} original donde $\eta = 2$, se podría comenzar con 64 modelos, mantener los mejores 32 modelos después del primer soporte, luego los mejores 16 modelos, y así sucesivamente.
+	\item $\eta$, en azul, es el número de modelos considerados en cada bucle. Observe que la fórmula incluye una división y un operador de techo para obtener un valor entero. Siguiendo el ejemplo anterior, sería 64.
+	\item $n^i$, en rojo, es el número de modelos utilizados en la iteración $i$. Observe que se redondea con un operador de piso.
+	\item La cantidad sin nombre en verde es el número de modelos guardados de una iteración a la otra. Nuevamente, se redondea con un operador de piso.
+\end{itemize}
+
+Dado que la mayoría de estos valores están redondeados, esperamos que sean fracciones, no números enteros exactos. La complicada fórmula de $\eta$ está diseñada para consumir tanto presupuesto como sea posible en cada bucle de \textit{Hyperband}.
+
+En la fig.~\ref{fig:hyper_epochs_trials}, puede ver que el algoritmo de \textit{HyperBand} se ejecutará dividiendo a la mitad sucesivamente en 5 asignaciones de recursos. $s=4$ comienza su primera ronda con $81$ \textit{trials}, ofreciendo a cada uno una única época y luego descarta de forma iterativa $\frac{2}{3}$ de los intentos hasta que queda uno y se entrena durante $81$ épocas. En $s=0$, el algoritmo \textit{Hyperband} básicamente está ejecutando una búsqueda aleatoria con$ 5$ pruebas, cada uno entrenado en el número máximo de épocas.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.7\textwidth]{hyper_trials_vs_epochs.png}
+  	\caption{Cantidad de épocas y pruebas a medida que avanza el algoritmo.}
+  	\label{fig:hyper_epochs_trials}
+  	\end{center}
+\end{figure}
+
+En la práctica, \textit{HyperBand} funciona muy bien para presupuestos pequeños a medianos y, por lo general, supera la búsqueda aleatoria y la optimización bayesiana con bastante facilidad en ese entorno. Sin embargo, su convergencia está limitada por su dependencia de configuraciones dibujadas al azar: con presupuestos más grandes, su ventaja sobre la Búsqueda Aleatoria disminuye. Un ejemplo de esto se da en la figura \ref{fig:rs_vs_hb} a continuación. \citep{automl-bohb}
+
+Dado que la Optimización Bayesiana se comporta de manera similar a la Búsqueda Aleatoria al principio, \textit{Hyperband} exhibe la misma ventaja sobre éste para presupuestos pequeños a medianos. Para presupuestos más grandes, el modelo de Optimización Bayesiana normalmente guía la búsqueda a regiones de mejor rendimiento y supera a \textit{Hyperband}.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{comparison_rs_hb.png}
+  	\caption{Comparación de Búsqueda Aleatoria \textit{vs} \textit{HyperBand}.}
+  	\label{fig:rs_vs_hb}
+  	\end{center}
+\end{figure}
+
 \section{Series temporales}
 
-\begin{quote}
-  Una serie temporal o cronológica es una sucesión de datos medidos en determinados momentos y ordenados cronológicamente.
-  
-  \hfill \citet{poole1998}
-\end{quote}
+Una serie temporal o cronológica es una sucesión de datos medidos en determinados momentos y ordenados cronológicamente. \citep{Agrawal2019Mar}
 
 \subsection{Clasificación del modelo}
 
@@ -2530,26 +2887,12 @@ Para una mejor visualización de los resultados del mejor modelo, en la fig.~\re
 \end{figure}
 
 \subsection{Ajuste de hiperparámetros}
-Los parámetros que definen la arquitectura del modelo se denominan hiperparámetros y, por lo tanto, este proceso de búsqueda de la arquitectura del modelo ideal se denomina ajuste de hiperparámetros o \textit{hyperparameters tuning}. \citep{medium-hpt}
+Ahora debemos obtener el mejor modelo, por tanto es necesario explorar diversas configuraciones a través del ajuste de hiperparámetros como vimos en la sección \ref{tuning-hp}.
 
-Los hiperparámetros no son parámetros del modelo y no se pueden entrenar directamente a partir de los datos. Mientras que los parámetros del modelo especifican cómo transformar los datos de entrada en la salida deseada a través del entrenamiento optimizando una función de pérdida, los hiperparámetros definen cómo está realmente estructurado nuestro modelo.
-
-Los métodos de ajuste de hiperparámetros se relacionan con cómo muestreamos posibles candidatos a la arquitectura del modelo a partir del espacio de posibles valores de hiperparámetros. Esto se denomina a menudo "buscar" en el espacio de hiperparámetros los valores óptimos.
-
-En general, este proceso incluye:
-
-\begin{enumerate}
-	\item Definir los modelos.
-	\item Definir el rango de valores posibles para todos los hiperparámetros, es decir el espacio de búsqueda o \textit{search space}.
-	\item Definir un método para muestrear valores de hiperparámetros.
-	\item Definir un criterio evaluativo para juzgar el modelo.
-\end{enumerate}
-
-En nuestro caso ya cumplimos los pasos 1 y 4, necesitaríamos definir lo que necesitamos en los pasos restantes, pero para ello necesitaremos una librería de ajuste de hiperparámetros.
-
-Existen múltiples librerías disponibles para esta tarea tanto de uso comercial como gratuitas, tales como \textit{Ray-Tune, Optuna, Hyperopt, mlmachine, Polyaxon, BayesianOptimization, Talos, SHERPA, Scikit-Optimize, GPyOpt}, etc. Sin embargo por facilidad de uso optamos por \textit{Keras-tuner}, que además cuenta con el respaldo de \textit{TensorFlow}.
+Para esta labor existen diversas librerías (tanto gratis como comerciales) tales como \textit{Ray.tune, Optuna, Hyperopt, Polyaxon, Talos, BayesianOptimization, Metric Optimization Engine, Spearmint, GPyOpt, Scikit-Optimize, etc}. Sin embargo nosotros nos decantaremos por \textit{Keras-tuner}, básicamente por su facilidad de uso además de contar con el soporte de \textit{TensorFlow}.
 
 \subsubsection{\textit{Keras-tuner}}
+La librería se compone de diversas clases y métodos que nos permitirán ajustar los hiperparámetros de nuestros modelos creados en \textit{Keras}. \citep{keras-tuner}
 
 \textbf{Clase \texttt{HyperParameters}}
 
@@ -2571,10 +2914,23 @@ Cada clase \texttt{Oracle} (óraculo) implementa un algoritmo de ajuste de hiper
 
 La mayoría de las clases de \texttt{Oracle} se pueden combinar con cualquier subclase de \texttt{Tuner} definida por el usuario. Si no se necesita una subclase de \texttt{Tuner} (el caso más común), también se proporciona una serie de clases que empaquetan un \texttt{Tuner} y un \texttt{Oracle} juntos (cómo veremos a continuación).
 
-
 \textbf{Clase \texttt{Tuner}}
 
-Su propósito es realizar la búsqueda de hiperparámetros en el espacio de búsqueda definido, y como se aclaró en la sección anterior es posible crearlos de forma personalizada pero los métodos ofrecidos son más que suficientes para nuestra tarea.
+Su propósito es realizar la búsqueda de hiperparámetros en el espacio de búsqueda definido, y como se aclaró en la sección anterior es posible crearlos de forma personalizada pero los algoritmos ofrecidos son más que suficientes para nuestra tarea, que son los analizados en la sección \ref{algo-hp}:
+\begin{itemize}
+	\item Búsqueda Aleatoria (descartado).
+	\item Optimización Bayesiana: parámetro a destacar:
+	\begin{itemize}
+		\item \texttt{max\_trials}: número total de pruebas (configuraciones de modelo) para probar como máximo.
+	\end{itemize}
+	\item \textit{Hyperband}: parámetros a destacar:
+	\begin{itemize}
+		\item \texttt{factor}: factor de reducción ($\eta$) para el número de épocas y el número de modelos para cada \texttt{bracket}.
+		\item \texttt{hyperband\_iterations}: el número de veces que se iterará sobre el algoritmo \textit{Hyperband} completo. Una iteración ejecutará aproximadamente $s_{max}(\log_{\eta} s_{max})^2$ épocas acumulativas en todas las pruebas (notación tomada de la sección \ref{hyperband}). Se recomienda establecer esto en un valor tan alto como esté dentro de su presupuesto de recursos.
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{Resultados}
 
 \clearpage
 
