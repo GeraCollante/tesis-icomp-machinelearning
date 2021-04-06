@@ -7,6 +7,8 @@
 \usepackage{booktabs}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+%\usepackage[showframe=true]{geometry}
+\usepackage{changepage}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{svg}
@@ -438,43 +440,43 @@ Por ello se presentan en la Figura \ref{fig:typesfactivation} diferentes tipos d
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=1\textwidth]{021.png}
-  	\caption{\textbf{Arriba-izquierda}: Función escalón. \textbf{Arriba-derecha}: Función sigmoidea. \textbf{Medio-izquierda}: Tangente hiperbólica. \textbf{Medio-derecha}: activación ReLU (función activación más usada en \textit{Deep Learning}).
+  	\caption{\textbf{Arriba-izquierda}: Función escalón. \textbf{Arriba-derecha}: Función \texttt{sig}oidea. \textbf{Medio-izquierda}: Tangente hiperbólica. \textbf{Medio-derecha}: activación ReLU (función activación más usada en \textit{Deep Learning}).
  \textbf{Abajo-izquierda}: Leaky ReLU, variante de ReLU que permite valores negativos. \textbf{Abajo-derecha}:
 ELU, otra variante de ReLU que obtiene mejor performance que Leaky ReLU.}
   	\label{fig:typesfactivation}
   	\end{center}
 \end{figure}
 
-Una de las funciones de activación más usadas en la historia de la literatura de NN es la función sigmoidea, que sigue la siguiente ecuación:
+Una de las funciones de activación más usadas en la historia de la literatura de NN es la función \texttt{sig}oidea, que sigue la siguiente ecuación:
 
 \begin{equation}
 t=\sum_{i=1}^{n}w_ix_i \quad s(t)=\frac{1}{1+e^{-t}}
 \end{equation}
 
-La función sigmoidea es una mejor opción para el aprendizaje que la función de paso simple, ya que:
+La función \texttt{sig}oidea es una mejor opción para el aprendizaje que la función de paso simple, ya que:
 \begin{enumerate}
 \item Es continua y diferenciable en todas partes.
 \item Es simétrica alrededor del eje y.
 \item Se acerca asintóticamente a sus valores de saturación.
 \end{enumerate}
-La principal ventaja aquí es que la suavidad de la función sigmoidea hace que sea más fácil diseñar algoritmos de aprendizaje. Sin embargo, hay dos grandes problemas con la función sigmoidea:
+La principal ventaja aquí es que la suavidad de la función \texttt{sig}oidea hace que sea más fácil diseñar algoritmos de aprendizaje. Sin embargo, hay dos grandes problemas con la función \texttt{sig}oidea:
 \begin{enumerate}
-\item Las salidas del sigmoide no están centradas en cero.
+\item Las salidas del \texttt{sig}oide no están centradas en cero.
 \item Las neuronas saturadas esencialmente eliminan el gradiente, ya que el delta del gradiente será extremadamente pequeño.
 \end{enumerate}
 
-La tangente hiperbólica, o tanh (con una forma similar del sigmoide) también se usó fuertemente como una función de activación hasta fines de la década de 1990.
+La tangente hiperbólica, o tanh (con una forma similar del \texttt{sig}oide) también se usó fuertemente como una función de activación hasta fines de la década de 1990.
 La ecuación para tanh sigue:
 \begin{equation}
 f(z) = tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}
 \end{equation}
 La función tanh está centrada en cero, pero los gradientes aún se eliminan cuando las neuronas se saturan.
-Ahora sabemos que hay mejores opciones para las funciones de activación que las funciones sigmoide y tanh. Específicamente, la Unidad Lineal Rectificada (ReLU), definida como:
+Ahora sabemos que hay mejores opciones para las funciones de activación que las funciones \texttt{sig}oide y tanh. Específicamente, la Unidad Lineal Rectificada (ReLU), definida como:
 \begin{equation}
 f(x) = max(0, x)
 \end{equation}
 Las ReLU también se denominan "funciones de rampa" debido a cómo se ven cuando se trazan. La función es cero para entradas negativas pero luego aumenta linealmente para positivas valores. La función ReLU no es saturable y también es extremadamente  eficiente computacionalmente.
-Empíricamente, la función de activación ReLU tiende a superar a las funciones sigmoide y tanh en casi todas las aplicaciones. Sin embargo, surge un problema cuando tenemos un valor de cero: no se puede tomar el gradiente.
+Empíricamente, la función de activación ReLU tiende a superar a las funciones \texttt{sig}oide y tanh en casi todas las aplicaciones. Sin embargo, surge un problema cuando tenemos un valor de cero: no se puede tomar el gradiente.
 
 \subsection{Arquitecturas de redes \textit{feedforward}}
 
@@ -507,11 +509,11 @@ z(x)=Wx+b=\sum_{i=1}^{n}w_ix_i+b
 \end{equation}
 Además cabe mencionar que la multiplicación punto a punto entre dos matrices de igual dimensión es lo que se conoce como el producto Hadamard.
 \begin{equation}
-\sigma(z)=\frac{1}{1+e^{-z}}
+\\texttt{sig}a(z)=\frac{1}{1+e^{-z}}
 \end{equation}
 Por último definimos la salida de nuestro modelo como:
 \begin{equation}
-\hat{y}=\sigma(\sum_{i=1}^{n}w_ix_i+b)
+\hat{y}=\\texttt{sig}a(\sum_{i=1}^{n}w_ix_i+b)
 \end{equation}
 
 \subsection{Función pérdida}
@@ -643,7 +645,7 @@ El $\alpha$ representa la tasa de aprendizaje o  \textit{learning rate}.
 
 \subsection{Backpropagation}
 
-Ya sabemos cómo fluyen las activaciones en la dirección hacia adelante. Tomamos las \textit{features} de entrada, las transformamos linealmente, aplicamos la activación sigmoidea en el valor resultante y finalmente tenemos nuestra activación que luego usamos para hacer una predicción \citep{sgd}.
+Ya sabemos cómo fluyen las activaciones en la dirección hacia adelante. Tomamos las \textit{features} de entrada, las transformamos linealmente, aplicamos la activación \texttt{sig}oidea en el valor resultante y finalmente tenemos nuestra activación que luego usamos para hacer una predicción \citep{sgd}.
 
 Lo que veremos en esta sección es el flujo de gradientes a lo largo de la línea roja en la Figura \ref{fig:back} mediante un proceso conocido como retropropagación o \textit{backpropagation}, que es esencialmente la regla de la cadena de cálculo aplicada a los gráficos computacionales.
 
@@ -683,7 +685,7 @@ La derivada parcial de la función de pérdida con respecto a la activación de 
 
 Avancemos un paso hacia atrás y calculemos nuestra próxima derivada parcial. Esto nos llevará un paso más cerca de los gradientes reales que queremos calcular.
 
-Este es el punto donde aplicamos la regla de la cadena que mencionamos antes. Entonces, para calcular la derivada parcial de la función de pérdida con respecto a la salida transformada lineal, es decir, la salida de nuestro modelo antes de aplicar la activación sigmoidea:
+Este es el punto donde aplicamos la regla de la cadena que mencionamos antes. Entonces, para calcular la derivada parcial de la función de pérdida con respecto a la salida transformada lineal, es decir, la salida de nuestro modelo antes de aplicar la activación \texttt{sig}oidea:
 
 \begin{equation}
 \frac{\partial J}{\partial D} = \frac{\partial J}{\partial \hat{Y}} \frac{\partial \hat{Y}}{\partial A}
@@ -692,16 +694,16 @@ Este es el punto donde aplicamos la regla de la cadena que mencionamos antes. En
 
 La primera parte de esta ecuación es el valor que habíamos calculado en la ecuación \ref{dj/dy}. Lo esencial para calcular aquí es la derivada parcial de la predicción de nuestro modelo con respecto a la salida transformada linealmente.
 
-Veamos la ecuación para la predicción de nuestro modelo, la función de activación sigmoidea.
+Veamos la ecuación para la predicción de nuestro modelo, la función de activación \texttt{sig}oidea.
 
 \begin{equation}
-\hat{Y} = \sigma(A) = \frac{1}{1+e^{-A}}
+\hat{Y} = \\texttt{sig}a(A) = \frac{1}{1+e^{-A}}
 \end{equation}
 
-Derivada de la salida final de nuestro modelo, \textit{i.e.} significa la derivada parcial de la función sigmoide con respecto a su entrada.
+Derivada de la salida final de nuestro modelo, \textit{i.e.} significa la derivada parcial de la función \texttt{sig}oide con respecto a su entrada.
 
 \begin{equation}
-\frac{\partial}{\partial A} \sigma (A) = \frac{\partial}{\partial A} \frac{1}{1+e^{-A}} = \frac{\partial}{\partial A} (1+e^{-A})^{-1}
+\frac{\partial}{\partial A} \\texttt{sig}a (A) = \frac{\partial}{\partial A} \frac{1}{1+e^{-A}} = \frac{\partial}{\partial A} (1+e^{-A})^{-1}
 \end{equation}
 
 \begin{equation}
@@ -711,11 +713,11 @@ Derivada de la salida final de nuestro modelo, \textit{i.e.} significa la deriva
 Continuando, podemos simplificar aún más esta ecuación.
 
 \begin{equation}
-\sigma(A) = \frac{1}{1+e^{-A}}
+\\texttt{sig}a(A) = \frac{1}{1+e^{-A}}
 \end{equation}
 
 \begin{equation}
-e^{-A} = \frac{1}{\sigma (A)} - 1 = \frac{1-\sigma (A)}{\sigma(A)}
+e^{-A} = \frac{1}{\\texttt{sig}a (A)} - 1 = \frac{1-\\texttt{sig}a (A)}{\\texttt{sig}a(A)}
 \end{equation}
 
 Substituyendo este valor en la ecuación \ref{dJdD} obtenemos:
@@ -725,11 +727,11 @@ Substituyendo este valor en la ecuación \ref{dJdD} obtenemos:
 \end{equation}
 
 \begin{equation}
-\frac{\partial J}{\partial A} = \frac{\partial J} {\partial \hat{Y} } \frac{1-\sigma(A)}{\sigma(A)} \sigma (A) \sigma (A)
+\frac{\partial J}{\partial A} = \frac{\partial J} {\partial \hat{Y} } \frac{1-\\texttt{sig}a(A)}{\\texttt{sig}a(A)} \\texttt{sig}a (A) \\texttt{sig}a (A)
 \end{equation}
 
 \begin{equation}
-\frac{\partial J}{\partial A} = \frac{\partial J} {\partial \hat{Y}} \sigma(A) (1-\sigma(A))
+\frac{\partial J}{\partial A} = \frac{\partial J} {\partial \hat{Y}} \\texttt{sig}a(A) (1-\\texttt{sig}a(A))
 \end{equation}
 
 Necesitamos la derivada parcial de la función de pérdida correspondiente a cada uno de los pesos. Pero como estamos recurriendo a la vectorización, podemos encontrarlo todo de una vez. Es por eso que hemos estado usando la notación mayúscula $W$ en vez de $w_1, w_2, \ldots, w_n$.
@@ -1082,7 +1084,7 @@ Cabe destacar que \texttt{MAXPOOL} también actúa como supresor de ruido ya que
 
 %Las capas de normalización por lotes o \textit{Batch Normalization} (\texttt{BN}), como su nombre indica, se utilizan para normalizar las activaciones de un volumen de entrada determinado antes de pasarlo a la siguiente capa de la red.
 
-Por lo general, para entrenar una red neuronal, realizamos un preprocesamiento de los datos de entrada, por ejemplo, normalizar todos los datos para que se parezcan a una distribución normal (es decir, media cero y una varianza unitaria). Algunas razones para realizar esto puede ser prevenir la saturación temprana de funciones de activación no lineales como la función sigmoidea, asegurar que todos los datos de entrada estén en el mismo rango de valores, etc. \citep{bn}
+Por lo general, para entrenar una red neuronal, realizamos un preprocesamiento de los datos de entrada, por ejemplo, normalizar todos los datos para que se parezcan a una distribución normal (es decir, media cero y una varianza unitaria). Algunas razones para realizar esto puede ser prevenir la saturación temprana de funciones de activación no lineales como la función \texttt{sig}oidea, asegurar que todos los datos de entrada estén en el mismo rango de valores, etc. \citep{bn}
 
 Pero el problema aparece en las capas intermedias porque la distribución de las activaciones cambia constantemente durante el entrenamiento. Esto ralentiza el proceso de entrenamiento porque cada capa debe aprender a adaptarse a una nueva distribución en cada paso del entrenamiento. Este problema se conoce como \textbf{cambio de covariables interno}.
 
@@ -1092,18 +1094,18 @@ Durante el tiempo de entrenamiento, una capa de normalización por lotes se obti
 
 $$ \mu_{\beta} = \frac{1}{m} \sum_{i=1}^m x_i $$
 
-$$ \sigma_{\beta}^2 = \frac{1}{m}  \sum_{i=1}^m (x_i - \mu_{\beta} ) ^2$$
+$$ \\texttt{sig}a_{\beta}^2 = \frac{1}{m}  \sum_{i=1}^m (x_i - \mu_{\beta} ) ^2$$
 
 Normalizamos las entradas de la capa usando las estadísticas del lote calculados previamente:
 
-$$ \bar{x_i} = \frac{x_i - \mu_{\beta}}{\sqrt{\sigma_{\beta}^2+\epsilon}} $$
+$$ \bar{x_i} = \frac{x_i - \mu_{\beta}}{\sqrt{\\texttt{sig}a_{\beta}^2+\epsilon}} $$
 
 %Escalamos y \textit{shifteamos} en orden para obtener la salida de la capa:
 
 %$$ y_i = \gamma \hat{x_i} + \beta $$
 
 Establecemos $1e-7 \leq \epsilon \leq 0$ para evitar sacar la raíz cuadrada de cero. Aplicar esta ecuación implica que las activaciones que salen de una capa \texttt{BN} tendrán una media y una varianza unitaria aproximadamente cero (es decir, centrada en cero).
-Reemplazamos el mini-lote $\mu_{\beta}$ y $\sigma_{\beta}$ con promedios de $\mu_{\beta}$ y $\sigma_{\beta}$ calculados durante el proceso de entrenamiento. Esto asegura que podemos pasar vectores a través de nuestra red y aún así obtener predicciones precisas sin ser sesgados por $\mu_{\beta}$ y $\sigma_{\beta}$ del mini-lote final pasado a través de la red en el momento del entrenamiento. 
+Reemplazamos el mini-lote $\mu_{\beta}$ y $\\texttt{sig}a_{\beta}$ con promedios de $\mu_{\beta}$ y $\\texttt{sig}a_{\beta}$ calculados durante el proceso de entrenamiento. Esto asegura que podemos pasar vectores a través de nuestra red y aún así obtener predicciones precisas sin ser sesgados por $\mu_{\beta}$ y $\\texttt{sig}a_{\beta}$ del mini-lote final pasado a través de la red en el momento del entrenamiento. 
 
 La \texttt{BN} también tiene el beneficio adicional de ayudar a "estabilizar" el entrenamiento, lo que permite una mayor variedad de tasas de aprendizaje y fortalezas de regularización. Esto no alivia la necesidad de ajustar estos parámetros, por supuesto, pero le facilitará la vida al hacer que la tasa de aprendizaje y la regularización sean menos volátiles y más fáciles de ajustar. También tenderá a notar pérdidas finales más bajas y una curva de pérdida más estable en sus redes.
 
@@ -1415,11 +1417,11 @@ La clave de los \texttt{LSTM} es el estado de la celda, la línea horizontal que
   	\end{center}
 \end{figure}
 
-El \texttt{LSTM} tiene la capacidad de eliminar o agregar información al estado de la celda, regulada cuidadosamente por estructuras llamadas puertas. Las puertas son una forma de dejar pasar información opcionalmente. Están compuestos por una capa de red neuronal sigmoidea y una operación de multiplicación.
+El \texttt{LSTM} tiene la capacidad de eliminar o agregar información al estado de la celda, regulada cuidadosamente por estructuras llamadas puertas. Las puertas son una forma de dejar pasar información opcionalmente. Están compuestos por una capa de red neuronal \texttt{sig}oidea y una operación de multiplicación.
 
-La capa sigmoidea genera números entre $0$ y $1$, que describen cuánto de cada componente debe dejarse pasar. Un valor de $0$ significa "no dejar pasar nada", mientras que un valor de $1$ significa "dejar pasar todo". Un \texttt{LSTM} tiene tres de estas puertas para proteger y controlar el estado de la celda.
+La capa \texttt{sig}oidea genera números entre $0$ y $1$, que describen cuánto de cada componente debe dejarse pasar. Un valor de $0$ significa "no dejar pasar nada", mientras que un valor de $1$ significa "dejar pasar todo". Un \texttt{LSTM} tiene tres de estas puertas para proteger y controlar el estado de la celda.
 
-El primer paso es decidir qué información vamos a eliminar del estado de la celda. Esta decisión la toma una capa sigmoidea llamada \textbf{puerta del olvido} (Fig.~\ref{fig:lstm2}). Examina $h_{t-1}$ y $x_t$, y genera un número entre $0$ y $1$ para cada número en el estado de celda $C_{t-1}$. Un $1$ representa "mantener esto completamente", mientras que un $0$ representa "deshacerse de esto por completo".
+El primer paso es decidir qué información vamos a eliminar del estado de la celda. Esta decisión la toma una capa \texttt{sig}oidea llamada \textbf{puerta del olvido} (Fig.~\ref{fig:lstm2}). Examina $h_{t-1}$ y $x_t$, y genera un número entre $0$ y $1$ para cada número en el estado de celda $C_{t-1}$. Un $1$ representa "mantener esto completamente", mientras que un $0$ representa "deshacerse de esto por completo".
 
 \begin{figure}[H]
 	\begin{center}				
@@ -1431,7 +1433,7 @@ El primer paso es decidir qué información vamos a eliminar del estado de la ce
 
 Por tanto la puerta del olvido queda representada por la siguiente ecuación:
 
-$$f_{(t)} = \sigma (W_{xf}x_{(t)} + W_{hf}h_{(t-1)} + b_f)$$
+$$f_{(t)} = \\texttt{sig}a (W_{xf}x_{(t)} + W_{hf}h_{(t-1)} + b_f)$$
 
 El siguiente paso es decidir qué nueva información almacenaremos en el estado de la celda. Esto tiene dos partes. 
 
@@ -1443,9 +1445,9 @@ El siguiente paso es decidir qué nueva información almacenaremos en el estado 
   	\end{center}
 \end{figure}
 
-Una capa sigmoidea llamada \textbf{puerta de entrada} (Fig~\ref{fig:lstm3}) decide qué valores actualizaremos.
+Una capa \texttt{sig}oidea llamada \textbf{puerta de entrada} (Fig~\ref{fig:lstm3}) decide qué valores actualizaremos.
 
-$$i_{(t)}=\sigma(W_{xi}x_{(t)} + W_{hi}h_{(t-1)} + b_i)$$
+$$i_{(t)}=\\texttt{sig}a(W_{xi}x_{(t)} + W_{hi}h_{(t-1)} + b_i)$$
 
 A continuación, una capa $tanh$ crea un vector de nuevos valores candidatos, que podrían agregarse al estado. 
 
@@ -1476,9 +1478,9 @@ $$C_{(t)} = f_{(t)} \otimes C_{(t-1)} + i_{(t)} \otimes g_{(t)}$$
   	\end{center}
 \end{figure}
 
-Finalmente, tenemos que decidir qué vamos a producir. Esta salida se basará en el estado de nuestra celda, pero será una versión filtrada. Primero, ejecutamos una capa sigmoidea que denominaremos \textbf{puerta de salida} que decide qué partes del estado de la celda vamos a generar. Luego, colocamos el estado de la celda a través de $tanh$ (para presionar los valores entre $-1$ y $1$) y lo multiplicamos por la salida de la puerta, de modo que solo produzcamos las partes que decidimos.
+Finalmente, tenemos que decidir qué vamos a producir. Esta salida se basará en el estado de nuestra celda, pero será una versión filtrada. Primero, ejecutamos una capa \texttt{sig}oidea que denominaremos \textbf{puerta de salida} que decide qué partes del estado de la celda vamos a generar. Luego, colocamos el estado de la celda a través de $tanh$ (para presionar los valores entre $-1$ y $1$) y lo multiplicamos por la salida de la puerta, de modo que solo produzcamos las partes que decidimos.
 
-$$ o_{(t)}=\sigma (W_{xo}x_{(t)} + W_{ho}h_{(t-1)} + b_o) $$
+$$ o_{(t)}=\\texttt{sig}a (W_{xo}x_{(t)} + W_{ho}h_{(t-1)} + b_o) $$
 
 $$ h_{(t)}=o_{(t)} \otimes tanh(C_{(t)})$$
 
@@ -1486,7 +1488,7 @@ Pasando en limpio observando nuevamente la Fig.~\ref{fig:lstmcell}, tendremos nu
 
 \begin{itemize}
 	\item La capa principal es la que genera $g_{(t)}$. Tiene la función habitual de analizar las entradas actuales $x_{(t)}$ y el estado anterior (a corto plazo) $h_{(t-1)}$. En una celda básica \textit{RNN}, no hay nada más que esta capa, y su salida va directamente hacia $y_{(t)}$ y $h_{(t)}$. Por el contrario, en una celda \texttt{LSTM}, la salida de esta capa no sale directamente, sino que se almacena parcialmente en el estado a largo plazo.
-	\item Las otras tres capas son controladores de puerta. Dado que usan la función de activación sigmoidea, sus salidas van entre 0 y 1. Sus salidas se alimentan a operaciones de multiplicación elemento a elemento (también conocido como producto de Hadamard \citep{hadamard}), por lo que si generan ceros, cierran la puerta, y si generan 1 la abre. Específicamente:
+	\item Las otras tres capas son controladores de puerta. Dado que usan la función de activación \texttt{sig}oidea, sus salidas van entre 0 y 1. Sus salidas se alimentan a operaciones de multiplicación elemento a elemento (también conocido como producto de Hadamard \citep{hadamard}), por lo que si generan ceros, cierran la puerta, y si generan 1 la abre. Específicamente:
 	\begin{itemize}
 	\item La puerta de olvido (controlada por $f_{(t)}$) controla qué partes del estado a largo plazo $C_{(t-1)}$ deben borrarse.
 	\item La puerta de entrada (controlada por $i_{(t)}$) controla qué partes de $g_{(t)}$ deben agregarse al estado a largo plazo.
@@ -1519,9 +1521,9 @@ Hace algunas simplificaciones \citep{geron}:
 
 Las ecuaciones quedan de la siguiente forma:
 
-$$z_{(t)}=\sigma(W_{xz}x_{(t)} + W_{hx}h_{(t-1)} + b_z)$$
-$$r_{(t)}=\sigma(W_{xr}x_{(t)} + W_{hr}h_{(t-1)} + b_r)$$
-$$g_{(t)}=\sigma(W_{xg}x_{(t)} + W_{hg}h_{(t-1)} + b_g)$$
+$$z_{(t)}=\\texttt{sig}a(W_{xz}x_{(t)} + W_{hx}h_{(t-1)} + b_z)$$
+$$r_{(t)}=\\texttt{sig}a(W_{xr}x_{(t)} + W_{hr}h_{(t-1)} + b_r)$$
+$$g_{(t)}=\\texttt{sig}a(W_{xg}x_{(t)} + W_{hg}h_{(t-1)} + b_g)$$
 $$h_{(t)}=z_{(t)} \otimes h_{(t-1)} + (1-z_{(t)}) \otimes g_{(t)}$$
 
 \subsection{Secuencias de entradas y salida}
@@ -2930,9 +2932,143 @@ Su propósito es realizar la búsqueda de hiperparámetros en el espacio de bús
 	\end{itemize}
 \end{itemize}
 
-\subsubsection{Resultados}
+\subsubsection{Espacio de búsqueda}
+Para cada tipo de modelo se definió un espacio de búsqueda determinado en función a su arquitectura.
 
-\clearpage
+\textbf{\texttt{RNN}}
+
+Se limitó a explorar la cantidad de unidades en las capas recurrentes e intercambiar la función de activación de la capa final.
+
+\begin{python}
+# RNN layer
+for i in range(8,256,16):
+	units = i
+# Dense layer
+for j in ['relu', '\texttt{sig}oid', 'tanh']:
+		dense = j
+\end{python}
+
+\textbf{\texttt{CNN}}
+
+En este caso se debió crear una capa \texttt{CNN} \textit{input} y sobre la misma ir apilando las demás capas \texttt{CNN} que fueron variando en cantidad desde 1 a 3.
+Además se ajustaron los hiperpárametros de filtros y tamaño del kernel en cada una de ellas.
+ 
+\begin{python}
+# For first layer
+for i in range(8,64,16):
+	filters_0 = i
+	for j in range(2,8,2):
+		kernel_size_0
+
+# Others layers
+for i in range(1,3):
+	cnn_i = stack_cnnlayer(dilation_date=2**i)
+	for j in range(8,64,16):
+		filters_i = j
+		for k in range(2,8,2):
+			kernel_size_i = k
+
+# Model compile
+for lr in [1e-2, 1e-3, 1e-4]:
+	model_lr = lr
+\end{python}
+
+\textbf{\texttt{CNNRNN}}
+
+Se realizó una configuración mixta de los hiperparámetros de las otras arquitecturas, dónde la única novedad es la búsqueda en los hiperparámetros de la capa \texttt{MaxPooling1D}.
+
+\begin{python}
+# First CNN layer
+for i in range(8,64,16):
+	filters_0 = i
+	for j in range(2,8,2):
+		kernel_size_0
+
+# Others CNN layers
+for i in range(1,3):
+	cnn_i = stack_cnnlayer(dilation_date=2**i)
+	for j in range(8,64,16):
+		filters_i = j
+		for k in range(2,8,2):
+			kernel_size_i = k
+			
+# Pooling layer
+for i in range(2,8,2):
+	pool_size = i
+	
+# RNN layer
+for i in range(8,256,16):
+	units = i
+	
+# Model compile
+for lr in [1e-2, 1e-3, 1e-4]:
+	model_lr = lr
+\end{python}
+
+Ya definido el espacio de búsqueda de los modelos, se procede a la búsqueda del mejor conjunto de hiperparámetros obteniendo la tabla \ref{tab:tuning-hp}. De la misma podemos sacar varias conclusiones interesantes.
+\begin{itemize}
+	\item El modelo con la mejor puntuación fue \texttt{CNNGRU} en combinación con el algoritmo \textit{Hyperband}, sin embargo el segundo lugar (\texttt{LSTM}/Optimización Bayesiana) le sigue muy de cerca. De hecho todos los modelos están muy parejos.
+	\item Hay una clara tendencia a obtener mejores resultados con combinaciones definidas como \texttt{CNNGRU/HB/sig} y \texttt{LSTM/BO/tanh}.
+	\item Es curioso notar que a pesar de su arquitectura simple \texttt{LSTM} logró batir los resultados de otros modelos.
+	\item Nuestro tope de unidades \texttt{RNN} fue seteado en 256, observamos que los modelos con mejor puntaje están muy cerca de ese valor. Quizás se habrían mejores resultados si hubiéramos definido un espacio de búsqueda mayor para ese hiperparámetro.
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\begin{adjustwidth}{-1.3cm}{}
+\begin{tabular}{lcccccccccccc}
+\hline
+\textbf{}       & \textbf{}               & \multicolumn{7}{c}{\texttt{CNN}} & \texttt{MAXPOOL} & \texttt{RNN} & \texttt{DENSE}                  & \textbf{} \\ \hline
+\multicolumn{1}{c}{model} &
+  \multicolumn{1}{c|}{algo} &
+  layers &
+  $f_0$ &
+  $ks_0$ &
+  $f_1$ &
+  $ks_1$ &
+  $f_2$ &
+  $ks_2$ &
+  $ps$ &
+  units &
+  \multicolumn{1}{c|}{act} &
+  \textbf{score} \\ \hline
+\texttt{CNNGRU} & \multicolumn{1}{c|}{\texttt{HB}} & 3  & 40  & 8  & 56  & 4 & 56 & 6 & 6                & 232          & \multicolumn{1}{c|}{\texttt{sig}} & 0.011961  \\
+\texttt{LSTM}   & \multicolumn{1}{c|}{\texttt{BO}} & -  & -   & -  & -   & - & -  & - & -                & 248          & \multicolumn{1}{c|}{\texttt{tanh}}    & 0.011973  \\
+\texttt{CNNGRU} & \multicolumn{1}{c|}{\texttt{HB}} & 3  & 40  & 8  & 56  & 4 & 56 & 6 & 6                & 232          & \multicolumn{1}{c|}{\texttt{sig}} & 0.011980  \\
+\texttt{LSTM}   & \multicolumn{1}{c|}{\texttt{BO}} & -  & -   & -  & -   & - & -  & - & -                & 248          & \multicolumn{1}{c|}{\texttt{tanh}}    & 0.011996  \\
+\texttt{CNNGRU} & \multicolumn{1}{c|}{\texttt{HB}} & 3  & 40  & 8  & 56  & 4 & 56 & 6 & 6                & 232          & \multicolumn{1}{c|}{\texttt{sig}} & 0.011996  \\
+\texttt{LSTM}   & \multicolumn{1}{c|}{\texttt{BO}} & -  & -   & -  & -   & - & -  & - & -                & 248          & \multicolumn{1}{c|}{\texttt{tanh}}    & 0.012001  \\
+\texttt{CNNGRU} & \multicolumn{1}{c|}{\texttt{HB}} & 1  & 56  & 6  & -  & - & - & - & 6                & 88           & \multicolumn{1}{c|}{\texttt{sig}} & 0.012003  \\
+\texttt{LSTM}   & \multicolumn{1}{c|}{\texttt{BO}} & -  & -   & -  & -   & - & -  & - & -                & 248          & \multicolumn{1}{c|}{\texttt{tanh}}    & 0.012004  \\
+\texttt{CNNGRU} & \multicolumn{1}{c|}{\texttt{HB}} & 1  & 40  & 6  & -  & - & - & - & 6                & 120          & \multicolumn{1}{c|}{\texttt{sig}} & 0.012004  \\
+\texttt{CNNGRU}          & \multicolumn{1}{c|}{\texttt{HB}} & 2  & 40  & 6  & 40  & 4 & - & - & 6                & 216          & \multicolumn{1}{c|}{\texttt{sig}} & 0.012008  \\ \hline
+\end{tabular}
+\end{adjustwidth}
+\caption{Resultados del ajuste de hiperpárametros.}
+\label{tab:tuning-hp}
+\end{table}
+
+Ahora haremos énfasis en los rendimientos por arquitectura de los dos algoritmos de ajuste de hiperparámetros utilizados. Para esta tarea utilizaremos de soporte la tabla~\ref{tab:algo_vs_arch} y la fig.~\ref{fig:algo_comparison}. Notamos que exceptuando \texttt{LSTM}, \textit{Hyperband} se desempeña mejor en cada uno de los modelos restantes.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|ccccc}
+\hline
+algo/model & \texttt{CNN} & \texttt{CNNGRU} & \texttt{CNNLSTM} & \texttt{GRU} & \texttt{LSTM} \\ \hline
+\textit{BayesianOptimization}         & 0.012601     & 0.012236        & 0.012216         & 0.012178     & 0.011973      \\
+\textit{Hyperband}         & 0.012133     & 0.011961        & 0.012030         & 0.012036     & 0.012021      \\ \hline
+\end{tabular}
+\caption{Mejor puntuación por algoritmo y arquitectura.}
+\label{tab:algo_vs_arch}
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{model_vs_algo_hp.png}
+  	\caption{Comparación de algoritmos de ajuste de hiperpárametros por modelo y arquitectura.}
+  	\label{fig:algo_comparison}
+  	\end{center}
+\end{figure}
 
 \bibliography{tesis}{}
 \bibliographystyle{unsrtnat}
