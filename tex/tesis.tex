@@ -2133,17 +2133,17 @@ El entorno de trabajo será \texttt{Jupyter-Notebook} que soporta \texttt{Python
 \end{itemize}
 
 \subsubsection{Recolección de datos}
+
 Etapa de búsqueda y recolección de los datos que serán utilizados para el modelo. En nuestro caso se dividió en recolectar en la organización los datos de defectos y paradas de línea (se obtuvieron para los departamentos \texttt{SOLD}, \texttt{PINT} y \texttt{MONT}).
 
 Los datos fueron obtenidos desde 4 auditorias diferentes que fueron presentadas en \ref{ptocptj}.
 
-\subsubsection{Limpieza de datos}
+\subsubsection{\href{https://github.com/GeraCollante/tesis-icomp-machinelearning/blob/main/DataCleaning.ipynb}{\color{blue}Limpieza de datos}}
 Consiste en inspeccionar los datos obtenidos en búsqueda de posibles errores o datos que quizás es posible obtener pero por diversas razones se han perdido y debemos intentar recuperar.
 
 Ambos casos sucedieron, por tanto se procedió a recuperar los datos cuando fue posible, y en los que no se procedió al descarte debido a que no eran útiles para la tarea.
 
-\subsubsection{Preprocesamiento de datos}
-
+\subsubsection{\href{https://github.com/GeraCollante/tesis-icomp-machinelearning/blob/main/DataPreproccesing.ipynb}{\color{blue}Preprocesamiento de datos}}
 En este punto es donde debemos ponernos finos a la hora de inspeccionar nuestro \textit{dataset} para homogeneizar los datos, detectar incongruencias o datos sin sentido.
 
 En primer lugar se realizó una homogeneización de los datos, \textit{i.e.} quizás el mismo dato se puede estar refiriendo a lo mismo pero tienen \textit{tags} diferentes, por tanto es necesario revisar los datos columna por columna. Esto sucedió debido a que provenir los datos de diversas fuentes cada una tenía una forma de tratarlos. 
@@ -2154,8 +2154,7 @@ Debido a la estructura jerárquica de la usina, si tenemos definido la UET a la 
 
 Finalmente tenemos nuestro \textit{dataset} en condiciones para su análisis.
 
-\subsubsection{Análisis y visualización de datos}
-
+\subsubsection{\href{https://github.com/GeraCollante/tesis-icomp-machinelearning/blob/main/DataPlottingAndAnalysis.ipynb}{\color{blue}Análisis y visualización de datos}}
 Haremos una parada en nuestro procesamiento de datos para visualizarlos y dimensionar en que posición nos encontramos.
 Nuestro \textit{dataset} se compone de $229934$ filas que cada una representa un defecto y 17 columnas.
 
@@ -2260,7 +2259,8 @@ Si al gráfico anterior lo desglosamos por auditoria y gravedad (fig.~\ref{fig:d
   	\end{center}
 \end{figure}
 
-\subsubsection{Imputación de datos}
+\subsubsection{\href{https://github.com/GeraCollante/tesis-icomp-machinelearning/blob/main/DataImputation.ipynb}{\color{blue}Imputación de datos}}
+ 
 En estadística, la imputación es el proceso de reemplazar los datos faltantes (\textit{missing values}) con valores sustituidos. En nuestro \textit{dataset} tenemos 2 \textit{features} con faltantes, una es \texttt{UET} (lo que conlleva a faltantes de \texttt{DPTO} y \texttt{TALL}) y la otra es \texttt{TIPO}.
 
 Como se observa en la fig.~\ref{fig:missingvalue}, los datos faltantes no son demasiados, más precisamente $1052$ de \texttt{UET} y $1228$ de \texttt{TIPO}. Debido a la gran cantidad de datos disponibles podemos rellenar estos valores con algún algoritmo de \textit{Machine Learning} visto con anterioridad.
@@ -2440,9 +2440,11 @@ Finalmente imputaremos los datos en nuestro dataset con el mejor clasificador pa
   	\end{center}
 \end{figure}
 
-\subsubsection{Formateo de datos}
-El paso final antes de alimentar nuestro modelos es obtener rodajas de tiempo con funciones de agregación de tipo \texttt{sum}, \texttt{count}, etc de nuestros datos. 
+\subsubsection{\href{https://github.com/GeraCollante/tesis-icomp-machinelearning/blob/main/DataFormatting.ipynb}{\color{blue}Formateo de datos}}
 
+El paso final antes de alimentar nuestro modelos es obtener rodajas (\textit{slices}) de tiempo con funciones de agregación de tipo \texttt{sum}, \texttt{count}, etc de nuestros datos. 
+
+\hfill
 \textbf{Serie temporal univariada}
 
 Pero como observamos en la Fig.~\ref{fig:graf_cantdef_antes}, nuestra serie temporal dista mucho de ser continua. Esto es un inconveniente ya que se ha demostrado que a los modelos les cuesta mucho aprender sobre series temporales intermitentes.
@@ -2688,7 +2690,9 @@ En el caso de las últimas dos redes se utilizó la capa de \texttt{MAXPOOL} par
   	\end{center}
 \end{figure}
 
+%\subsection{\href{https://github.com/GeraCollante/tesis-icomp-machinelearning/blob/main/DataImputation.ipynb}{\color{blue}Entrenamiento}}
 \subsection{Entrenamiento}
+Link training
 \subsubsection{Datos de prueba}
 Ya tenemos todos los ingredientes necesarios para empezar el entrenamiento de nuestra red neuronal, sin embargo sería coherente utilizar datos de prueba o \textit{dummy data} para corroborar que todo funcione según lo esperado.
 
@@ -2736,8 +2740,8 @@ Recordar que la métrica \texttt{val\_loss} será aplicada sobre el set de valid
   	\end{center}
 \end{figure}
 
-\subsubsection{\textit{Shifteo} temporal}
-Una operación importante a realizar en nuestro dataset es el \textit{shifteo} temporal para lograr que nuestra red pueda aprender sobre los \textit{timesteps} pasados de nuestras features y comparar su salida contra los \textit{timesteps} futuros en caso de ser la \textit{target feature}.
+\subsubsection{Desplazamiento temporal}
+Una operación importante a realizar en nuestro dataset es el desplazamiento temporal o \textit{time-shifting} para lograr que nuestra red pueda aprender sobre los \textit{timesteps} pasados de nuestras features y comparar su salida contra los \textit{timesteps} futuros en caso de ser la \textit{target feature}.
 
 Para aclarar esta idea pongamos nuestro enfoque en la figura \ref{fig:shift_explain}. Definiremos \texttt{T} a la cantidad de \textit{timesteps} que queremos que nuestro modelo utilice para extraer información pasada, además del actual.
 
@@ -2746,7 +2750,7 @@ Y definiremos \texttt{HORIZON} como al horizonte de pronóstico, \textit{i.e.} l
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=0.9\textwidth]{time-shift.pdf}
-  	\caption{\textit{Shifteo} temporal.}
+  	\caption{Desplazamiento temporal visualizado.}
   	\label{fig:shift_explain}
   	\end{center}
 \end{figure}
@@ -2754,6 +2758,7 @@ Y definiremos \texttt{HORIZON} como al horizonte de pronóstico, \textit{i.e.} l
 \subsubsection{Tipo de horizonte}
 Un punto importante a aclarar es que es diferente la arquitectura a implementar según si nuestra \textit{target feature} es de horizonte único o multi-horizonte.
 
+\hfill
 \textbf{Horizonte único}
 
 Veremos en una perspectiva más amplia el funcionamiento de nuestro modelo para tomar noción de donde nos encontramos y para esta tarea nos será útil la fig.~\ref{fig:unihorizon_model} \citep{rnn_azure}. Básicamente tomamos los \texttt{T} \textit{timesteps} de nuestras \textit{features} para alimentar a la arquitectura (que fueron presentadas en la sección \ref{archs}), en este caso compuesta de celdas \texttt{RNN}, que luego la salida alimenta una neurona que determina el valor de \texttt{t+1}.
@@ -2852,19 +2857,19 @@ En la tabla~\ref{tab:metrics-models} y en la fig.~\ref{fig:mase_per_model} verif
 \centering
 \begin{tabular}{lcc}
 \hline
-\multicolumn{1}{r}{modelname} & \texttt{val\_loss} & \texttt{MASE} \\ \hline
-GRU                                    & 0.0121    & 0.2894        \\
-LSTM                                   & 0.0123    & 0.2777        \\
-\textbf{CNNGRU}                                 & \textbf{0.0123}    & \textbf{0.2775}        \\
-CNNLSTM                                & 0.0123    & 0.2793        \\
-CNN-1                                  & 0.0144    & 0.6526        \\
-CNN-2                                  & 0.0124    & 0.3476        \\
-CNN-4                                  & 0.0126    & 0.3242        \\
-CNN-8                                  & 0.0133    & 0.4389        \\
-CNN-16                                 & 0.0124    & 0.3172        \\
-CNN-32                                 & 0.0127    & 0.3318        \\
-CNN-64                                 & 0.0126    & 0.3597        \\
-CNN-128                                & 0.0122    & 0.3121        \\ \hline
+\multicolumn{1}{l}{model} & \texttt{MAE} & \texttt{MASE} \\ \hline
+\texttt{GRU}                                    & 0.0121    & 0.2894        \\
+\texttt{LSTM}                                   & 0.0123    & 0.2777        \\
+\textbf{\texttt{CNNGRU}}                                 & \textbf{0.0123}    & \textbf{0.2775}        \\
+\texttt{CNNLSTM}                                & 0.0123    & 0.2793        \\
+\texttt{CNN-1}                                  & 0.0144    & 0.6526        \\
+\texttt{CNN-2}                                  & 0.0124    & 0.3476        \\
+\texttt{CNN-4}                                  & 0.0126    & 0.3242        \\
+\texttt{CNN-8}                                  & 0.0133    & 0.4389        \\
+\texttt{CNN-16}                                 & 0.0124    & 0.3172        \\
+\texttt{CNN-32}                                 & 0.0127    & 0.3318        \\
+\texttt{CNN-64}                                 & 0.0126    & 0.3597        \\
+\texttt{CNN-128}                                & 0.0122    & 0.3121        \\ \hline
 \end{tabular}
 \caption{Métricas de los modelos.}
 \label{tab:metrics-models}
@@ -3005,7 +3010,9 @@ for lr in [1e-2, 1e-3, 1e-4]:
 	model_lr = lr
 \end{python}
 
-Ya definido el espacio de búsqueda de los modelos, se procede a la búsqueda del mejor conjunto de hiperparámetros obteniendo la tabla \ref{tab:tuning-hp}. De la misma podemos sacar varias conclusiones interesantes.
+\subsubsection{Resultados}
+
+Ya definido el espacio de búsqueda de los modelos, se procede a la búsqueda del mejor conjunto de hiperparámetros obteniendo la tabla \ref{tab:tuning-hp} (recordar que se utiliza como métrica \texttt{MAE}). De la misma podemos sacar varias conclusiones interesantes.
 \begin{itemize}
 	\item El modelo con la mejor puntuación fue \texttt{CNNGRU} en combinación con el algoritmo \textit{Hyperband}, sin embargo el segundo lugar (\texttt{LSTM}/Optimización Bayesiana) le sigue muy de cerca. De hecho todos los modelos están muy parejos.
 	\item Hay una clara tendencia a obtener mejores resultados con combinaciones definidas como \texttt{CNNGRU/HB/sig} y \texttt{LSTM/BO/tanh}.
@@ -3048,27 +3055,76 @@ Ya definido el espacio de búsqueda de los modelos, se procede a la búsqueda de
 \label{tab:tuning-hp}
 \end{table}
 
-Ahora haremos énfasis en los rendimientos por arquitectura de los dos algoritmos de ajuste de hiperparámetros utilizados. Para esta tarea utilizaremos de soporte la tabla~\ref{tab:algo_vs_arch} y la fig.~\ref{fig:algo_comparison}. Notamos que exceptuando \texttt{LSTM}, \textit{Hyperband} se desempeña mejor en cada uno de los modelos restantes.
+Ahora haremos énfasis en los rendimientos por arquitectura de los dos algoritmos de ajuste de hiperparámetros utilizados discriminando los análisis por las dos métricas propuestas (\texttt{MAE} y \texttt{MASE}). 
+
+\hfill
+
+\textbf{\texttt{MAE}}
+
+Para esta tarea utilizaremos de soporte la tabla~\ref{tab:algo_vs_arch_mae} y la fig.~\ref{fig:algo_comparison}. Notamos que exceptuando \texttt{LSTM}, el algoritmo \textit{Hyperband} se desempeña mejor en cada uno de los modelos restantes.
 
 \begin{table}[H]
 \centering
 \begin{tabular}{l|ccccc}
 \hline
 algo/model & \texttt{CNN} & \texttt{CNNGRU} & \texttt{CNNLSTM} & \texttt{GRU} & \texttt{LSTM} \\ \hline
-\textit{BayesianOptimization}         & 0.012601     & 0.012236        & 0.012216         & 0.012178     & 0.011973      \\
-\textit{Hyperband}         & 0.012133     & 0.011961        & 0.012030         & 0.012036     & 0.012021      \\ \hline
+\textit{BayesianOptimization}         & 0.01260     & 0.01224        & 0.01222         & 0.01218     & 0.01197      \\
+\textit{Hyperband}         & 0.01213     & 0.01196        & 0.01203         & 0.01204     & 0.01202      \\ \hline
 \end{tabular}
-\caption{Mejor puntuación por algoritmo y arquitectura.}
-\label{tab:algo_vs_arch}
+\caption{Mejor puntuación por algoritmo y arquitectura utilizando \texttt{MAE} cómo métrica.}
+\label{tab:algo_vs_arch_mae}
 \end{table}
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.8\textwidth]{model_vs_algo_hp.png}
-  	\caption{Comparación de algoritmos de ajuste de hiperpárametros por modelo y arquitectura.}
-  	\label{fig:algo_comparison}
+	\includegraphics[width=0.8\textwidth]{model_vs_algo_hp_mae.png}
+  	\caption{Comparación de algoritmos de ajuste de hiperpárametros por modelo y arquitectura utilizando como métrica \texttt{MAE}.}
+  	\label{fig:algo_comparison_mae}
   	\end{center}
 \end{figure}
+
+\textbf{\texttt{MASE}}
+
+Es muy díficil crear una función de perdida \texttt{MASE} ya que ésta se alimenta de muestras pasadas, añadiendo una complejidad que no fue posible sortear en su implementación (\textit{Keras} no soportaba esta característica). Por tanto utilizamos \texttt{MAE} cómo métrica para entrenar nuestros modelos, sin embargo \texttt{MASE} es nuestra principal métrica a la hora de definir cúal es el mejor modelo para el objetivo propuesto.
+
+Por tanto utilizando la tabla~\ref{tab:algo_vs_arch_mase} y la fig.~\ref{fig:algo_comparison_mase} concluimos que la combinación que posee el mejor rendimiento en nuestro \textit{set} de datos es \texttt{CNN} con Optimización Bayesiana.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|ccccc}
+\hline
+algo/model & \texttt{CNN} & \texttt{CNNGRU} & \texttt{CNNLSTM} & \texttt{GRU} & \texttt{LSTM} \\ \hline
+\textit{BayesianOptimization}         & 0,208        & 0,300           & 0,306            & 0,243        & 0,297         \\
+\textit{Hyperband}         & 0,253        & 0,332           & 0,290            & 0,628        & 0,304         \\ \hline
+\end{tabular}
+\caption{Mejor resultado por algoritmo y arquitectura utilizando como métrica \texttt{MASE}.}
+\label{tab:algo_vs_arch_mase}
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{model_vs_algo_hp_mase.png}
+  	\caption{Comparación de algoritmos de ajuste de hiperpárametros por modelo y arquitectura utilizando como métrica \texttt{MAE}.}
+  	\label{fig:algo_comparison_mase}
+  	\end{center}
+\end{figure}
+
+En la fig.~\ref{fig:best_model_hp} podemos notar la fina precisión del modelo al predecir los instantes \texttt{t+1}, convaleciendo de manera visual el análisis realizado.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{cnn_bo_best.png}
+  	\caption{Pronóstico del mejor modelo una vez realizado el ajuste de hiperparámetros.}
+  	\label{fig:best_model_hp}
+  	\end{center}
+\end{figure}
+
+Para destacar la utilidad del ajuste de hiperparámetros recordemos la tabla~\ref{tab:metrics-models}. En la misma notamos que el mejor modelo (\texttt{CNNGRU}) logró un \texttt{MASE} de $0.278$ mientras que el modelo (\texttt{CNN}) de mejor rendimiento una vez aplicado el ajuste de hiperparámetros obtuvo $0.208$, una mejora de casi 8 puntos. También es interesante notar que antes del ajuste de hiperpárametros los modelos \texttt{CNN} estaban muy lejos de los mejores rendimientos, pero luego se posicionaron como la mejor opción.
+
+\subsubsection{Conclusión}
+Si bien el ajuste de hiperparámetros es mucho más costoso computacionalmente que el entrenamiento de los modelos, si nuestra necesidad radica en obtener el mejor modelo posible con nuestros recursos definitivamente es un paso que no podremos saltear. Si más que precisión se necesita velocidad para obtener un modelo con un rendimiento aceptable no es necesario pasar por este proceso.
+
+\clearpage
 
 \bibliography{tesis}{}
 \bibliographystyle{unsrtnat}
