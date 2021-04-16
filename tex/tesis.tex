@@ -2047,6 +2047,259 @@ No utiliza aprendizaje profundo, pero \textit{ATI} está desarrollando una libre
 
 Debido a la naturaleza de nuestra serie temporal (que es de tipo intermitente) no podemos ajustarnos a algunos de estos modelos ya que necesitan series temporales continuas.
 
+\section{Entropía de una serie temporal} \label{sec:entropy}
+La entropía aproximada (\textit{Approximate Entropy}) y la entropía de muestra (\textit{Sample Entropy}) son dos algoritmos para determinar la regularidad de series de datos en función de la existencia de patrones. A pesar de sus similitudes, las ideas teóricas detrás de esas técnicas son diferentes. \citep{delgado2019approximate}
+
+\subsection{Introducción}
+El objetivo de la entropía aproximada (\texttt{ApEn}) y la entropía muestral (\texttt{SampEn}) es estimar la aleatoriedad de una serie de datos sin ningún conocimiento previo sobre la fuente que genera el conjunto de datos. Por lo tanto, su aplicabilidad es ilimitada y esos algoritmos se han utilizado en una amplia variedad de campos de investigación. Para comprender completamente los algoritmos, es necesario comprender los fundamentos teóricos en los que se basan y qué están tratando de medir. El objetivo perseguido por \texttt{ApEn} y \texttt{SampEn} es determinar con qué frecuencia se encuentran diferentes patrones de datos en el conjunto de datos. Para lograr ese objetivo, se requiere una medida matemática del nivel de aleatoriedad. Esa métrica se basa en el concepto de entropía de la teoría de la información, una magnitud que cuantifica la incertidumbre de una medida.
+
+La conexión entre el contenido de la información y la aleatoriedad proporciona una forma de cuantificar el nivel de aleatoriedad de un conjunto de datos de una manera puramente matemática, sin asumir ningún modelo o hipótesis subyacente sobre el proceso que genera los datos. 
+
+\subsection{Información y complejidad}
+\subsubsection{Estadísticas de regularidad} 
+En muchas situaciones, el uso de la palabra aleatorio contrasta con la idea matemática de la aleatoriedad de un número. 
+
+\textit{Chaitin} \citep{chaitin} propuso el experimento de lanzar una moneda 20 veces y escribir un uno si sale cara y un cero si sale cruz. Desde una perspectiva probabilística, el experimento podría producir las siguientes dos series con la misma probabilidad (una sobre $2^{20}$), por lo tanto, considerando ambas series como aleatorias : 
+
+A: \texttt{01010101010101010101}
+
+B: \texttt{01101000110111100010}
+
+Si bien es cierto que las dos series se han producido aleatoriamente con la misma probabilidad y tienen los mismos valores de media y varianza, es fácil continuar con el patrón descrito en la serie A, pero tendríamos que trabajar más para poder predecir el siguiente número de la serie B. La serie A se construye alternando ceros y unos, mientras que la serie B no tiene un patrón claro. El análisis de aleatoriedad es, por tanto, una limitación esencial de los métodos de estadística de momento y no puede utilizarse para garantizar matemáticamente la aleatoriedad de una serie.
+
+El origen de esta limitación radica en el hecho de que el enfoque probabilístico clásico de analizar los momentos de diferentes órdenes no analiza la aleatoriedad de una serie sino la aleatoriedad del proceso de generación de la serie. Una mayor frecuencia de un número en una serie, una asimetría de la distribución, o cualquier otra medida similar, son herramientas para estudiar el proceso de generación de los datos, y el orden de su generación no tiene ninguna influencia. En consecuencia, como afirmó \textit{Chaitin}, el uso de esos métodos no puede probar la aleatoriedad de un número dado, simplemente porque la idea subyacente de probabilidad es analizar el método de generación. 
+
+En esencia, dado que la entropía cuantifica la cantidad de información, también mide el grado de aleatoriedad en el sistema. Sería deseable que una de las características a la hora de medir la aleatoriedad de una serie fuera establecer una jerarquía de grados de aleatoriedad, una cuantificación del nivel de aleatoriedad para que la pregunta no sea si una serie de datos es aleatoria o no, sino lo aleatorio que es. Habrá una situación con máxima aleatoriedad, totalmente impredecible, pero también habrá otras situaciones con diferentes grados de aleatoriedad por lo que deberíamos poder ordenar las series de datos según su complejidad. Una serie de datos simple (no compleja) tendría patrones obvios, como la serie A mencionada anteriormente, mientras que para una serie compleja esos patrones serían completamente inexistentes. Nos centraremos en analizar la aleatoriedad de la serie mediante el estudio de los patrones de números utilizando una formulación matemática fundamental sin asumir ningún modelo.
+
+La idea subyacente es la siguiente. Imagínense los días en que se usaba el telégrafo, e imaginen a dos investigadores, uno que lee las temperaturas en Nueva York y envía telegramas a su amigo en Chicago, un meteorólogo experto que quiere obtener datos del año anterior para su investigación. La teoría de la codificación se ocupa del contenido de información de los telegramas y la longitud mínima requerida para enviar el mensaje de un lugar a otro. Suponga que la persona en Nueva York escribe un \texttt{1} si la temperatura sube y un \texttt{0} si baja, escribiendo un número por hora y haciendo que la serie anual sea extremadamente larga. Si el clima se comportara como una serie sinusoidal perfecta, el telegrama consistiría en la serie de números:\texttt{Los valores fueron 01010101010101010101010101010101010101010101010101...}.
+
+Sin embargo, la persona en Nueva York puede simplificar el telegrama (y ahorrar dinero con él, recuerde que el costo dependía de la cantidad de palabras) diciéndole a su amigo: \texttt{'Los valores fueron 01 repetidos 4380 veces'}. 
+
+El punto esencial a tener en cuenta es que la información es la misma en los dos mensajes; sin embargo, la longitud del código es mínima en el segundo caso, lo que lo hace óptimo (y más económico). Por el contrario, suponga que el clima no se comporta de tan buena manera y que la secuencia de números no tiene sentido para la persona en Nueva York. No hay otra opción que enviar la lista completa de números en un telegrama de la forma: \texttt{`Los valores fueron 01101101000100111010101010100101010110101011111010...'}. 
+
+Como no hay un patrón discernible en esos datos, no hay forma de reducir la longitud del telegrama, pagando así un costo más alto por ello. El punto esencial aquí es que no podemos comprimir una secuencia de números totalmente aleatorios en un mensaje más corto, lo que ofrece una manera de definir la aleatoriedad total de una serie como un mensaje que requiere la máxima longitud para ser transmitido. Una vez definida la aleatoriedad de esta forma, en función de su contenido de información y la longitud del código necesario para enviar el mensaje, podemos plantearnos cómo medirlo en diferentes grados. 
+
+Como hemos visto en el ejemplo anterior, la existencia de patrones dentro de una serie es el núcleo de la definición de aleatoriedad, por lo que es apropiado establecer una jerarquía de aleatoriedad en base a los diferentes patrones y sus repeticiones. La formulación matemática para lograrlo proviene de otra rama de las matemáticas llamada Teoría del Caos. 
+
+\subsubsection{Teoría de la información}
+
+En esta sección definimos y resumimos aquellos conceptos de TI necesarios para comprender la lógica detrás de \texttt{ApEn}, enfocándonos en variables discretas. No pretende ser una revisión completa del tema ni dar demostraciones o nuevos métodos para analizar datos.
+
+Originalmente, la TI se diseñó como una teoría para analizar el proceso de envío de mensajes a través de un canal ruidoso y comprender cómo reconstruir el mensaje con una baja probabilidad de error. Como se mencionó anteriormente, una de las ideas detrás de TI es el hecho de que la información en un mensaje se puede medir cuantitativamente. 
+
+En nuestra era digital, los mensajes se componen de bits, pero no todos los bits son útiles: algunos de ellos son redundantes, algunos de ellos son errores, y así sucesivamente. Así que cuando comunicamos un mensaje, queremos tanta información útil como sea posible para pasar. En la TI, transmitir un poco de información significa reducir la incertidumbre del receptor en un factor de 2, \textit{e.g.}, digamos que el clima es completamente aleatorio, con una probabilidad de 50/50 de ser soleado o lluvioso todos los días (fig.~\ref{fig:geron1}). Si una estación meteorológica te dice que va a llover mañana, entonces en realidad han reducido tu incertidumbre en un factor de dos. Había dos opciones igualmente probables, ahora sólo hay una. \citep{Geron2018Feb}
+
+Así que el canal del tiempo en realidad le envió un solo poco de información útil. Y esto es cierto sin importar cómo codificaron esta información. Si lo codificaron como una cadena, con 5 caracteres, cada uno codificado en 1 byte, entonces en realidad le enviaron un mensaje de 40 bits, pero sólo se comunicó 1 bit de información útil.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.7\textwidth]{geron_1.png}
+  	\caption{Representación gráfica de la situación propuesta.}
+  	\label{fig:geron1}
+  	\end{center}
+\end{figure}
+
+Ahora supongamos que el clima tiene en realidad 8 estados posibles los cúales son definidos como los símbolos del alfabeto (dónde la longitud del alfabeto es $S$), todos igualmente probables (fig.~\ref{fig:geron2}, ignorar porcentajes). Ahora, cuando la estación meteorológica te da el tiempo de mañana, están dividiendo tu incertidumbre por un factor de 8, que es $2^3$. Así que se enviaron 3 bits de información útil. Es fácil encontrar el número de bits de información que en realidad se comunicaron calculando el logaritmo binario del factor de reducción de incertidumbre, \textit{i.e.} $\log_2(8)$.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.9\textwidth]{geron_2.png}
+  	\caption{Representación gráfica de transmisión de 8 estados.}
+  	\label{fig:geron2}
+  	\end{center}
+\end{figure}
+
+Pero, ?`qué pasa si las posibilidades no son igualmente probables? Digamos que el 75\% tiene posibilidades de sol y el 25\% de probabilidad de lluvia. Si la estación meteorológica te dice que va a llover mañana, entonces tu incertidumbre ha bajado en un factor de 4, \textit{i.e.} $\log_2(4)=2$ que serían 2 bits de información. La reducción de la incertidumbre es sólo la inversa de la probabilidad del evento, en este caso la inversa del 25\% ($\frac{1}{4}$) es 4. Ahora $\log(\frac{1}{x})=-\log(x)$, por lo que la ecuación para calcular el número de bits simplifica a $-\log_2(0.25)$. 
+
+%$$ H = n \log S$$
+%
+%dónde:
+%\begin{itemize}
+%	\item $S:$ es el número de símbolos posibles (longitud del alfabeto)
+%	\item $n$: el número de ellos transmitidos.
+%\end{itemize} 
+
+Por tanto la fórmula para medir la cantidad de información se define:
+
+$$ H = -p \log_2(p)$$
+
+dónde:
+\begin{itemize}
+	\item $p:$ es la probabilidad de aparición de un determinado símbolo.
+\end{itemize}
+
+Ahora, si la estación meteorológica te dice que mañana estará soleado, entonces tu incertidumbre no ha bajado mucho. ?`Cuánta información vas a obtener de la estación meteorológica, en promedio? Bueno, hay un 75\% de probabilidades de que sea soleado mañana, así que eso es lo que la estación meteorológica te diría y eso es $0.41$ bits de información. Luego hay un 25\% de probabilidades de que llueva, en cuyo caso la estación meteorológica te lo dirá, y esto te dará 2 bits de información. Así que en promedio, si calculamos $0.75\cdot 0.41 + 0.25 \cdot 2 = 0.81$, \textit{i.e.} obtenemos $0.81$ bits de información de la estación meteorológica, todos los días. Así que lo que acabamos de calcular se llama \textbf{entropía}. Para finalizar hagamos el mismo cálculo para la fig.~\ref{fig:geron2}: $(0.6)(-\log_2(0.6))+(0.2)(-\log_2(0.2))+(0.1)(-\log_2(0.1))-(0.1)(-\log_2(0.1))=1.57$, es decir que de los 3 bits enviados obtenemos el 52\% de la información. 
+
+La entropía es una buena medida de lo inciertos que son los acontecimientos y de manera más formal la definimos como la medida de información de una sola variable aleatoria. La idea de una variable aleatoria en este contexto se refiere a la interpretación probabilística: cada uno de los posibles resultados de la variable tiene una probabilidad definida de ocurrencia y el valor asociado con el resultado es aleatorio. Matemáticamente la definimos:
+
+Si $X$ puede tomar los valores $\{x_1, \dots, x_n\}$ y $p(x)$ es la probabilidad asociada con esos valores dado $x \in X$, la entropía se define como:
+
+$$H(X) = - \sum_{x \in X} p(x) \log_2 p(x)$$
+
+Esperemos que la ecuación de la entropía ahora tenga sentido completo: mide la cantidad promedio de información obtenida cuando se consulta el clima cada día, o  de forma más general la cantidad promedio de información obtenida de una muestra extraída de una $p$ de distribución de probabilidad dada. Le dice lo impredecible que es esa distribución de probabilidad. Si vivís en medio de un desierto donde hace sol todos los días, en promedio no se obtendrá mucha información de la estación meteorológica y la entropía estará cerca de cero. Por el contrario, si el clima varía mucho, la entropía será mucho mayor.
+
+%Esas ideas eran correctas pero limitadas a situaciones en las que todos los eventos tienen la misma probabilidad, como lanzar una moneda o un dado. \textit{Shannon} extendió esta formulación para evitar esa restricción, proponiendo 
+
+Es importante comprender que la entropía se basa en la probabilidad de aparición de cada símbolo, es decir, la entropía no es una función de los valores de la serie en sí, sino una función de sus probabilidades. 
+
+En general, el investigador ignora la distribución de probabilidad real de cada símbolo y usa la frecuencia de ocurrencia en la serie de datos como una aproximación de la probabilidad real. Es una buena idea interpretar los conceptos fundamentales de TI antes de continuar:
+
+\begin{itemize}
+	\item La \textbf{información} es la disminución de la ambigüedad con respecto a un fenómeno, un incremento de nuestro conocimiento cuando observamos un evento específico. Las realizaciones de una variable aleatoria con baja probabilidad son más sorprendentes y agregan más información. Imagine una serie de datos cuyos valores cambian tan poco que el siguiente valor es prácticamente el mismo que el anterior. Si hay un cambio brusco y el valor aumenta drásticamente (esta variable aleatoria que tiene un valor alto como resultado es un evento con baja probabilidad), hay una gran ganancia de información. 
+	
+	Matemáticamente, la información es proporcional a la inversa de la función de probabilidad del evento, $\log_2 \frac{1}{p1}$. Por tanto, la \textbf{información} es un evento que induce a los agentes racionales a cambiar sus creencias y expectativas sobre una situación particular, con las restricciones de la nueva información. 
+	
+	En el ejemplo anterior, los eventos muy probables (una serie plana de datos) brindan poca información a los agentes, mientras que los resultados de baja probabilidad (un aumento repentino en el valor) brindan más información que cambiará sus creencias sobre el proceso detrás de los datos. 
+
+\item La \textbf{incertidumbre} es algo posible pero desconocido. Es posible que tirando un dado consigamos el número cinco, pero tirar un dado no implica obtener el número cinco. Tenemos incertidumbre sobre el número cinco, pero no lo tendríamos para el número 214 en un dado de seis caras porque es un evento imposible. 
+
+En el contexto de las TI, la incertidumbre es la cantidad de información que esperamos que revele un experimento. Si la distribución de probabilidades es uniforme, como en el caso de los dados ($pi = \frac{1}{n}$), existe una incertidumbre máxima y el resultado es más impredecible. 
+
+Por otro lado, si la distribución de probabilidad está más concentrada (un dado cargado con una alta probabilidad de obtener un seis), entonces el resultado es más predecible y hay una menor incertidumbre. Respecto al concepto anterior, \textbf{baja incertidumbre significa más información}. 
+
+\item La \textbf{entropía ($H_x$)} es una medida de la cantidad de incertidumbre asociada con una variable $X$ cuando solo se conoce su distribución. 
+
+Es una medida de la cantidad de información que esperamos aprender de un resultado (observaciones) y podemos entenderla como una medida de uniformidad. \textbf{Cuanto más uniforme sea la distribución, mayor será la incertidumbre y mayor la entropía}. Esta definición es importante porque la entropía se utilizará en última instancia para medir la aleatoriedad de una serie. La entropía $H$ es una función de la distribución de probabilidad $\{p_1, p_2, \dots \}$ y no una función de los valores de la variable en la serie particular $\{x_1, x_2, \dots\}$. 
+
+La teoría de la información y el concepto de entropía proporcionan una forma matemática de determinar la información contenida en un mensaje. Esta información es independiente del conocimiento del receptor y está determinada por la fuente de información a través de la función de probabilidad de cada uno de los símbolos. 
+
+El resultado de un experimento contiene la cantidad de información $H(p)$, o dicho de otra manera, $H(p)$ es una medida de la incertidumbre sobre un evento específico antes de observarlo.
+
+Como podemos ver en la fig.~\ref{fig:entropy}, la entropía depende de la cantidad de aleatoriedad representada por $p$, donde la situación $p = \frac{1}{2}$ es aleatoria desde una perspectiva probabilística y da una entropía máxima $H=1$. Con la definición de Shannon, eventos con alto o baja probabilidad no contribuyen mucho al valor de la medida, como se muestra en el gráfico para valores de $p =0$ o $p=1$.
+
+\end{itemize}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.7\textwidth]{entropy2.png}
+  	\caption{Entropía de una variable $X$ la cual toma un valor uno con una probabilidad $p$ y el valor cero con una probabilidad $(1-p)$.}
+  	\label{fig:entropy}
+  	\end{center}
+\end{figure}
+
+En el apartado anterior definimos la entropía como una medida para cuantificar la información de un mensaje que es válida de forma general, independientemente del proceso que lo genera. 
+\textbf{Tipos de procesos}
+\begin{itemize}
+	\item \textbf{Procesos estocásticos:} sucesión de variables aleatorias relacionadas entre sí por una regla de evolución, representando un sistema que evoluciona con el tiempo. 
+	\item \textbf{Procesos deterministas:} un sistema en el que no hay aleatoriedad en la determinación de los siguientes estados del sistema. Si conocemos con precisión el estado inicial del sistema podemos hacer una predicción exacta de cualquier estado futuro del sistema.
+\end{itemize}
+
+La cuestión de evaluar la aleatoriedad de una serie de datos es, por tanto, una cuestión de caracterizar el sistema como estocástico o determinista. Más precisamente, en qué medida los datos se comportan como estocásticos y cuánto determinismo existe; estaríamos hablando de grados de aleatoriedad. 
+
+Si no hay un proceso determinista subyacente al analizar una serie particular de datos, implicará una verificación del movimiento aleatorio más estricto. Sin embargo, si hay ciclos, tendencias y patrones, entonces la serie de datos no sería totalmente aleatoria. Será necesario cuantificar tanto la situación totalmente aleatoria como los diferentes grados de aleatoriedad de forma inequívoca. En el caso particular de los procesos estocásticos, el interés no radica en medir la entropía total sino en medir la entropía del proceso, es decir, cómo cambia la entropía de la serie a lo largo del tiempo. 
+
+Si pensamos en una serie de datos, nuestro interés sería medir el aumento de información que obtenemos cuando conocemos un nuevo valor. Esta medida está determinada por la tasa de entropía del proceso estocástico $X_t$ con $x \in K$, donde $K$ es el alfabeto (cuando existe el límite):
+
+$$H(X) = \lim_{T\to\infty} \frac{1}{T} H(X_1, X_2, \dots, X_T)$$
+
+Por tanto, la medición de la tasa de entropía ofrece una forma de medir hasta qué punto un proceso es estocástico y, en última instancia, cuantificará la aleatoriedad de una serie. Podemos relacionar este concepto con la discusión anterior sobre el telégrafo. La tasa de entropía es el número esperado de bits (medida de entropía cuando usamos la base 2 para el logaritmo) por símbolo necesarios para describir el proceso. Si el proceso es completamente estocástico, entonces el número de bits es máximo (la tasa de entropía es máxima). Comparando la tasa de entropía máxima de nuestro sistema con el máximo número de bits dado un alfabeto, podemos determinar el grado de aleatoriedad de una serie sin asumir nada sobre el proceso de generación de datos. Así que tanto en sistemas estocásticos como deterministas, la tasa de entropía puede estar relacionada con la aleatoriedad del sistema.
+
+\subsection{Medición de la aleatoriedad}
+\subsubsection{Entropía aproximada} 
+
+La formulación para el análisis de la complejidad de un sistema fue desarrollada para analizar sistemas caóticos, y los intentos de utilizar esas técnicas para series temporales limitadas, ruidosas y estocásticamente derivadas no tuvieron mucho éxito. 
+
+El número de puntos necesarios para caracterizar correctamente un sistema dinámico está en el rango $[10^d,  30^d]$, donde $d$ es la dimensión del sistema. Por lo tanto, se requiere una gran cantidad de datos para caracterizar completamente incluso los sistemas de baja dimensión. 
+
+\textbf{ApEn} es un parámetro que mide la correlación, persistencia o regularidad en el sentido de que los valores bajos de \textbf{ApEn} reflejan que el sistema es muy persistente, repetitivo y predictivo, con patrones aparentes que se repiten a lo largo de la serie, mientras que los valores altos significan independencia entre los datos, un número bajo de patrones repetidos y aleatoriedad. Esta definición coincide con la intuición de que los sistemas que tienen una probabilidad más aleatoria tienen mayor entropía, como se ve en las secciones anteriores, siendo sistemas estocásticos puros aquellos que tenían una tasa de entropía más alta (número máximo de bits dado un alfabeto).
+
+En los sistemas binarios, el valor máximo de ApEn sería el registro 2, y un valor inferior al indicado que la serie en análisis contiene patrones que se repiten y, por lo tanto, no es totalmente aleatorio.
+
+Heurísticamente, \texttt{ApEn} mide la probabilidad logarítmica de que los patrones cercanos permanezcan cerca en la siguiente comparación incremental. La idea principal detrás del desarrollo de su desarrollo fue que no es un algoritmo para determinar completamente la dinámica de un sistema. En cambio, es un algoritmo adecuado para clasificar sistemas y estudiar la evolución de su complejidad: no es necesario reconstruir completamente la dinámica del sistema para clasificarlo. 
+
+\texttt{ApEn} no intenta reconstruir toda la dinámica, sino que sólo discrimina de una manera estadísticamente válida, y a cambio, podemos deshacernos de los límites m → ∞ y r → 0, haciendo que el enfoque sea adecuado para el análisis de datos. Veremos cómo elegir los valores de $m$ (dimensión de incrustación o \textit{embedding dimension}) y $r$ (parámetro de escalado o filtro de ruido) para calcular \texttt{ApEn}, pero es apropiado comprender cómo afectan esos cambios al sistema. 
+
+En el algoritmo \texttt{ApEn}, debemos seleccionar un par $(m, r)$ como parámetros de entrada. Estadísticamente, $m$ sería el equivalente a dividir el espacio de los estados en celdas de ancho $r$, para estimar las probabilidades condicionales del orden $m$-iésimo. En la interpretación que se indica a continuación, $m$ es la longitud de la ventana de las diferentes comparaciones vectoriales, y $r$ es un filtro de ruido de facto (superposición de ruido mucho menor en magnitud que $r$ apenas afecta al cálculo). 
+
+Si tenemos $m$ más alto y $r$ más pequeño describiremos detalles de parámetros más nítidos (probabilísticos). Sin embargo, al tratar con procesos estocásticos, el análisis de probabilidades condicionales hace que grandes valores de $m$ o valores mínimos de $r$ produzcan estimaciones estadísticamente deficientes. 
+
+Formalmente, el algoritmo para determinar la entropía aproximada de una secuencia es el siguiente: 
+
+Dada una secuencia de números $u = \{u(1), u(2), \dots, u( N)\}$ de longitud $N$, un entero no negativo $m$, con $m \leq N$ y un número real positivo $r$, definimos los bloques $x(i) = \{u(i), u(i + 1), \dots, u(i + m - 1)\}$ y $x(j) = \{u(j), u(j+1), \dots, (j + m - 1)\}$, y calcular la distancia entre ellos como $d[x(i), x(j)] = max_{k=1,2, \dots,m}(|u(i + k - 1) - u( j + k - 1)|)$. 
+
+Luego calculamos el valor $C_i^m (r)$ = (número de $j \leq N - m + 1$ tal que $d[x(i), x(j)] \leq r)/(N - m + 1)$. El numerador de $C_i^m$ cuenta, dentro de la resolución $r$, el número de bloques de valores consecutivos de longitud $m$ que son similares a un bloque determinado. 
+
+Calculando: 
+$$\phi^m(r) = \frac{1}{N-m+1} \sum_{i=1}^{N-m+1} \log C_i^m(r)$$
+
+Podemos definir $ApEn(m, r, N )(u) = \phi^m(r) - \phi^{,+1}(r)$, con $m \leq 1$ y $ApEn(0, r, N )(u) = −\phi^1 (r)$. 
+
+$ApEn(m, r, N )(u)$ mide la frecuencia logarítmica con la que los bloques de longitud $m$ que están unidos permanecen juntos para la siguiente posición, o se colocan de manera diferente.
+
+El valor negativo de $ApEn$ se define como:
+$$-ApEn(m, r, N )(u) = \phi^{m+1}(r) - \phi^m(r)$$
+
+$ApEn(m,r,N)$ es el estimador estadístico del parámetro $ApEn(m,r)$:
+
+$$ApEn = \lim_{N\to\infty} [\phi^m(r)-\phi^{m+1}(r)]$$
+
+$ApEn(m, r, N)$ es una familia de estadísticas y las comparaciones entre sistemas están destinadas con valores fijos de $m$ y $r$, y, si es posible, con el mismo número de observaciones $N$ debido al sesgo que mencionaremos más adelante. \texttt{ApEn} mide la probabilidad de que las ejecuciones de patrones que están cerca para las observaciones $m$ permanezcan cerca en las siguientes comparaciones incrementales. Una mayor probabilidad de permanecer cerca, lo que implica regularidad, produce valores \texttt{ApEn} más pequeños y, por el contrario valores más altos.
+
+\textbf{Propiedades de \texttt{ApEn}}
+\begin{itemize}
+	\item Es independiente de cualquier modelo, lo que la hace adecuada para el análisis de series de datos sin tener en cuenta nada más que los datos.
+	\item Es muy estable a grandes e infrecuentes valores atípicos (\textit{outliers}). Los valores atípicos grandes son eventos de baja probabilidad, que hacen una pequeña contribución a la medida general. Estos acontecimientos, sin embargo, son críticos en las estadísticas de momento, ya que las diferencias entre los valores y la media se cuantifican. La variabilidad puede detectar desviaciones del valor medio, pero no se preocupa por la regularidad de los datos. El mejor análisis de una serie de datos sería el uso combinado de estadísticas de regularidad y estadísticas de momentos. En este sentido, se ha demostrado que ApEn distingue lo normal de los datos anormales en los casos en que los enfoques estadísticos de momento no mostraron diferencias significativas.
+	\item Debido a la construcción de \texttt{ApEn} y sus cimientos en TI, su valor no es negativo. Es finito para procesos estocásticos y para procesos deterministas con ruido. 
+	\item Tiene un valor de 0 para series perfectamente regulares. 
+	\item Toma el valor $\ln 2$ para series binarias totalmente aleatorias y, en general, el valor $\ln k$ para alfabetos de $k$ símbolos. 
+	\item No se altera mediante traducciones o escalado aplicado uniformemente a todos los términos.
+	\item La no linealidad provoca un mayor valor. 
+	\item Valores recomendados: 
+	\begin{itemize}
+		\item $m$ debe ser bajo, $m = 2$ o $3$ son opciones típicas.
+		\item $r$ debe ser lo suficientemente grande como para tener un número suficiente de secuencias de vectores $x$ a una distancia r de la mayoría de los vectores especificados, para garantizar estimaciones razonables de probabilidades condicionales. Los valores recomendados están generalmente en el rango de desviación estándar de $0.1$ a $0.25$ de la serie de datos en análisis.
+	\end{itemize}
+	\item $ApEn(m, r)$ crece con una disminución de $r$ como $\log(2r)$, exhibiendo una variación infinita con $r$, lo que implica una gran variación en el valor de la estadística $ApEn(m, r, N)$ con $r$.
+	\item El número de datos necesarios para discriminar entre sistemas está en el rango de $10^m$ a $30^m$, como en el caso de la teoría del caos, pero ya que $m$ es generalmente un valor bajo, incluso una serie con un pequeño número de datos como $N = 100$ es adecuado para el análisis.
+	\item Los sistemas con una $\texttt{SNR}<3$ (relación señal-ruido), es decir, situaciones en las que el ruido es sustancial, comprometerían la validez de los cálculos de ApEn.
+	\item La mayor utilidad surge cuando los medios y las desviaciones estándar de los sistemas muestran pocos cambios con la evolución del sistema.
+	\item Para comparar diferentes series de datos, se recomienda normalizar estas series con respecto a su desviación estándar antes de la comparación.
+	\item El algoritmo hace uso del vector de datos $\{x_1, x_2, \dots, x_T\}$ en lugar de utilizar las probabilidades asociadas con la aparición de cada resultado $\{p_1, p_2, \dots, p_T\}$. \texttt{ApEn} es directamente aplicable sin saber ni asumir nada sobre el conjunto de datos o saber nada sobre el proceso que genera los valores. 
+	\item Requiere mediciones igualmente espaciadas a lo largo del tiempo. 
+\end{itemize}
+
+\subsubsection{Entropía de muestra }
+En la práctica, \texttt{ApEn} tiene dos implicaciones importantes. 
+\begin{enumerate}
+	\item La coherencia relativa no está garantizada, y dependiendo del valor de son los resultados puede ser diferente.
+	\item El valor de ApEn depende de la longitud de la serie de datos
+\end{enumerate}
+
+Por ello se definió \texttt{SampEn}, una estadística que no tiene autoconteo. $SampEn(m, r, N)$ es el valor negativo del logaritmo de la probabilidad condicional de que dos secuencias similares de puntos $m$ permanezcan similares en el siguiente punto $m+1$, contando cada vector sobre todos los demás vectores excepto en sí mismo. Implica que \texttt{SampEn} mantiene la consistencia relativa y también es principalmente independiente de la longitud de la serie.
+
+Según los autores de \texttt{SampEn}, la eliminación del autoconteo está justificada dado que "la entropía se concibe como una medida de la tasa de producción de información, y en este contexto comparar datos consigo mismos no tiene sentido". \texttt{SampEn} no utiliza el mismo enfoque de patrón que \texttt{ApEn} para determinar su valor, utilizando en su lugar toda la serie juntos, lo que requiere solo que un vector de plantilla encuentre una coincidencia de longitud $m+1$ que se va a definir. Contrasta con \texttt{ApEn}, donde cada vector de plantilla tiene que encontrar una coincidencia que definir. 
+
+\hfill
+$ B_i^m(r) = \frac{1}{N-m-1} \times [$ número de vectores $x_m(j)$ a la distancia $r$ de $x_m(i)$ sin permitir el autoconteo, donde $j=1,N-m]$
+
+$ B_i^m(r) = \frac{1}{N-m-1} \sum_{j=1,j \neq i}^{N-m} [$ número de veces que $d[|x_m(j)-x_m(i)|]<r]$
+
+y sumando todos los vectores de plantilla:
+
+$B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m} \sum_{i=1}^{N-m}\sum_{j=1, j \neq i}^{N-m} [$ número de veces que $d[|x_m(j)-x_m(i)|<r]$
+
+De la misma manera, definimos el número total de coincidencias calculando para cada vector modelo:
+
+\hfill
+$ A_i^m(r) = \frac{1}{N-m-1} \times [$ número de vectores $x_{m+1}(j)$ a la distancia $r$ de $x_{m+1}(i)$ sin permitir el autoconteo, donde $j=1,N-m]$
+
+y agregándolas como:
+
+\hfill
+$A^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} A_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m} \sum_{i=1}^{N-m}\sum_{j=1, j \neq i}^{N-m} [$ número de veces que $d[|x_{m+1}(j)-x_{m+1}(i)|<r]$
+
+
+Por lo tanto, $B^m(r)$ es la probabilidad de que dos secuencias sean similares para los puntos $m$ (posibles), mientras que $A^m(r)$ es la probabilidad de que dos secuencias sean similares para $m+1$ puntos (coincidencias). Puesto que el número de coincidencias es siempre menor o igual que el número de vectores posibles, la relación $A^m(r)/B^m(r)$ es una probabilidad condicional menor que la unidad. 
+
+El parámetro \textbf{entropía de muestra} se define como $SampEn(m, r) = \lim_{N\to\infty}  \{− \log[ A^m(r)/B^m(r)]\}$, valor que se estima a partir de la estadística $SampEn(m,r,N)=−\log[A^m(r)/B^m(r)]$. 
+
+\subsubsection{Diferencias entre \texttt{ApEn} y \texttt{SampEn}:}
+\begin{itemize}
+	\item \texttt{SampEn} no permite el autoconteo ($j \neq i$) mientras que \texttt{ApEn} sí. 
+	\item La suma de todos los vectores de plantilla está dentro del logaritmo en \texttt{SampEn} y fuera en \texttt{ApEn}. Implica que \texttt{SampEn} considera la serie completa y si una plantilla encuentra una coincidencia, \texttt{SampEn} ya está definido, mientras que \texttt{ApEn} necesita una coincidencia para cada plantilla. 
+	\item A priori, parece que el uso de \texttt{SampEn} elimina muchos de los problemas asociados con \texttt{ApEn}, siendo, según sus autores, útil para cuantificar la regularidad en un sistema más eficazmente.
+\end{itemize}
+
 \section{Desarrollo}
 
 \subsection{Breve introducción}
@@ -3123,6 +3376,99 @@ Para destacar la utilidad del ajuste de hiperparámetros recordemos la tabla~\re
 
 \subsubsection{Conclusión}
 Si bien el ajuste de hiperparámetros es mucho más costoso computacionalmente que el entrenamiento de los modelos, si nuestra necesidad radica en obtener el mejor modelo posible con nuestros recursos definitivamente es un paso que no podremos saltear. Si más que precisión se necesita velocidad para obtener un modelo con un rendimiento aceptable no es necesario pasar por este proceso.
+
+\subsection{Entropía}
+Intentaremos encontrar una causa al dispar rendimiento entre nuestro \textit{dataset} de polución del aire y el de defectos. Para ello haremos uso de lo revisado en la sección~\ref{sec:entropy}, dónde mencionamos que la entropía de los datos influye directamente en la capacidad de predicción de nuestros modelos. Mientras más entropía tengan los datos, más difícil será que el modelo pueda aprender correctamente sus patrones, si es que los hubiere.
+
+Ambos \textit{datasets} serán procesados por los dos algoritmos disponibles para esta tarea: \texttt{ApEn} y \texttt{SampEn}.
+
+\subsubsection{Rendimiento de los algoritmos}
+Al realizar las pruebas se notó que los algoritmos eran muy lentos al ejecutar los cálculos sobre la totalidad del \textit{dataset}, por tanto se buscó una solución. \textit{Python} por defecto no posee librerías que hagan uso intensivo de \texttt{GPU} (un caso es \textit{scikit sk-learn}, que a pesar de brindar diversos algoritmos de Aprendizaje Automático sólo utiliza \texttt{CPU} para sus cálculos) y \texttt{NumPy} (librería por defecto para operaciones matriciales y tensoriales) no es la excepción.
+
+\vfill
+\textbf{\texttt{CuPy}}
+
+Es una biblioteca de matrices de código abierto que proporciona computación acelerada por \texttt{GPU} con \textit{Python} a través de \texttt{CUDA}. \citep{CuPy} 
+
+\texttt{CUDA} es una plataforma de computación paralela y un modelo de programación desarrollado por \textit{Nvidia} para computación general en unidades de procesamiento gráfico (\texttt{GPU}). Con \texttt{CUDA}, los desarrolladores pueden acelerar drásticamente las aplicaciones informáticas aprovechando la potencia de las \texttt{GPU}. \citep{CUDA}
+
+La implementación de \texttt{CuPy} sobre código creado para la librería \texttt{NumPy} es muy simple.\\
+
+\textbf{Comparación de rendimiento}
+En la fig.~\ref{fig:np_vs_cp} tenemos los desempeños de ambas librerías sobre el mismo \textit{dataset} y ejecutando los mismos algoritmos. Se divisa que a medida que la cantidad de muestras aumenta, el tiempo de ejecución de \texttt{NumPy} crece exponencialmente en contraste con \texttt{CuPy} que crece de forma lineal. En el caso límite que el algoritmo utiliza la totalidad del \textit{dataset} llegamos a tener un \textit{speedup} de \texttt{8X}. Por tanto concluimos que \texttt{CuPy} promete lo que cumple con creces.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{numpy_vs_cupy.png}
+  	\caption{Comparación de \texttt{NumPy} \textit{vs} \texttt{CuPy}.}
+  	\label{fig:np_vs_cp}
+  	\end{center}
+\end{figure}
+
+\subsubsection{\textit{Dataset} de polución}
+Vamos a calcular \texttt{ApEn} y \texttt{SamPen} sobre el \textit{dataset} de polución con $0 \leq m \leq 4$ y y $0 \leq r \leq 0.25$ (recordar que éste valor debe ser multiplicado por la desviación estándar de la serie temporal $\sigma$). Los resultados obtenidos son visualizados en la fig.~\ref{fig:en_pol}.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{en_pollution.png}
+  	\caption{Gráfico de la entropía del \textit{dataset} de polución.}
+  	\label{fig:en_pol}
+  	\end{center}
+\end{figure}
+
+Podemos deducir que tenemos un pico de entropía claro en cada uno de las figuras, que a medida que $m$ aumenta este pico se va desplazando hacia la derecha aumentando el valor de $r$ que lo intersecta.
+
+\subsubsection{\textit{Dataset} FSI}
+Sin embargo, esta información carece de valor si no la comparamos con nuestro \textit{dataset} principal, por tanto observemos los resultados obtenidos para el mismo en la fig.~\ref{fig:en_fsi}.
+
+La forma escalonada podemos deducir que se debe a la baja cantidad de datos en comparación al otro \textit{dataset}. Si bien se divisa que los valores de \texttt{ApEn} y \texttt{SampEn} a priori parecen mayores, no podemos sacar conclusiones claras por tanto debemos realizar otro tipo de análisis.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{en_fsi.png}
+  	\caption{Gráfico de la entropía del \textit{dataset} FSI.}
+  	\label{fig:en_fsi}
+  	\end{center}
+\end{figure}
+
+\subsubsection{Comparación de \textit{datasets}}
+Tomaremos el mayor resultado de cada $m$ de cada modelo y algoritmo, conformando la tabla \ref{tab:dataset_comparison}.
+
+Interpretaremos estos valores a través de la fig.~\ref{fig:en_fsi}, que nos muestra que según \texttt{ApEn} ambas series temporales muestran una entropía similar, cosa que podemos desmentir al visualizar los ploteos de cada una. Sin embargo, \texttt{SampEn} nos ayuda a exponer de manera empírica que la entropía de la serie temporal de FSI es mayor a la de polución. Por tanto en este caso \texttt{SampEn} funcionó mejor que \texttt{ApEn} a la hora de calcular la entropía de la serie temporal.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{cccc}
+\hline
+\textbf{m} & \textbf{score} & \textbf{dataset} & \textbf{algo} \\ \hline
+1          & 3.264          & \texttt{fsi}              & \texttt{ApEn}          \\
+2          & 2.003          & \texttt{fsi}              & \texttt{ApEn}          \\
+3          & 1.388          & \texttt{fsi}              & \texttt{ApEn}          \\
+4          & 0.777          & \texttt{fsi}              & \texttt{ApEn}          \\
+1          & 4.003          & \texttt{fsi}              & \texttt{SampEn}        \\
+2          & 3.286          & \texttt{fsi}              & \texttt{SampEn}        \\
+3          & 2.527          & \texttt{fsi}              & \texttt{SampEn}        \\
+4          & 1.946          & \texttt{fsi}              & \texttt{SampEn}        \\
+1          & 3.377          & \texttt{pollution}        & \texttt{ApEn}          \\
+2          & 1.906          & \texttt{pollution}        & \texttt{ApEn}          \\
+3          & 1.233          & \texttt{pollution}        & \texttt{ApEn}          \\
+4          & 0.897          & \texttt{pollution}        & \texttt{ApEn}          \\
+1          & 1.551          & \texttt{pollution}        & \texttt{SampEn}        \\
+2          & 0.828          & \texttt{pollution}        & \texttt{SampEn}        \\
+3          & 0.558          & \texttt{pollution}        & \texttt{SampEn}        \\
+4          & 0.427          & \texttt{pollution}        & \texttt{SampEn}        \\ \hline
+\end{tabular}
+\caption{Tabla para comparación de \textit{datasets}.}
+\label{tab:dataset_comparison}
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{fsi_vs_pollution.png}
+  	\caption{Gráfico de la entropía del \textit{dataset} FSI.}
+  	\label{fig:en_fsi}
+  	\end{center}
+\end{figure}
 
 \clearpage
 
