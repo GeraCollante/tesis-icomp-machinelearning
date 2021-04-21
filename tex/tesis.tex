@@ -3263,7 +3263,7 @@ for lr in [1e-2, 1e-3, 1e-4]:
 	model_lr = lr
 \end{python}
 
-\subsubsection{Resultados}
+\subsubsection{Resultados \textit{dataset} polución}
 
 Ya definido el espacio de búsqueda de los modelos, se procede a la búsqueda del mejor conjunto de hiperparámetros obteniendo la tabla \ref{tab:tuning-hp} (recordar que se utiliza como métrica \texttt{MAE}). De la misma podemos sacar varias conclusiones interesantes.
 \begin{itemize}
@@ -3376,6 +3376,161 @@ Para destacar la utilidad del ajuste de hiperparámetros recordemos la tabla~\re
 
 \subsubsection{Conclusión}
 Si bien el ajuste de hiperparámetros es mucho más costoso computacionalmente que el entrenamiento de los modelos, si nuestra necesidad radica en obtener el mejor modelo posible con nuestros recursos definitivamente es un paso que no podremos saltear. Si más que precisión se necesita velocidad para obtener un modelo con un rendimiento aceptable no es necesario pasar por este proceso.
+
+\subsubsection{Resultados \textit{dataset} FSI}
+Los mismos procedimientos realizados sobre nuestra \textit{dummy data} serán aplicados a nuestro \textit{dataset} de \texttt{FSI}.
+
+Los modelos obtenidos sin búsqueda de hiperparámetros arrojan los resultados de la tabla~\ref{tab:score_table_fsi} que son interpretados visualmente en la fig.~\ref{fig:mase_per_model_fsi}. Si comparamos los gráficos entre ambos \textit{datasets} caemos en cuenta que tenemos un rendimiento 8 veces peor en promedio (\texttt{MAE}) que con el \textit{dataset} de polución, esto claramente repercutirá en la precisión de pronóstico de nuestros modelos.
+
+El mejor modelo con un \texttt{MASE} de 0.626 es \texttt{CNN-16} seguido de cerca por \texttt{CNNGRU}. Se observa que los modelos \texttt{LSTM} funcionan peor que los demás pero no podemos sacar conclusiones claras aún.
+
+De la fig.~\ref{fig:best_model_fsi} notamos que a nuestro modelo no tiene problemas en predecir mínimos pero le es casi imposible predecir máximos debido a la brusquedad de los cambios en la serie temporal.
+
+\begin{table}[]
+\centering
+\begin{tabular}{lcc}
+\hline
+\multicolumn{1}{c}{{model}} & \multicolumn{1}{c}{\texttt{val\_loss}} & \multicolumn{1}{c}{\texttt{MASE}} \\ \hline
+\texttt{GRU}     & 0.0874 & 0.7308 \\
+\texttt{LSTM}    & 0.0891 & 0.8138 \\
+\texttt{CNNGRU}  & 0.0865 & 0.6575 \\
+\texttt{CNNLSTM} & 0.0841 & 0.7877 \\
+\texttt{CNN-1}   & 0.0867 & 0.6812 \\
+\texttt{CNN-2}   & 0.0891 & 0.6949 \\
+\texttt{CNN-4}   & 0.0888 & 0.7675 \\
+\texttt{CNN-8}   & 0.0844 & 0.6984 \\
+\texttt{CNN-16}  & 0.0846 & 0.6260 \\
+\texttt{CNN-32}  & 0.0839 & 0.7574 \\
+\texttt{CNN-64}  & 0.0847 & 0.6516 \\
+\texttt{CNN-128} & 0.0878 & 0.7501 \\ \hline
+\end{tabular}
+\caption{Métricas de los modelos para el \textit{dataset} FSI.}
+\label{tab:score_table_fsi}
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.75\textwidth]{mase_per_model_fsi.png}
+  	\caption{\texttt{MASE} por modelo con \textit{dataset} FSI.}
+  	\label{fig:mase_per_model_fsi}
+  	\end{center}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{best_model_fsi.png}
+  	\caption{Mejor modelo para el \textit{dataset} FSI.}
+  	\label{fig:best_model_fsi}
+  	\end{center}
+\end{figure}
+
+Obtenemos la tabla \ref{tab:tuning-hp} (recordar que se utiliza como métrica \texttt{MAE}). De la misma podemos sacar varias conclusiones interesantes.
+\begin{itemize}
+	\item El modelo con la mejor puntuación fue \texttt{CNNGRU} en combinación con el algoritmo \textit{HyperBand}, y en segundo lugar (\texttt{LSTM}/\textit{HyperBand}) apenas por detrás.
+	\item 2 capas de \texttt{CNN} fueron suficientes, e incluso podría haberse utilizado solo una.
+	\item Las unidades de nuestras \texttt{RNN} varían bastante sin definir un rango de valores claros.
+	\item Sin lugar a dudas la mejor función de activación fue la sigmoide.
+\end{itemize}
+
+\hfill
+
+\begin{table}[H]
+\centering
+\begin{adjustwidth}{-1.3cm}{}
+\begin{tabular}{lcccccccccccc}
+\hline
+        & \multicolumn{1}{l}{}    & \multicolumn{7}{c}{\texttt{CNN}}      & \texttt{MAXPOOL} & \texttt{RNN} & \texttt{DENSE}   &          \\ \hline
+\multicolumn{1}{c}{{model}} &
+  \multicolumn{1}{c|}{{algo}} &
+  {layers} &
+  \multicolumn{1}{c}{{$f_0$}} &
+  \multicolumn{1}{c}{{$ks_0$}} &
+  \multicolumn{1}{c}{{$f_1$}} &
+  \multicolumn{1}{c}{{$ks_1$}} &
+  \multicolumn{1}{c}{{$f_2$}} &
+  \multicolumn{1}{c}{{$ks_2$}} &
+  {$p_s$} &
+  {units} &
+  {act} &
+  {score} \\ \hline
+\texttt{CNNGRU}  & \multicolumn{1}{c|}{\texttt{HB}} & 1 & 56 & 4 & 24 & 6 & 40 & 4 & 6       & 120 & \texttt{sig} & 0.080426 \\
+\texttt{CNNGRU}  & \multicolumn{1}{c|}{\texttt{HB}} & 2 & 56 & 4 & 40 & 4 & 40 & 4 & 6       & 200 & \texttt{sig} & 0.080560 \\
+\texttt{CNNLSTM} & \multicolumn{1}{c|}{\texttt{HB}} & 2 & 56 & 2 & 56 & 6 & 24 & 6 & 4       & 168 & \texttt{sig} & 0.080621 \\
+\texttt{CNNGRU}  & \multicolumn{1}{c|}{\texttt{HB}} & 1 & 56 & 6 & 24 & 6 & 56 & 6 & 8       & 184 & \texttt{sig} & 0.080632 \\
+\texttt{CNNLSTM} & \multicolumn{1}{c|}{\texttt{HB}} & 1 & 40 & 8 & 24 & 4 & 24 & 6 & 8       & 232 & \texttt{sig} & 0.080693 \\
+\texttt{CNNLSTM} & \multicolumn{1}{c|}{\texttt{HB}} & 1 & 24 & 4 & 56 & 4 & 24 & 8 & 6       & 152 & \texttt{sig} & 0.080752 \\
+\texttt{CNNLSTM} & \multicolumn{1}{c|}{\texttt{HB}} & 1 & 56 & 6 & 56 & 2 & 56 & 4 & 8       & 248 & \texttt{sig} & 0.080915 \\
+\texttt{CNNLSTM} & \multicolumn{1}{c|}{\texttt{HB}} & 1 & 24 & 4 & 40 & 6 & 24 & 4 & 6       & 184 & \texttt{sig} & 0.080979 \\
+\texttt{CNNGRU}  & \multicolumn{1}{c|}{\texttt{HB}} & 2 & 56 & 6 & 24 & 4 & 56 & 4 & 8       & 248 & \texttt{sig} & 0.081028 \\
+\texttt{CNNGRU}  & \multicolumn{1}{c|}{\texttt{HB}} & 1 & 40 & 8 & 40 & 2 & 8  & 6 & 8       & 200 & \texttt{sig} & 0.081080 \\ \hline
+\end{tabular}
+\end{adjustwidth}
+\caption{Resultados de ajuste de hiperpárametros del \textit{dataset} FSI.}
+\label{tab:tuning-hp-fsi}
+\end{table}
+
+\textbf{\texttt{MAE}}
+
+Para esta tarea utilizaremos de soporte la tabla~\ref{tab:algo_vs_arch_mae_fsi} y la fig.~\ref{fig:algo_comparison_mae_fsi}. Excepto \texttt{GRU},\textit{Hyperband} obtiene un mejor rendimiento en cada uno de los modelos restantes.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|ccccc}
+\hline
+algo/model & \texttt{CNN} & \texttt{CNNGRU} & \texttt{CNNLSTM} & \texttt{GRU} & \texttt{LSTM} \\ \hline
+\textit{BayesianOptimization}         & 0.08309     & 0.08138        & 0.08138         & 0.08558     & 0.08346      \\
+\textit{Hyperband}         & 0.08196     & 0.08043        & 0.08062         & 0.09082     & 0.08389      \\ \hline
+\end{tabular}
+\caption{Mejor puntuación por algoritmo y arquitectura utilizando \texttt{MAE} cómo métrica en \textit{dataset} FSI.}
+\label{tab:algo_vs_arch_mae_fsi}
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{model_vs_algo_hp_mae_fsi.png}
+  	\caption{Comparación de algoritmos de ajuste de hiperpárametros por modelo y arquitectura utilizando como métrica \texttt{MAE}.}
+  	\label{fig:algo_comparison_mae_fsi}
+  	\end{center}
+\end{figure}
+
+\textbf{\texttt{MASE}}
+
+Utilizando la tabla~\ref{tab:algo_vs_arch_mase_fsi} y la fig.~\ref{fig:algo_comparison_mase_fsi} concluimos que la combinación que posee el mejor rendimiento en nuestro \textit{set} de datos es \texttt{CNN} con \textit{HyperBand}. En el \textit{dataset} de polución el mejor rendimiento también se obtuvo a través de una \texttt{CNN} pero el algoritmo de ajuste de hiperparámetros fue \textit{Bayesian}. Sin embargo aunque en nuestros dos \textit{datasets} hayamos obtenido que el mejor modelo es \texttt{CNN} no se puede asegurar que no habrá arquitecturas que funcionen mejor con otras series temporales.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|ccccc}
+\hline
+algo/model & \texttt{CNN} & \texttt{CNNGRU} & \texttt{CNNLSTM} & \texttt{GRU} & \texttt{LSTM} \\ \hline
+\textit{BayesianOptimization}         & 0.661        & 0.659           &    0.707         &     0.730    & 0.754         \\
+\textit{Hyperband}         & 0.627        & 0.707           & 0.704            & 0.744        & 0.752         \\ \hline
+\end{tabular}
+\caption{Mejor resultado por algoritmo y arquitectura utilizando como métrica \texttt{MASE} en \textit{dataset} FSI.}
+\label{tab:algo_vs_arch_mase_fsi}
+\end{table}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{model_vs_algo_hp_mase_fsi.png}
+  	\caption{Comparación de algoritmos de ajuste de hiperpárametros por modelo y arquitectura utilizando como métrica \texttt{MASE} para el \textit{dataset} FSI.}
+  	\label{fig:algo_comparison_mase_fsi}
+  	\end{center}
+\end{figure}
+
+En la fig.~\ref{fig:cnn_hp_best_fsi} resaltamos lo antes mencionado, nuestro modelo carece de la capacidad de predecir los valores máximos de la función, pero puede predecir los valores mínimos. Esto lo hace poco funcional a nuestra tarea pero en la próxima sección intentaremos descubrir que diferencia a ambos \textit{datasets} para que uno funcione tan bien y el otro no.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{cnn_hp_best_fsi.png}
+  	\caption{Pronóstico del mejor modelo para el \textit{dataset} FSI una vez realizado el ajuste de hiperparámetros.}
+  	\label{fig:cnn_hp_best_fsi}
+  	\end{center}
+\end{figure}
+
+Para finalizar comparemos los valores antes y después del ajuste de hiperparámetros. En la tabla~\ref{tab:score_table_fsi} obtuvimos con \texttt{CNN-16} un \texttt{MASE} de 0.626 y la tabla~\ref{algo_vs_arch_mase_fsi} nos dice que el mejor modelo fue un \texttt{CNN} con \texttt{MASE} de 0.627 \textit{i.e.} valores casi idénticos pero además peores para el post-ajuste. 
+
+\subsubsection{Conclusión}
+No siempre aplicar ajuste de hiperparámetros nos dará resultados muy superiores a los que obtuvimos originalmente, ya que esto dependerá de cada serie temporal a pronosticar.
 
 \subsection{Entropía}
 Intentaremos encontrar una causa al dispar rendimiento entre nuestro \textit{dataset} de polución del aire y el de defectos. Para ello haremos uso de lo revisado en la sección~\ref{sec:entropy}, dónde mencionamos que la entropía de los datos influye directamente en la capacidad de predicción de nuestros modelos. Mientras más entropía tengan los datos, más difícil será que el modelo pueda aprender correctamente sus patrones, si es que los hubiere.
