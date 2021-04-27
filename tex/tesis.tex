@@ -2004,8 +2004,9 @@ Se realizó una investigación de los modelos de \textit{forecasting} disponible
 
 \begin{table}[H]
 \centering
+\begin{adjustwidth}{-0.5cm}{}
 \begin{tabular}{l|ccccccc}
-\textbf{Librería} & \textbf{Creador/es}   & \textbf{Estrellas} & Versión     & Licencia     & Framework ML \\ \hline
+Librería & Creador/es   & Estrellas & Versión     & Licencia     & Framework \texttt{ML} \\ \hline
 \texttt{Prophet}          & Facebook                      & 12000              & 0.7.1          & MIT          & \textit{PyTorch}      \\
 \texttt{Sktime}           & ATI  & 3400               & 0.5.1          & BSD-3-Clause & -            \\
 \texttt{GluonTS}          & AWSlabs                           & 1700               & 0.6.4        & Apache-2.0   & \textit{mxnet}        \\
@@ -2014,11 +2015,12 @@ Se realizó una investigación de los modelos de \textit{forecasting} disponible
 \texttt{DCRNN}            & liyaguang                                  & 600          &  ?                    & MIT          & \textit{TensorFlow}   \\
 \texttt{Sktime-dl}        & ATI                    & 340                & 0.1.0   & BSD-3-Clause & \textit{Keras}       
 \end{tabular}
+\end{adjustwidth}
 \caption{Comparativo de modelos de series temporales.}
 \label{tab:ts-models}
 \end{table}
 
-Se explorarán los 3 más populares de \href{http://www.github.com}{Github} 
+Serán explorados los 3 más populares de \href{http://www.github.com}{Github}.
 
 \subsubsection{\texttt{Prophet}}
 \texttt{Prophet} es un modelo desarrollado por \textit{Facebook AI} para pronosticar datos de series de tiempo basado en un modelo aditivo donde las tendencias no lineales se ajustan a la estacionalidad anual, semanal y diaria, más los efectos de las vacaciones. \citep{prophet}
@@ -3517,7 +3519,7 @@ algo/model & \texttt{CNN} & \texttt{CNNGRU} & \texttt{CNNLSTM} & \texttt{GRU} & 
   	\end{center}
 \end{figure}
 
-En la fig.~\ref{fig:cnn_hp_best_fsi} resaltamos lo antes mencionado, nuestro modelo carece de la capacidad de predecir los valores máximos de la función, pero puede predecir los valores mínimos. Esto lo hace poco funcional a nuestra tarea pero en la próxima sección intentaremos descubrir que diferencia a ambos \textit{datasets} para que uno funcione tan bien y el otro no.
+En la fig.~\ref{fig:cnn_hp_best_fsi} resaltamos lo antes mencionado, nuestro modelo carece de la capacidad de predecir los valores máximos de la función, pero puede predecir los valores mínimos. Si pensamos a cada capa como un amplificador podemos intuir que quizás una de las mismas se esté saturando incapacitando a las siguientes a llegar a los valores máximos, por tanto haremos un resumido análisis utilizando diferentes \textit{scalers} (con la intención de cambiar la amplitud de la señal que ingresa a la red para ver si así logramos predecir los valores a los cuales no estamos llegando).
 
 \begin{figure}[H]
 	\begin{center}
@@ -3527,10 +3529,71 @@ En la fig.~\ref{fig:cnn_hp_best_fsi} resaltamos lo antes mencionado, nuestro mod
   	\end{center}
 \end{figure}
 
-Para finalizar comparemos los valores antes y después del ajuste de hiperparámetros. En la tabla~\ref{tab:score_table_fsi} obtuvimos con \texttt{CNN-16} un \texttt{MASE} de 0.626 y la tabla~\ref{algo_vs_arch_mase_fsi} nos dice que el mejor modelo fue un \texttt{CNN} con \texttt{MASE} de 0.627 \textit{i.e.} valores casi idénticos pero además peores para el post-ajuste. 
+Esto lo hace poco funcional a nuestra tarea pero en la próxima sección intentaremos descubrir que diferencia a ambos \textit{datasets} para que uno funcione tan bien y el otro no.
+
+Comparemos los valores antes y después del ajuste de hiperparámetros, en la tabla~\ref{tab:score_table_fsi} obtuvimos con \texttt{CNN-16} un \texttt{MASE} de 0.626 y la tabla~\ref{algo_vs_arch_mase_fsi} nos dice que el mejor modelo fue un \texttt{CNN} con \texttt{MASE} de 0.627 \textit{i.e.} valores casi idénticos pero además peores para el post-ajuste. 
+
+\subsubsection{Cambio en preprocesamiento de datos}
+Como mencionamos anteriormente, para evitar la saturación en nuestra red variaremos forma en que la misma recibe nuestro \textit{dataset} modificando dos parámetros:
+\begin{itemize}
+	\item \textit{Scaler}: algoritmo de preprocesamiento de datos cuyo objetivo usualmente es lograr un \textit{dataset} más homogéneo y sin \textit{outliers}.
+	\item Factor de escala ($s_f$): simplemente multiplicaremos toda la red por este valor para obtener amplitudes menores.
+\end{itemize}
+
+\textit{Scikit-learn} nos provee de varios \textit{scalers} pero seleccionamos los siguientes:
+\begin{itemize}
+	\item \texttt{MinMax}: escala y traduce cada característica individualmente de modo que se encuentre en el rango seleccionada (\textit{e.g.} 1 y 0).
+	\item \texttt{PowerTransformer}: aplica una transformación de potencia en función de las características para hacer que los datos sean más \textit{gaussianos}.
+	\item \texttt{RobustScaler}: escale características usando estadísticas que sean robustas a \textit{outliers}.
+	\item \texttt{StandardScaler}: estandariza las características eliminando la media y escalando a la varianza unitaria.
+\end{itemize}
+
+Para el factor de escala se definió un rango entre 0.01 y 0.40 tras varias pruebas.
+
+En la tabla~\ref{tab:scalers-table} comprobamos que lejos el mejor \textit{scaler} es el \texttt{PowerTransformer} notando los bajos valores de $s_f$. Además comprobamos que obtenemos con respecto a nuestros resultados originales (en \texttt{MASE}) casi 5 puntos de mejora.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccc}
+\hline
+\multicolumn{1}{c}{\textit{scaler}} & $s_f$ & \texttt{model} & \texttt{MASE} \\ \hline
+\texttt{PowerTransformer}                    & 0.075      & \texttt{GRU}            & 0.5749        \\
+\texttt{PowerTransformer}                    & 0.088      & \texttt{GRU}            & 0.5836        \\
+\texttt{PowerTransformer}                    & 0.101      & \texttt{GRU}            & 0.5868        \\
+\texttt{PowerTransformer}                    & 0.062      & \texttt{GRU}            & 0.5873        \\
+\texttt{PowerTransformer}                    & 0.114      & \texttt{GRU}            & 0.5907        \\
+\texttt{PowerTransformer}                    & 0.049      & \texttt{GRU}            & 0.6004        \\
+\texttt{PowerTransformer}                    & 0.101      & \texttt{LSTM}           & 0.6070        \\
+\texttt{PowerTransformer}                    & 0.114      & \texttt{LSTM}           & 0.6128        \\
+\texttt{PowerTransformer}                    & 0.127      & \texttt{GRU}            & 0.6142        \\
+\texttt{PowerTransformer}                    & 0.088      & \texttt{LSTM}           & 0.6194        \\ \hline
+\end{tabular}
+\caption{Top 10 de mejores \textit{scalers} según \texttt{MASE} obtenido.}
+\label{tab:scalers-table}
+\end{table}
+
+En los gráficos de la fig.~\ref{fig:scalers} notamos que los modelos \texttt{RNN} puros funcionan mucho mejor que los que poseen algún componente \texttt{CNN}, esto se puede deber a que las capas \texttt{CNN} se sobrecargan haciendo que el modelo diverja. Además según el \textit{scaler} notamos que hay determinadas zonas de valle en las cuales los modelos funcionan mejor. Lo recomendable sería una vez determinado el mejor \textit{scaler} y la mejor zona explorarla utilizando ajuste de hiperparámetros.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{scalers.png}
+  	\caption{Factor de escala \textit{vs} \texttt{MASE} según \textit{scaler}.}
+  	\label{fig:scalers}
+  	\end{center}
+\end{figure}
+
+En la fig.~\ref{fig:powertrafo_forecast} obtenemos resultados reveladores, si bien seguimos sin llegar a los picos ahora al menos nos aproximamos y no tenemos ese techo que no nos permitía escalar visto en la fig.~\ref{fig:cnn_hp_best_fsi}. Por tanto otra manera de mejorar el rendimiento de nuestros modelos en cuanto a series temporales puede ser variar las configuraciones del preprocesamiento de los datos. Sin embargo esto es tedioso y arduo de automatizar.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{powertrafo_forecast.png}
+  	\caption{Prónostico utilizando como \textit{scaler} \texttt{PowerTransformer} y modelo \texttt{GRU}.}
+  	\label{fig:powertrafo_forecast}
+  	\end{center}
+\end{figure}
 
 \subsubsection{Conclusión}
-No siempre aplicar ajuste de hiperparámetros nos dará resultados muy superiores a los que obtuvimos originalmente, ya que esto dependerá de cada serie temporal a pronosticar.
+No siempre aplicar ajuste de hiperparámetros nos dará resultados muy superiores a los que obtuvimos originalmente, ya que esto dependerá de cada serie temporal a pronosticar. Pero si intuimos lo que puede estar sucediendo a nuestra red podemos desarrollar soluciones innovadoras como modificar el preprocesamiento de nuestros datos antes de ingresar al modelo.
 
 \subsection{Entropía}
 Intentaremos encontrar una causa al dispar rendimiento entre nuestro \textit{dataset} de polución del aire y el de defectos. Para ello haremos uso de lo revisado en la sección~\ref{sec:entropy}, dónde mencionamos que la entropía de los datos influye directamente en la capacidad de predicción de nuestros modelos. Mientras más entropía tengan los datos, más difícil será que el modelo pueda aprender correctamente sus patrones, si es que los hubiere.
@@ -3624,6 +3687,13 @@ Interpretaremos estos valores a través de la fig.~\ref{fig:en_fsi}, que nos mue
   	\label{fig:en_fsi}
   	\end{center}
 \end{figure}
+
+\clearpage
+
+\section{Conclusión}
+Ha sido un extenso camino dónde exploramos una vasta cantidad de conceptos y herramientas referidas al \textit{Machine Learning}, en el cual los obstáculos que fueron surgiendo nos obligaron a utilizar el ingenio para sortearlos. Valiosos conocimientos fueron adquiridos y con seguridad en un futuro serán beneficiosos para mi carrera profesional.
+
+El pronóstico de series temporales es un campo aún en proceso de exploración, a pesar de ello se procuró hacer uso de los algoritmos y técnicas más avanzadas para lograr los mejores resultados posibles. No obstante y con absoluta certeza nuevos mecanismos serán desarrollados, por tanto será labor del desarrollador avizorar hacía donde se dirige el estado del arte para perfeccionarse y estar a la vanguardia tecnólogica en pro de ser un mejor profesional.
 
 \clearpage
 
