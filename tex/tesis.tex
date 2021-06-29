@@ -1730,7 +1730,7 @@ La función objetivo real es una función fija. Supongamos que se parece a la fi
   	\end{center}
 \end{figure}
 
-Dado que calcular la métrica de nuestro modelo es costoso, digamos que solo tenemos 10 muestras, representada como círculos negros en la figura~·\ref{fig:bayes7}.
+Dado que calcular la métrica de nuestro modelo es costoso, digamos que solo tenemos 10 muestras, representada como círculos negros en la figura~\ref{fig:bayes7}.
 
 \begin{figure}[H]
 	\begin{center}
@@ -1804,7 +1804,9 @@ La secuencia se desarrolla de la siguiente manera:
 	\item Repita hasta alcanzar el número máximo de iteraciones. Al final, se devuelve el historial de (hiperparámetro, puntuación de función objetiva real). Tenga en cuenta que el último registro no es necesariamente el mejor puntaje logrado. Tendría que ordenar la puntuación para encontrar el mejor hiperparámetro.
 \end{itemize}
 
-Ya que la Optimización Bayesiana necesita tiempo para construir un buen modelo que conducirá a configuraciones de mejor rendimiento, en su versión básica,se comporta de manera similar a la búsqueda aleatoria al principio. Sin embargo, con el aumento de los presupuestos, el modelo recopila cada vez más información sobre el espacio de búsqueda, lo que genera grandes ventajas sobre la Búsqueda Aleatoria (fig.~\ref{fig:rs_vs_bo}). \citep{automl-bohb}
+En la (fig.~\ref{fig:rs_vs_bo}) \citep{automl-bohb} advertimos que tanto al inicio de la optimización bayesiana como de búsqueda aleatoria no hay mejoras. La optimización bayesiana necesita tiempo para la construcción de un buen modelo que conduzca a configuraciones de mejor rendimiento. Por tanto una vez que aumentamos los presupuestos, el modelo recopila cada vez más información sobre el espacio de búsqueda, lo que genera ventajas sobre la búsqueda aleatoria.
+
+%Ya que la Optimización Bayesiana necesita tiempo para construir un buen modelo que conducirá a configuraciones de mejor rendimiento, en su versión básica, se comporta de manera similar a la búsqueda aleatoria al principio. Sin embargo, con el aumento de los presupuestos,  (fig.~\ref{fig:rs_vs_bo}). \citep{automl-bohb}
 
 \begin{figure}[H]
 	\begin{center}
