@@ -11,6 +11,7 @@ thrash/
 data/
 misc/
 models/
+smp/
 .ipynb_checkpoints
 
 ## Core latex/pdflatex auxiliary files:
