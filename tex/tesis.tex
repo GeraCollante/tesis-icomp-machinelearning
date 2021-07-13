@@ -2193,7 +2193,7 @@ Como podemos ver en la fig.~\ref{fig:entropy}, la entropía depende de la cantid
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=0.7\textwidth]{entropy2.png}
-  	\caption{Entropía de una variable $X$ la cual toma un valor uno con una probabilidad $p$ y el valor cero con una probabilidad $(1-p)$.}
+  	\caption{Entropía de una variable $X$ la cual toma un valor uno con una probabilidad $p$ y el valor cero con una probabilidad $(1-p)$. \citep{delgado2019approximate}}
   	\label{fig:entropy}
   	\end{center}
 \end{figure}
@@ -2324,7 +2324,7 @@ Sin embargo todavía es necesario realizar estos cálculos para $m=3$ ya que com
 
 \begin{align*}
    C_1^3(3)&=\frac{17}{49} 	\\
-   C_2^3(3)&=\frac{16}{50} 	\\
+   C_2^3(3)&=\frac{16}{49} 	\\
    C_3^3(3)&=\frac{16}{49} 	\\
    C_4^3(3)&=\frac{17}{49} 	\\
    & \vdotswithin{=} 		\\
@@ -2534,7 +2534,7 @@ Es vital realizar el procesamiento de los datos para alimentar el modelo, para e
   	\end{center}
 \end{figure}
 
-En el campo de ciencia de datos la comunidad ha consensuado de facto que el estándar es es utilizar como entorno de trabajo \texttt{Jupyter-Notebook}, que soporta \texttt{Python} como lenguaje de programación. Existen otros lenguajes reconocidos como \texttt{R} pero poseen mayor difusión en comunidades académicas.
+En el campo de ciencia de datos la comunidad ha consensuado de facto que el estándar es utilizar como entorno de trabajo \texttt{Jupyter-Notebook}, que soporta \texttt{Python} como lenguaje de programación. Existen otros lenguajes reconocidos como \texttt{R} pero poseen mayor difusión en comunidades académicas.
 
 Las librerías que serán parte del proyecto son las siguientes: 
 \begin{itemize}[noitemsep, topsep=2pt]
@@ -3806,7 +3806,7 @@ Los resultados son esclarecedores, si bien seguimos sin llegar a los picos ahora
 \subsubsection{Conclusión}
 No siempre aplicar ajuste de hiperparámetros nos dará resultados mejores a los originales, ya que esto dependerá de cada serie temporal a pronosticar. Pero si intuimos lo que puede estar sucediendo en la red podemos desarrollar soluciones innovadoras.
 
-\subsection{Entropía}
+\subsection{\href{https://github.com/GeraCollante/tesis-icomp-machinelearning/blob/main/EntropyModel.ipynb}{\color{blue}Entropía}}
 Intentaremos encontrar una causa al dispar rendimiento entre nuestro \textit{dataset} de polución del aire y el de defectos. Para ello haremos uso de lo revisado en la sección~\ref{sec:entropy}, dónde mencionamos que la entropía de los datos influye directamente en la capacidad de predicción de nuestros modelos. Mientras más entropía tengan los datos, más difícil será que el modelo pueda aprender correctamente sus patrones, si es que los hubiere.
 
 Ambos \textit{datasets} serán procesados por los dos algoritmos disponibles para esta tarea: $\textrm{ApEn}$ y $\textrm{SampEn}$.
