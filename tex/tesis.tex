@@ -73,11 +73,37 @@ Más allá del todo el \textit{marketing} que envuelve a la tecnología, es inne
 
 \clearpage
 
-\section{Objetivo}
+\section{Objetivos}
+\subsection{Objetivos principales}
+Crear un modelo de \textit{Machine Learning} cuyo fin será el pronóstico de la cantidad de defectos graves de las unidades en la línea de producción de una planta automotriz.
 
-Se desea realizar un modelo de \textit{machine learning} capaz de predecir la cantidad de defectos graves utilizando como datos de entrada los defectos anteriores (de menor gravedad usualmente) considerando una ventana de tiempo a determinar.
-
-En funcionamiento es muy similar a lo que se conoce como \textit{forecasting}, utilizado generalmente en la predicción del clima.
+\subsection{Objetivos secundarios}
+\begin{itemize}
+	\item \textbf{Clasificación de modelos de inteligencia artificial}
+	
+	Uno de los objetivos que tiene el arquitectura de computadoras es formar alumnos en el campo de la IA aplicada. Evaluar los diversos algoritmos disponibles de \textit{Machine Learning}, explorando todas las posibilidades en aras de identificar el modelo que mejor se adapte al problema a afrontar.
+	
+	\item \textbf{Redes neuronales \textit{feedforward}, convolucionales y recurrentes}
+	
+	Analizar los principios fundamentales de las redes neuronales, así como sus elementos, algoritmos y arquitecturas que posibilitan su funcionalidad. Se explorará cada uno de sus tipos con el objetivo de reconocer sus fortalezas y debilidades según el tipo de problema a afrontar.
+	
+	\item \textbf{\textit{Tuning} de hiperparámetros}
+	
+	Establecer y evaluar la mejor configuración de parámetros para una determinada arquitectura de red con el fin de optimizar su desempeño.
+	
+	\item \textbf{Series temporales}
+	
+	Dado que el problema a afrontar posee características temporales, se procede a describir y clasificar a las series temporales.
+	
+	\item \textbf{Entropía}
+	
+	Calcular de forma teórica la entropía de una serie temporal con la finalidad de cuantificar la cantidad de información.
+	
+	\item \textbf{Desarrollo}
+	
+	Examinar el problema a afrontar en su contexto, para así determinar los requerimientos del mismo. Posteriormente haciendo uso de las herramientas para manipulación de datos obtener un formato acorde de la serie temporal para alimentar los modelos.
+	
+\end{itemize}
 
 \clearpage
 
@@ -125,13 +151,17 @@ Una vez obtenido el \textit{dataset} de entrada es primordial investigar, limpia
 Para lograr este objetivo se aplican técnicas tales como normalización, reescalado, reducción de dimensionalidad, discretización, tratamiento de anomalías y \textit{outliers}. También de ser necesario se utilizan algoritmos de Aprendizaje no supervisado.
 
 \subsection{Aprendizaje supervisado} \label{supervised}
-El aprendizaje supervisado es el enfoque más utilizado y comprendido para el aprendizaje automático, siendo ideal para tareas donde el modelo necesita predecir resultados. Implica una entrada y salida para cada pieza de datos en su \textit{dataset}. 
+El aprendizaje supervisado es el enfoque más utilizado y comprendido para el aprendizaje automático, siendo ideal para tareas donde el modelo necesita predecir resultados. Implica una entrada y salida para cada pieza de datos en su \textit{dataset}. Por ejemplo, una entrada podría ser una imagen y la salida podría ser la respuesta a ``?`es esto un gato?''.
 
-Por ejemplo, una entrada podría ser una imagen y la salida podría ser la respuesta a ``?`es esto un gato?''. En el aprendizaje supervisado siempre hay una distinción entre el conjunto de entrenamiento o \textit{training} para el cual se nos proporciona la etiqueta (o \textit{label}), y el conjunto de prueba para el cual la etiqueta debe ser inferida. El algoritmo de aprendizaje debe ajustar el modelo predictivo al \textit{dataset} de entrenamiento y usamos el \textit{dataset} de prueba para evaluar la capacidad de generalización. El aprendizaje supervisado es ideal para tareas donde el modelo necesita predecir resultados.
+Cada una de estas piezas de datos que alimentan el modelo se denominan \textit{features} (características), que son esencialmente una propiedad individual medible como puede ser la edad o el peso de una persona.
 
-\textbf{features}
+\clearpage
 
-Estos problemas de predicción podrían involucrar el uso de estadísticas para predecir un valor (por ejemplo, $20 kg$, $\$1498$, $0.80 cm$) o categorizar datos basados en clasificaciones dadas (por ejemplo, ``gato'', ``verde'', ``feliz'') \cite{norman2019aprendizaje}.  El siguiente paso es profundizar en las dos categorías de aprendizaje supervisado que existen: clasificación y regresión.
+En el aprendizaje supervisado siempre hay una distinción entre el conjunto de entrenamiento o \textit{training} para el cual se nos proporciona la etiqueta (o \textit{label}), y el conjunto de prueba para el cual la etiqueta debe ser inferida. 
+
+El algoritmo de aprendizaje debe ajustar el modelo predictivo al \textit{dataset} de entrenamiento y usamos el \textit{dataset} de prueba para evaluar la capacidad de generalización. El aprendizaje supervisado es ideal para tareas donde el modelo necesita predecir resultados.
+
+Estos problemas de predicción podrían involucrar el uso de estadísticas para predecir un valor (por ejemplo, $20 kg$, $\$1498$, $0.80 cm$) o categorizar datos basados en clasificaciones dadas (por ejemplo, ``gato'', ``verde'', ``feliz'') \cite{norman2019aprendizaje}. El siguiente paso es profundizar en las dos categorías de aprendizaje supervisado que existen: clasificación y regresión.
 
 \subsubsection{Clasificación}
 
@@ -218,6 +248,8 @@ Uno de los primeros pasos a realizar cuando se nos presenta un conjunto de datos
 
 Un \textit{outlier} puede ser considerado como un dato atípico en un dataset o que parece ser inconsistente con el resto del conjunto.
 
+\clearpage
+
 Tipos de entornos en los que se produce la detección de anomalías:
 \begin{itemize}[noitemsep, topsep=2pt]
 	\item AD supervisada:
@@ -250,7 +282,9 @@ Tipos de entornos en los que se produce la detección de anomalías:
 
 A menudo las muestras disponibles contienen una gran variedad de características, que pueden dar como resultado un sobreajuste del modelo utilizado, por lo tanto es necesario reducir la dimensionalidad de dichos datos pero manteniendo la información relevante. Al reducir la dimensionalidad no solo se evita el sobreajuste, sino que también se obtiene una mejor visualización de los datos y se reduce el costo computacional. 
 
-Uno de los modelos más conocidos y que requieren menor costo computacional es Principal Component Analysis (PCA), pero si lo que estamos buscando es una mejor visualización de los datos y además las características no son lineales, sería recomendable usar T-SNE. 
+\clearpage
+
+Uno de los modelos más conocidos y que requieren menor costo computacional es \textit{Principal Component Analysis} (\texttt{PCA}), pero si lo que estamos buscando es una mejor visualización de los datos y además las características no son lineales, sería recomendable usar \texttt{T-SNE}. 
 
 \begin{figure}[H]
 	\begin{center}				
@@ -272,11 +306,11 @@ Enumeramos en la Fig.~\ref{fig:proconsreduxdim.} las ventajas y desventajas de l
   	\end{center}
 \end{figure}
 
+\clearpage
+
 \subsubsection{\textit{Clustering}}
 
 El \textit{clustering} es una técnica que conceptualmente es simple de comprender, consiste agrupar objetos con características similares. Por lo tanto, obtenemos diferentes grupos llamados clústers, donde en cada uno de ellos están contenidos los datos que son más similares entre ellos que con los que pertenecen a otros clústers, obteniendo de esta forma una útil subdivisión del \textit{dataset}. Como no suele tenerse conocimiento sobre los datos, es decir no están etiquetados, esta técnica pertenece al Aprendizaje no Supervisado.
-
-\clearpage
 
 El algoritmo más simple de \textit{clustering} es K-means, el cual funciona para agrupar datos que se distribuyen en formas esféricas, si se usa la distancia euclídea. y a su vez hay que proporcionar la cantidad k de grupos en los cuales queremos distribuir el \textit{dataset}, por ello se debe tener un conocimiento previo de cuantos clúster se espera tener. 
 Otras alternativas pueden ser, realizar \textit{clustering} jerárquico o \textit{clustering} basados en densidades.
@@ -310,6 +344,8 @@ Enumeramos en la Fig.~\ref{fig:proconsreduxdim.} las ventajas y desventajas de l
   	\label{fig:proconsclustering.}
   	\end{center}
 \end{figure}
+
+\clearpage
 
 \subsection{Selección de algoritmo en base al \textit{dataset}}
 En la Fig.~\ref{fig:maindiagram.} obtenemos una vista general sobre que hacer con nuestros datos en función a nuestro objetivo.
@@ -366,6 +402,8 @@ En la Fig.~\ref{fig:maindiagram.} obtenemos una vista general sobre que hacer co
   	\end{center}
 \end{figure}
 
+\clearpage
+
 \section{Redes neuronales}
 La palabra neuronal es la forma adjetiva de "neurona", y red denota una estructura tipo grafo; por lo tanto, una \textit{Red Neuronal Artificial} es un sistema de computación que intenta imitar (o al menos, está inspirado en) las conexiones neuronales en nuestro sistema nervioso. Las redes neuronales artificiales también se denominan \textit{redes neuronales} o \textit{sistemas neuronales artificiales}. Es común abreviar la red neuronal artificial y referirse a ellas como "NN". \citep{rosebrock2017deep}
 
@@ -385,7 +423,9 @@ Para que un sistema se considere un NN, debe contener una estructura de grafo di
   	\end{center}
 \end{figure}
 
-Cada nodo realiza un cálculo simple. Cada conexión transporta una señal (es decir, la salida del cálculo) de un nodo a otro, marcada por un peso que indica el grado en que la señal se amplifica o disminuye. Algunas conexiones tienen grandes pesos positivos que amplifican la señal, lo que indica que la señal es muy importante al hacer una clasificación. Otros tienen pesos negativos, lo que disminuye la intensidad de la señal, lo que especifica que la salida del nodo es menos importante en la clasificación final. Llamamos a dicho sistema una Red Neuronal Artificial si consta de una estructura de grafo (como en la Figura \ref{fig:nn}) con pesos de conexión que se pueden modificar utilizando un algoritmo de aprendizaje.
+Cada nodo realiza un cálculo simple. Cada conexión transporta una señal (es decir, la salida del cálculo) de un nodo a otro, marcada por un peso que indica el grado en que la señal se amplifica o disminuye. Algunas conexiones tienen grandes pesos positivos que amplifican la señal, lo que indica que la señal es muy importante al hacer una clasificación. 
+
+Otros tienen pesos negativos, lo que disminuye la intensidad de la señal, lo que especifica que la salida del nodo es menos importante en la clasificación final. Llamamos a dicho sistema una Red Neuronal Artificial si consta de una estructura de grafo (como en la Figura \ref{fig:nn}) con pesos de conexión que se pueden modificar utilizando un algoritmo de aprendizaje.
 
 \subsection{Relación con la biología}
 Nuestros cerebros están compuestos por aproximadamente 10 mil millones de neuronas, cada una conectada a otras 10000 neuronas. El cuerpo celular de la neurona se llama soma, donde las entradas (dendritas) y las salidas (axones) conectan el soma con otro (Figura \ref{fig:realneuron}).
@@ -479,6 +519,8 @@ f(x) = max(0, x)
 Las ReLU también se denominan "funciones de rampa" debido a cómo se ven cuando se trazan. La función es cero para entradas negativas pero luego aumenta linealmente para positivas valores. La función ReLU no es saturable y también es extremadamente  eficiente computacionalmente.
 Empíricamente, la función de activación ReLU tiende a superar a las funciones sigmoidea y tanh en casi todas las aplicaciones. Sin embargo, surge un problema cuando tenemos un valor de cero: no se puede tomar el gradiente.
 
+\clearpage
+
 \subsection{Arquitecturas de redes \textit{feedforward}}
 
 Si bien hay muchas, muchas arquitecturas NN diferentes, la arquitectura más común es la red hacía adelante o \textit{feedforward}, como se presenta en la Figura \ref{fig:nnff}.
@@ -568,6 +610,8 @@ Consideremos el ejemplo de un solo ítem con 2 características, lo que signific
 J(\Theta)=\frac{1}{2m} \sum_{i=1}^{m} (w_1x_1^{(i)}+w_2x_2^{(i)}+b-y^{(i)})^2
 \end{equation}
 
+\clearpage
+
 Queremos encontrar valores para nuestros pesos y el sesgo que minimiza el valor de nuestra función de pérdida. Dado que esta es una ecuación de múltiples variables, eso significa que tendríamos que tratar con derivadas parciales de la función de pérdida correspondiente a cada una de nuestras variables $w_1$, $w_2$ y $b$.
 
 \begin{equation}
@@ -610,7 +654,7 @@ Entonces el descenso del gradiente mide el gradiente local de la función de pé
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.65\textwidth]{023.png}
+	\includegraphics[width=0.58\textwidth]{023.png}
   	\caption{Representación gráfica del descenso de gradiente.}
   	\label{fig:gd}
   	\end{center}
@@ -755,6 +799,8 @@ Y de la ecuación \ref{dJ/db}:
 
 Se demostró desde un punto de vista matemático el concepto de \textit{backpropagation} como se realiza la actualización de los pesos y sesgos utilizando el descenso por gradiente.
 
+\clearpage
+
 \subsection{Descenso de gradiente estocástico (SGD)}
 El descenso de gradiente puede ser excepcionalmente lento en datasets muy grandes ya que en cada iteración se requiere calcular una predicción por cada punto en nuestro \textit{dataset} de entrenamiento, antes que actualicemos nuestra matriz de pesos.
 
@@ -792,6 +838,8 @@ En la Figura \ref{fig:fitting} \textbf{Izquierda} el modelo está sobreajustado,
 En cambio en la Figura \ref{fig:fitting} \textbf{Derecha} se dice que el modelo predictivo tiene bajo-ajuste, si funciona mal en los datos de entrenamiento. Esto sucede porque el modelo no puede capturar la relación entre el ejemplo de entrada y la variable objetivo. Podría deberse a que el modelo es demasiado simple, es decir, las características de entrada no son lo suficientemente expresivas como para describir bien la variable objetivo. El modelo con bajo-ajuste no predice los objetivos en los conjuntos de datos de entrenamiento con mucha precisión.
 
 Un buen modelo debe ser como el de la Figura \ref{fig:fitting} \textbf{Medio} que posee una buena precisión en su conjunto de datos de entrenamiento pero a su vez también tiene una buena \textit{performance} con datos que no haya visto.
+
+\clearpage
 
 \subsection{Regularización}
 Para disminuir los efectos del sobreajuste se utiliza la \textbf{regularización} que después de la tasa de aprendizaje, es el parámetro más importante de su modelo que puede ajustar.
@@ -938,17 +986,19 @@ Consideremos la Fig.~\ref{fig:conv2dimg} \citep{Saha2020Oct}, tenemos una imagen
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.7\textwidth]{imgrgb.png}
+	\includegraphics[width=0.70\textwidth]{imgrgb.png}
   	\caption{Imagen RGB $4 \times 4 \times 3$.}
   	\label{fig:conv2dimg}
   	\end{center}
 \end{figure}
 
+\clearpage
+
 Si consideramos la totalidad de la imagen como un prisma donde la profundidad corresponde a cada canal de color, podemos ver en la Figura~\ref{fig:kernelmove} el movimiento que realiza el kernel (con forma de cubo) a través del volumen del prisma.
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.3\textwidth]{kernelmove.png}
+	\includegraphics[width=0.25\textwidth]{kernelmove.png}
   	\caption{Movimiento del \textit{kernel}.}
   	\label{fig:kernelmove}
   	\end{center}
@@ -962,7 +1012,7 @@ En la figura~\ref{fig:padding}, rellenamos una entrada de $3 \times 3$, aumentan
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.6\textwidth]{conv-pad.png}
+	\includegraphics[width=0.57\textwidth]{conv-pad.png}
   	\caption{Relleno o \textit{padding}.}
   	\label{fig:padding}
   	\end{center}
@@ -1016,6 +1066,8 @@ Una capa o filtro puede tener varios \textit{kernels} que al convolucionar con e
 
 La diferencia entre filtro y \textit{kernel} es un poco complicada. A veces, se usan indistintamente, lo que podría crear confusiones. Esencialmente, estos dos términos tienen una sutil diferencia. Un "\textit{kernel}" se refiere a una matriz 2D de pesos. El término "filtro" se refiere a estructuras 3D de varios \textit{kernels} apilados juntos. Para un filtro 2D, el filtro es igual que el kernel. Pero para un filtro 3D y la mayoría de las convoluciones en el aprendizaje profundo, un filtro es una colección de \textit{kernels} (fig.~\ref{fig:layer-kernel}). Cada \textit{kernel} es único, enfatizando diferentes aspectos del canal de entrada.
 
+\clearpage
+
 El funcionamiento de la capa convolucional se resume en pensar en cada uno de los $K$ \textit{kernels} deslizándose a través del vector de entrada, computando un producto de Hadamard, sumando cada uno de sus valores y luego almacenando el valor generado en un mapa 2D de activación. En la figura~\ref{fig:conv-mechanism} se puede observar una visualización de la secuencia.
 
 \begin{figure}[H]
@@ -1035,6 +1087,8 @@ Luego de aplicar los $K$ filtros al vector de entrada, ahora tenemos $K \times 2
   	\label{fig:k-maps}
   	\end{center}
 \end{figure}
+
+\clearpage
 
 Cada entrada en el volumen de salida es, por tanto, una salida de una neurona que "observa" sólo una pequeña región de la entrada. De esta manera, la red "aprende" los filtros que se activan cuando ven un tipo específico de característica en una ubicación espacial determinada en el volumen de entrada.
 
@@ -1077,7 +1131,9 @@ Cabe destacar que \texttt{MAXPOOL} también actúa como supresor de ruido ya que
 
 \subsubsection{\textit{Batch Normalization}}
 
-%Las capas de normalización por lotes o \textit{Batch Normalization} (\texttt{BN}), como su nombre indica, se utilizan para normalizar las activaciones de un volumen de entrada determinado antes de pasarlo a la siguiente capa de la red.
+Las capas de normalización por lotes o \textit{Batch Normalization} (\texttt{BN}), como su nombre indica, se utilizan para normalizar las activaciones de un volumen de entrada determinado antes de pasarlo a la siguiente capa de la red.
+
+\clearpage
 
 Por lo general, para entrenar una red neuronal, realizamos un preprocesamiento de los datos de entrada, por ejemplo, normalizar todos los datos para que se parezcan a una distribución normal (es decir, media cero y una varianza unitaria). Algunas razones para realizar esto puede ser prevenir la saturación temprana de funciones de activación no lineales como la función sigmoidea, asegurar que todos los datos de entrada estén en el mismo rango de valores, etc. \citep{bn}
 
@@ -1101,6 +1157,8 @@ $$ \bar{x_i} = \frac{x_i - \mu_{\beta}}{\sqrt{\sigma_{\beta}^2+\epsilon}} $$
 
 Establecemos $1e-7 \leq \epsilon \leq 0$ para evitar sacar la raíz cuadrada de cero. Aplicar esta ecuación implica que las activaciones que salen de una capa \texttt{BN} tendrán una media y una varianza unitaria aproximadamente cero (es decir, centrada en cero).
 Reemplazamos el mini-lote $\mu_{\beta}$ y $\sigma_{\beta}$ con promedios de $\mu_{\beta}$ y $\sigma_{\beta}$ calculados durante el proceso de entrenamiento. Esto asegura que podemos pasar vectores a través de nuestra red y aún así obtener predicciones precisas sin ser sesgados por $\mu_{\beta}$ y $\sigma_{\beta}$ del mini-lote final pasado a través de la red en el momento del entrenamiento. 
+
+\clearpage
 
 La \texttt{BN} también tiene el beneficio adicional de ayudar a "estabilizar" el entrenamiento, lo que permite una mayor variedad de tasas de aprendizaje y fortalezas de regularización. Esto no alivia la necesidad de ajustar estos parámetros, por supuesto, pero le facilitará la vida al hacer que la tasa de aprendizaje y la regularización sean menos volátiles y más fáciles de ajustar. También tenderá a notar pérdidas finales más bajas y una curva de pérdida más estable en sus redes.
 
@@ -1153,11 +1211,15 @@ Las convoluciones causales proporcionan la herramienta adecuada para manejar el 
   	\end{center}
 \end{figure}
 
+\clearpage
+
 En lugar de cometer ese error, \textit{WaveNet} utiliza \textbf{convoluciones dilatadas}, que permiten que el campo receptivo aumente exponencialmente en función de la profundidad de la capa de convolución. 
 
 En una capa de convolución dilatada, los filtros no se aplican a las entradas de una manera secuencial simple, sino que omiten una entrada de tasa de dilatación constante entre cada una de las entradas que procesan, como en el diagrama \textit{WaveNet} a continuación. Al aumentar la tasa de dilatación multiplicativamente en cada capa (por ejemplo, 1, 2, 4, 8,…), podemos lograr la relación exponencial entre la profundidad de la capa y el tamaño del campo receptivo que deseamos. 
 
 En la figura~\ref{fig:dilated-conv}, puede ver cómo ahora solo necesitamos 4 capas para conectar los 16 valores de la serie de entrada a la salida resaltada (digamos, el valor de paso de tiempo 17). Por extensión, cuando se trabaja con una serie de tiempo diaria, se puede capturar más de un año de historia con solo 9 capas de convolución dilatadas de esta forma.
+
+\clearpage
 
 \section{Redes neuronales recurrentes}
 Anteriormente hemos visto cómo las redes neuronales o convolucionales nos permiten clasificar un dato, por ejemplo una palabra, un sonido, o una imagen, pero tienen un inconveniente, y es que cuando tenemos una secuencia de datos (\textit{e.g.} una secuencia de palabras o una secuencia de imágenes) este tipo de arquitecturas no pueden procesar ese tipo de datos. 
@@ -1174,6 +1236,8 @@ en el caso del vídeo o una cantidad variable de palabras en el caso de la conve
 \end{itemize}
 
 Una secuencia es una serie de datos que siguen un orden específico y tienen únicamente significado cuando se analizan en conjunto y no de manera individual. Dichos datos, analizados de forma individual o en un orden diferente, carecen de significado. Es evidente que una secuencia no tiene un tamaño predefinido pues no podemos saber con antelación el número de datos. 
+
+\clearpage
 
 Las \textit{RNN} resuelven los inconvenientes expresados anteriormente, pues pueden procesar tanto a la entrada como a la salida secuencias sin importar su tamaño, y además teniendo en cuenta la correlación existente entre los diferentes elementos de esa secuencia.
 
@@ -1197,6 +1261,8 @@ Modo de procesamiento vanilla \textit{i.e.} sin \textit{RNN}, desde una entrada 
 
 La entrada es un único dato y la salida es una secuencia. Un ejemplo de esta arquitectura es el "\textit{image captioning}" o subtitular imagen en donde la entrada es una y la salida es una secuencia de caracteres, un texto, que describe el contenido de la imagen.
 
+\clearpage
+
 \textbf{\textit{Many-to-one}}
 
 La entrada es una secuencia y la salida es por ejemplo una categoría. Un ejemplo de esto es la clasificación de sentimientos, en donde por ejemplo la entrada es un texto que contiene una crítica a una película y la salida es una categoría indicando si la película le gustó a la persona o no.
@@ -1210,6 +1276,8 @@ Como era de esperar, el régimen secuencial de operación es mucho más poderoso
 Además, las \textit{RNN} combinan el vector de entrada con su vector de estado con una función fija (pero aprendida) para producir un nuevo vector de estado. En términos de programación, esto puede interpretarse como ejecutar un programa fijo con ciertas entradas y algunas variables internas. Visto de esta manera, los RNN esencialmente describen programas.
 
 \textbf{Si entrenar redes neuronales es optimización sobre funciones, entrenar redes recurrentes es optimización sobre programas.}
+
+\clearpage
 
 \subsection{Funcionamiento}
 
@@ -1225,7 +1293,7 @@ Consideremos la Figura~\ref{fig:rnnunit} \citep{olahlstm}, aquí podemos observa
 
 El \textit{loop} de A permite que la información pase de un paso de la red al siguiente.
 
-Una red neuronal recurrente se puede considerar como múltiples copias de la misma red, cada una de las cuales pasa un mensaje a un sucesor. si desenrollamos el ciclo podemos representar la \textit{RNN} a través del eje del tiempo, como se muestra en la Figura~\ref{fig:rnnunrolled}.
+Una red neuronal recurrente se puede considerar como múltiples copias de la misma red, cada una de las cuales pasa un mensaje a un sucesor. si desenrollamos el ciclo podemos representar la \textit{RNN} a través del eje del tiempo, como se muestra en la  Figura~\ref{fig:rnnunrolled}.
 
 \begin{figure}[H]
 	\begin{center}
@@ -1235,11 +1303,11 @@ Una red neuronal recurrente se puede considerar como múltiples copias de la mis
   	\end{center}
 \end{figure}
 
-Esta naturaleza en cadena revela que las redes neuronales recurrentes están íntimamente relacionadas con secuencias y listas.
+Esta naturaleza en cadena revela que las redes neuronales recurrentes están íntimamente relacionadas con secuencias y listas. En su esencia una \textit{RNN} se parece demasiado a una \textit{FFNN}, excepto que también tiene conexiones hacía atrás.
 
-En su esencia una \textit{RNN} se parece demasiado a una \textit{FFNN}, excepto que también tiene conexiones hacía atrás.
-La \textit{RNN} más simple posible es la que mostramos en la figura 
+\clearpage
 
+En la Figura~\ref{fig:rnnunitv2} se observa que en cada instante de tiempo la red tiene realmente dos entradas y dos salidas. Las entradas son el dato actual, $x_t$ y la activación anterior, $a_{t-1}$, mientras que las salidas son la predicción actual, $y_t$, y la activación actual, $a_t$. Esta activación también recibe el nombre de \textit{hidden state} o estado oculto.
 
 \begin{figure}[H]
 	\begin{center}				
@@ -1248,8 +1316,6 @@ La \textit{RNN} más simple posible es la que mostramos en la figura
   	\label{fig:rnnunitv2}
   	\end{center}
 \end{figure}
-
-En la Figura~\ref{fig:rnnunitv2} se observa que en cada instante de tiempo la red tiene realmente dos entradas y dos salidas. Las entradas son el dato actual, $x_t$ y la activación anterior, $a_{t-1}$, mientras que las salidas son la predicción actual, $y_t$, y la activación actual, $a_t$. Esta activación también recibe el nombre de \textit{hidden state} o estado oculto.
 
 Se define:
 
@@ -1268,9 +1334,13 @@ $b_a:$ bias.
 
 $b_y:$ bias que relaciona el estado oculto a la salida.
 
-Es posible entrenar una RNN con una gran cantidad de texto y le pediremos que modele la distribución de probabilidad del siguiente carácter en la secuencia dada una secuencia de caracteres anteriores. Esto nos permitirá generar texto nuevo, de a un carácter a la vez.
+Es posible entrenar una \textit{RNN} con una gran cantidad de texto y le pediremos que modele la distribución de probabilidad del siguiente carácter en la secuencia dada una secuencia de caracteres anteriores. Esto nos permitirá generar texto nuevo, de a un carácter a la vez.
 
-Como ejemplo práctico, suponga que solo tenemos un vocabulario de cuatro letras posibles \texttt{helo} y queremos entrenar a un RNN en la secuencia de entrenamiento \texttt{hello}. Esta secuencia de entrenamiento es de hecho una fuente de 4 ejemplos de entrenamiento separados: 
+Como ejemplo práctico, suponga que solo tenemos un vocabulario de cuatro letras posibles \texttt{helo} y queremos entrenar a un \textit{RNN} en la secuencia de entrenamiento \texttt{hello}. 
+
+\clearpage
+
+Esta secuencia de entrenamiento es de hecho una fuente de 4 ejemplos de entrenamiento separados: 
 \begin{enumerate}[noitemsep, topsep=2pt]
 	\item La probabilidad de \texttt{e} probablemente debería estar dado el contexto de \texttt{h}.
 	\item \texttt{l} debería estar probablemente en el contexto de \texttt{he}.
@@ -1290,7 +1360,11 @@ Concretamente, codificaremos cada carácter en un vector usando la codificación
 
 En la Fig.~\ref{fig:rnnexample} observamos un ejemplo de \textit{RNN} con capas de entrada y salida de 4 dimensiones y una capa oculta de 3 unidades (neuronas). Las activaciones en el pase hacia adelante cuando el \textit{RNN} recibe los caracteres \texttt{"hell"} como entrada. La capa de salida contiene los pesos que el \textit{RNN} asigna al siguiente carácter (el vocabulario es \texttt{"h, e, l, o"}); Queremos que los números verdes sean altos y los números rojos bajos.
 
-Por ejemplo, vemos que en el primer paso de tiempo cuando el \textit{RNN} vio el carácter \texttt{"h"} asignó un peso de $1.0$ a la siguiente letra que era \texttt{"h"}, $2.2$ a la letra \texttt{"e"}, $-3.0$ a \texttt{"l"} y $4.1$ a "o". Dado que en nuestros datos de entrenamiento (la cadena \texttt{"hello"}) el siguiente carácter correcto es \texttt{"e"}, nos gustaría aumentar su peso (verde) y disminuir los pesos de todas las demás letras (rojo). 
+Por ejemplo, vemos que en el primer paso de tiempo cuando el \textit{RNN} vio el carácter \texttt{"h"} asignó un peso de $1.0$ a la siguiente letra que era \texttt{"h"}, $2.2$ a la letra \texttt{"e"}, $-3.0$ a \texttt{"l"} y $4.1$ a "o". 
+
+\clearpage
+
+Dado que en nuestros datos de entrenamiento (la cadena \texttt{"hello"}) el siguiente carácter correcto es \texttt{"e"}, nos gustaría aumentar su peso (verde) y disminuir los pesos de todas las demás letras (rojo). 
 
 De manera similar, tenemos un carácter objetivo deseado en cada uno de los 4 pasos de tiempo a los que nos gustaría que la red le asignara una mayor confianza. Dado que el \textit{RNN} consta completamente de operaciones diferenciables, podemos ejecutar el algoritmo de \textit{back-propagation} para averiguar en qué dirección debemos ajustar cada uno de sus pesos para aumentar los pesos de los objetivos correctos. 
 
@@ -1303,7 +1377,7 @@ Para entrenar una \textit{RNN}, el truco simplemente es desenrrollarla a través
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.8\textwidth]{tesis_40.png}
+	\includegraphics[width=0.6\textwidth]{tesis_40.png}
   	\caption{\textit{Backpropagation} a través del tiempo.}
   	\label{fig:BPTT}
   	\end{center}
@@ -1324,7 +1398,7 @@ En el ejemplo de la Fig.~\ref{fig:rnnvanishing1} intentaremos predecir la intenc
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.6\textwidth]{vanishing1.png}
+	\includegraphics[width=0.5\textwidth]{vanishing1.png}
   	\caption{\textit{RNN} siendo alimentada con las palabras de la oración.}
   	\label{fig:rnnvanishing1}
   	\end{center}
@@ -1473,6 +1547,8 @@ $$C_{(t)} = f_{(t)} \otimes C_{(t-1)} + i_{(t)} \otimes g_{(t)}$$
   	\end{center}
 \end{figure}
 
+\clearpage
+
 Finalmente, tenemos que decidir qué vamos a producir. Esta salida se basará en el estado de nuestra celda, pero será una versión filtrada. Primero, ejecutamos una capa sigmoidea que denominaremos \textbf{puerta de salida} que decide qué partes del estado de la celda vamos a generar. Luego, colocamos el estado de la celda a través de $tanh$ (para presionar los valores entre $-1$ y $1$) y lo multiplicamos por la salida de la puerta, de modo que solo produzcamos las partes que decidimos.
 
 $$ o_{(t)}=\sigma (W_{xo}x_{(t)} + W_{ho}h_{(t-1)} + b_o) $$
@@ -1527,7 +1603,7 @@ Si bien en la Sección~\ref{rnnarchitecture} ya desglosamos los diferentes tipos
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=1\textwidth]{tesis_42.png}
+	\includegraphics[width=0.80\textwidth]{tesis_42.png}
   	\caption{\textbf{Superior-izquierda}: \textit{seq-to-seq}. \textbf{Superior-derecha}: \textit{sec-to-vector}. \textbf{Inferior-izquierda}: \textit{vector-to-sec}. \textbf{Inferior-derecha}: \textit{encoder-decoder}.}
   	\label{fig:rnnnets}
   	\end{center}
@@ -1548,6 +1624,8 @@ Por el contrario, puede alimentar la red con una sola entrada en el primer paso 
 \textbf{Secuencia a secuencia con retardo}
 
 Por último, podría tener una red de secuencia a vector, llamada \textit{encoder}, seguida de una red de vector a secuencia, llamada \textit{decoder} (consulte la red de la parte inferior derecha). Por ejemplo, esto se puede utilizar para traducir una oración de un idioma a otro. Alimentaría la red con una oración en un idioma, el \textit{encoder} convertiría esta oración en una representación de vector único y luego el \textit{decoder} decodificaría este vector en una oración en otro idioma. Este modelo de dos pasos, llamado \textit{encoder-decoder}, funciona mucho mejor que intentar traducir sobre la marcha con un único \textit{RNN} secuencia a secuencia (red \textbf{Superior-izquierda}), ya que las últimas palabras de una oración pueden afectan las primeras palabras de la traducción, por lo que debe esperar hasta que haya escuchado la oración completa antes de traducirla.
+
+\clearpage
 
 \section{Optimización de hiperparámetros} \label{tuning-hp}
 Los parámetros que definen la arquitectura del modelo se denominan hiperparámetros y, por lo tanto, este proceso de búsqueda de la arquitectura del modelo ideal se denomina ajuste de hiperparámetros o \textit{hyperparameters tuning}. \citep{Koehrsen2018Jul}
@@ -1590,7 +1668,9 @@ Para todos los algoritmos, se debe definir un espacio de búsqueda de antemano p
 El espacio de búsqueda de cada hiperparámetro se discretiza, y el espacio de búsqueda total se discretiza como los productos cartesianos de ellos. Luego, el algoritmo lanza un aprendizaje para cada una de las configuraciones de hiperparámetros y selecciona la mejor al final. Es un problema paralelo (siempre que uno tenga la potencia de cálculo necesaria para entrenar varios modelos al mismo tiempo) pero sufre el problema de la dimensionalidad (el número de configuraciones a probar es exponencial con respecto al número de hiperparámetros a ser optimizado).
 
 \textbf{Búsqueda aleatoria (\textit{Random search})}
-Una variación del algoritmo anterior, que muestrea aleatoriamente el espacio de búsqueda en lugar de discretizarlo con una cuadrícula cartesiana. El algoritmo no tiene fin. En su lugar, se debe especificar un presupuesto de tiempo (en otras palabras, una número de \textit{trials} o pruebas). Este algoritmo también sufre el problema de la dimensionalidad para alcanzar una densidad de muestreo fija preestablecida. Una de las ventajas de la búsqueda aleatoria es que si dos hiperparámetros están poco correlacionados, la búsqueda aleatoria permite encontrar con mayor precisión los óptimos de cada parámetro, como se muestra en la fig.~\ref{fig:grid_vs_search}. 
+Una variación del algoritmo anterior, que muestrea aleatoriamente el espacio de búsqueda en lugar de discretizarlo con una cuadrícula cartesiana. El algoritmo no tiene fin. En su lugar, se debe especificar un presupuesto de tiempo (en otras palabras, una número de \textit{trials} o pruebas). 
+
+Este algoritmo también sufre el problema de la dimensionalidad para alcanzar una densidad de muestreo fija preestablecida. Una de las ventajas de la búsqueda aleatoria es que si dos hiperparámetros están poco correlacionados, la búsqueda aleatoria permite encontrar con mayor precisión los óptimos de cada parámetro, como se muestra en la fig.~\ref{fig:grid_vs_search}. 
 
 \begin{figure}[H]
 	\begin{center}
@@ -1653,7 +1733,9 @@ En cada iteración, continuamos examinando la función subrogada actual, aprende
 
 Después de un cierto número de iteraciones, estamos destinados a llegar a un mínimo global, a menos que la forma de la función sea muy irregular (en el sentido de que tiene grandes oscilaciones hacia arriba y hacia abajo) por tanto se debería hacer más foco sobre los datos que en la optimización.
 
-Es enfoque no hace ninguna suposición sobre la función (excepto que es optimizable en primer lugar), no requiere información sobre derivadas y es capaz de utilizar el razonamiento de sentido común mediante el uso ingenioso de una función de aproximación continuamente actualizada. La costosa evaluación de nuestra función objetivo original no es un problema en absoluto.
+\clearpage
+
+Este enfoque no hace ninguna suposición sobre la función (excepto que es optimizable en primer lugar), no requiere información sobre derivadas y es capaz de utilizar el razonamiento de sentido común mediante el uso ingenioso de una función de aproximación continuamente actualizada. La costosa evaluación de nuestra función objetivo original no es un problema en absoluto.
 
 La esencia de los modelos bayesianos es la actualización de una creencia previa ("antes") utilizando nueva información para producir una creencia posterior ("después") actualizada. Esto es exactamente lo que hace la optimización subrogada en este caso, por lo que se puede representar mejor a través de sistemas, fórmulas e ideas bayesianos.
 
@@ -1700,6 +1782,8 @@ Juntemos las piezas. La optimización bayesiana se puede realizar como tal:
 \end{enumerate}
 
 La optimización bayesiana se trata de poner ideas probabilísticas detrás de la idea de optimización subrogada. La combinación de estas dos ideas crea un sistema poderoso con muchas aplicaciones, desde el desarrollo de productos farmacéuticos hasta vehículos autónomos. Sin embargo, más comúnmente en el aprendizaje automático, la optimización bayesiana se usa para la optimización de hiperparámetros. Por ejemplo, si estamos entrenando un clasificador de aumento de gradiente, hay docenas de parámetros, desde la tasa de aprendizaje hasta la profundidad máxima de capas de la red, la cantidad de neuronas de cada capa entre otras por nombrar algunos ejemplos. En este caso, $x$ representa los hiperparámetros del modelo y $c(x)$ representa el rendimiento del modelo.
+
+\clearpage
 
 La principal motivación para utilizar la optimización bayesiana se encuentra en escenarios en los que es muy costoso evaluar la salida, tal como el entrenamiento de múltiples arquitecturas de modelos para encontrar la mejor.
 
@@ -1797,6 +1881,9 @@ La secuencia se desarrolla de la siguiente manera:
 	\item Línea 4: Obtenga la puntuación de la función objetivo de $x^*$ para ver cómo se desempeña realmente este punto
 	\item Línea 5: Incluya el par (hiperparámetro $x^*$, puntuación de función objetivo real) en el historial de otras muestras.
 	\item Línea 6: entrene el modelo subrogado utilizando el último historial de muestras.
+	
+\clearpage	
+	
 	\item Repita hasta alcanzar el número máximo de iteraciones. Al final, se devuelve el historial de (hiperparámetro, puntuación de función objetiva real). Tenga en cuenta que el último registro no es necesariamente el mejor puntaje logrado. Tendría que ordenar la puntuación para encontrar el mejor hiperparámetro.
 \end{itemize}
 
@@ -1815,6 +1902,8 @@ En la (fig.~\ref{fig:rs_vs_bo}) \citep{automl-bohb} advertimos que tanto al inic
 \subsubsection{Reducciones sucesivas a la mitad}
 Definamos un par de conceptos que nos serán útiles para plasmar la idea. 
 Al conjunto de valores para cada hiperparámetro se denomina configuración. Se entiende por presupuesto a la cantidad de recursos disponibles, ya sea para entrenar un modelo una determinada cantidad de épocas (\textit{epochs}) o probar diversas configuraciones del mismo (\textit{trials)}. 
+
+\clearpage
 
 En la práctica las configuraciones prometedoras tienden a obtener puntuaciones más altas en relación con las peores, incluso en las primeras etapas del proceso. A este hecho se aferran los algoritmos de sucesivas reducciones a la mitad \textit{SuccessiveHalving}.
 
@@ -1838,6 +1927,8 @@ La secuencia se ejemplifica en la fig.~\ref{fig:sh} donde cada línea paralela a
 \end{figure}
 
 En lugar de perder mucho tiempo de entrenamiento en configuraciones que no nos llevarán a ninguna parte, \textit{SuccessiveHalving} los descarta lo antes posible. Por lo tanto, se puede asignar más tiempo de entrenamiento, es decir, recursos, a modelos más potencialmente valiosos.
+
+\clearpage
 
 Sin embargo, el \textit{Successive Halving} sufre lo que se denomina el \textit{trade-off} $n$ \textit{vs} $B/n$ \citep{Bissuel2019Apr}, dónde:
 \begin{itemize}[noitemsep, topsep=2pt]
@@ -1875,7 +1966,7 @@ Los inconvenientes de estas estrategias son los siguientes:
 
 El algoritmo que veremos a continuación elimina este dilema al considerar varios valores posibles de $n$ para un $B$ fijo, en esencia realizando una \textit{Grid Search} sobre el valor factible de $n$.
 
-\hfill
+\clearpage
 
 \textbf{\textit{Hyperband}} \label{hyperband}
 
@@ -1909,11 +2000,15 @@ Dentro del algoritmo:
 
 Dado que la mayoría de estos valores están redondeados, esperamos que sean fracciones, no números enteros exactos. La fórmula de $\eta$ está diseñada para consumir tanto presupuesto como sea posible en cada bucle de \textit{Hyperband}.
 
-En la fig.~\ref{fig:hyper_epochs_trials}, puede ver que el algoritmo de \textit{HyperBand} se ejecutará dividiendo a la mitad sucesivamente en 5 asignaciones de recursos. $s=4$ comienza su primera ronda con $81$ \textit{trials}, ofreciendo a cada uno una única época y luego descarta de forma iterativa $\frac{2}{3}$ de los intentos hasta que queda uno y se entrena durante $81$ épocas. En $s=0$, el algoritmo \textit{Hyperband} básicamente está ejecutando una búsqueda aleatoria con$ 5$ pruebas, cada uno entrenado en el número máximo de épocas.
+En la fig.~\ref{fig:hyper_epochs_trials}, puede ver que el algoritmo de \textit{HyperBand} se ejecutará dividiendo a la mitad sucesivamente en 5 asignaciones de recursos. $s=4$ comienza su primera ronda con $81$ \textit{trials}, ofreciendo a cada uno una única época y luego descarta de forma iterativa $\frac{2}{3}$ de los intentos hasta que queda uno y se entrena durante $81$ épocas. 
+
+\clearpage
+
+En $s=0$, el algoritmo \textit{Hyperband} básicamente está ejecutando una búsqueda aleatoria con  5 pruebas, cada uno entrenado en el número máximo de épocas.
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.7\textwidth]{hyper_trials_vs_epochs.png}
+	\includegraphics[width=0.58\textwidth]{hyper_trials_vs_epochs.png}
   	\caption{Cantidad de épocas y pruebas a medida que avanza el algoritmo.}
   	\label{fig:hyper_epochs_trials}
   	\end{center}
@@ -1925,7 +2020,7 @@ Dado que la Optimización Bayesiana se comporta de manera similar a la Búsqueda
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=1\textwidth]{comparison_rs_hb.png}
+	\includegraphics[width=0.77\textwidth]{comparison_rs_hb.png}
   	\caption{Comparación de Búsqueda Aleatoria \textit{vs} \textit{HyperBand}.}
   	\label{fig:rs_vs_hb}
   	\end{center}
@@ -1961,6 +2056,8 @@ Los problemas de modelado predictivo de:
 	\item \textbf{Regresión}: son aquellos en los que se predice una cantidad.
 	\item  \textbf{Clasificación}: son aquellos en los que se predice una categoría.
 \end{itemize}
+
+\clearpage
 
 \subsubsection{Estructura}
 
@@ -2015,6 +2112,8 @@ Se refiere a la actualización del modelo para dar nuevos pronósticos.
 
 En el caso de observaciones no uniformes, es posible que se requiera un formato de datos específico al ajustar algunos modelos para que las observaciones sean uniformes a lo largo del tiempo.
 
+\clearpage
+
 \subsection{Modelos disponibles}
 
 Se realizó una investigación de los modelos de \textit{forecasting} disponibles de forma \textit{open-source} y los resultados se reflejan en el Cuadro~\ref{tab:ts-models}. Se realizará una breve síntesis de cada uno de ellos, sin embargo no se puede responder a la pregunta de cual es mejor ya que según el tipo de problema a abordar alguno tendrá mejor rendimiento que el otro.
@@ -2066,6 +2165,8 @@ No utiliza aprendizaje profundo, pero \textit{ATI} está desarrollando una libre
 
 Dada el carácter de investigación del proyecto integrador se optó por no utilizar estos modelos y crearlos desde \textit{scratch} (terminología utilizada en el argot para describir un proyecto creado casi desde 0 a partir de un \textit{stack} seleccionado de tecnologías).
 
+\clearpage
+
 \section{Entropía de una serie temporal} \label{sec:entropy}
 La entropía aproximada (\textit{Approximate Entropy}) y la entropía de muestra (\textit{Sample Entropy}) son dos algoritmos para determinar la regularidad de series de datos en función de la existencia de patrones. A pesar de sus similitudes, las ideas teóricas detrás de esas técnicas son diferentes. \citep{delgado2019approximate}
 
@@ -2084,7 +2185,9 @@ A: \texttt{01010101010101010101}
 
 B: \texttt{01101000110111100010}
 
-Si bien es cierto que las dos series se han producido aleatoriamente con la misma probabilidad y tienen los mismos valores de media y varianza, es fácil continuar con el patrón descrito en la serie A, pero tendríamos que trabajar más para poder predecir el siguiente número de la serie B. La serie A se construye alternando ceros y unos, mientras que la serie B no tiene un patrón claro. El análisis de aleatoriedad es, por tanto, una limitación esencial de los métodos de estadística de momento y no puede utilizarse para garantizar matemáticamente la aleatoriedad de una serie.
+Si bien es cierto que las dos series se han producido aleatoriamente con la misma probabilidad y tienen los mismos valores de media y varianza, es fácil continuar con el patrón descrito en la serie A, pero tendríamos que trabajar más para poder predecir el siguiente número de la serie B. La serie A se construye alternando ceros y unos, mientras que la serie B no tiene un patrón claro. 
+
+El análisis de aleatoriedad es, por tanto, una limitación esencial de los métodos de estadística de momento y no puede utilizarse para garantizar matemáticamente la aleatoriedad de una serie.
 
 El origen de esta limitación radica en el hecho de que el enfoque probabilístico clásico de analizar los momentos de diferentes órdenes no analiza la aleatoriedad de una serie sino la aleatoriedad del proceso de generación de la serie. Una mayor frecuencia de un número en una serie, una asimetría de la distribución, o cualquier otra medida similar, son herramientas para estudiar el proceso de generación de los datos, y el orden de su generación no tiene ninguna influencia. En consecuencia, como afirmó \textit{Chaitin}, el uso de esos métodos no puede probar la aleatoriedad de un número dado, simplemente porque la idea subyacente de probabilidad es analizar el método de generación. 
 
@@ -2092,6 +2195,8 @@ En esencia, dado que la entropía cuantifica la cantidad de información, tambi�
 
 La idea subyacente es la siguiente. Imagínense los días en que se usaba el telégrafo, e imagine a dos investigadores, uno que lee las temperaturas en Nueva York y envía telegramas a su amigo en Chicago, un meteorólogo experto que quiere obtener datos del año anterior para su investigación. La teoría de la codificación se ocupa del contenido de información de los telegramas y la longitud mínima requerida para enviar el mensaje de un lugar a otro. Suponga que la persona en Nueva York escribe un \texttt{1} si la temperatura sube y un \texttt{0} si baja, escribiendo un número por hora y haciendo que la serie anual sea extremadamente larga. Si el clima se comportara como una serie sinusoidal perfecta, el telegrama consistiría en la serie de números:
 \texttt{Los valores fueron 01010101010101010101010101010101010101010101010101...}.
+
+\clearpage
 
 Sin embargo, la persona en Nueva York puede simplificar el telegrama (y ahorrar dinero con él, recuerde que el costo dependía de la cantidad de palabras) diciéndole a su amigo:
 \texttt{'Los valores fueron 01 repetidos 4380 veces'}. 
@@ -2108,13 +2213,17 @@ En esta sección definimos y resumimos aquellos conceptos de TI necesarios para 
 
 Originalmente, la TI se diseñó como una teoría para analizar el proceso de envío de mensajes a través de un canal ruidoso y comprender cómo reconstruir el mensaje con una baja probabilidad de error. Como se mencionó anteriormente, una de las ideas detrás de TI es el hecho de que la información en un mensaje se puede medir cuantitativamente. 
 
-En nuestra era digital, los mensajes se componen de bits, pero no todos los bits son útiles: algunos de ellos son redundantes, algunos de ellos son errores, y así sucesivamente. Así que cuando comunicamos un mensaje, queremos tanta información útil como sea posible para pasar. En la TI, transmitir un poco de información significa reducir la incertidumbre del receptor en un factor de 2, \textit{e.g.}, digamos que el clima es completamente aleatorio, con una probabilidad de 50/50 de ser soleado o lluvioso todos los días (fig.~\ref{fig:geron1}). Si una estación meteorológica te dice que va a llover mañana, entonces en realidad han reducido tu incertidumbre en un factor de dos. Había dos opciones igualmente probables, ahora sólo hay una. \citep{Geron2018Feb}
+En nuestra era digital, los mensajes se componen de bits, pero no todos los bits son útiles: algunos de ellos son redundantes, algunos de ellos son errores, y así sucesivamente. Así que cuando comunicamos un mensaje, queremos tanta información útil como sea posible para pasar. 
+
+\clearpage
+
+En la TI, transmitir un poco de información significa reducir la incertidumbre del receptor en un factor de 2, \textit{e.g.}, digamos que el clima es completamente aleatorio, con una probabilidad de 50/50 de ser soleado o lluvioso todos los días (fig.~\ref{fig:geron1}). Si una estación meteorológica te dice que va a llover mañana, entonces en realidad han reducido tu incertidumbre en un factor de dos. Había dos opciones igualmente probables, ahora sólo hay una. \citep{Geron2018Feb}
 
 Así que el canal del tiempo en realidad le envió un solo poco de información útil. Y esto es cierto sin importar cómo codificaron esta información. Si lo codificaron como una cadena, con 5 caracteres, cada uno codificado en 1 byte, entonces en realidad le enviaron un mensaje de 40 bits, pero sólo se comunicó 1 bit de información útil.
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.7\textwidth]{geron_1.png}
+	\includegraphics[width=0.6\textwidth]{geron_1.png}
   	\caption{Representación gráfica de la situación propuesta.}
   	\label{fig:geron1}
   	\end{center}
@@ -2122,15 +2231,15 @@ Así que el canal del tiempo en realidad le envió un solo poco de información 
 
 Ahora supongamos que el clima tiene en realidad 8 estados posibles los cúales son definidos como los símbolos del alfabeto (dónde la longitud del alfabeto es $S$), todos igualmente probables (fig.~\ref{fig:geron2}, ignorar porcentajes). Ahora, cuando la estación meteorológica te da el tiempo de mañana, están dividiendo tu incertidumbre por un factor de 8, que es $2^3$. Así que se enviaron 3 bits de información útil. Es fácil encontrar el número de bits de información que en realidad se comunicaron calculando el logaritmo binario del factor de reducción de incertidumbre, \textit{i.e.} $\log_2(8)$.
 
+Pero, ?`qué pasa si las posibilidades no son igualmente probables? Digamos que el 75\% tiene posibilidades de sol y el 25\% de probabilidad de lluvia. Si la estación meteorológica te dice que va a llover mañana, entonces tu incertidumbre ha bajado en un factor de 4, \textit{i.e.} $\log_2(4)=2$ que serían 2 bits de información. La reducción de la incertidumbre es sólo la inversa de la probabilidad del evento, en este caso la inversa del 25\% ($\frac{1}{4}$) es 4. Ahora $\log(\frac{1}{x})=-\log(x)$, por lo que la ecuación para calcular el número de bits simplifica a $-\log_2(0.25)$.
+
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.9\textwidth]{geron_2.png}
+	\includegraphics[width=0.7\textwidth]{geron_2.png}
   	\caption{Representación gráfica de transmisión de 8 estados.}
   	\label{fig:geron2}
   	\end{center}
 \end{figure}
-
-Pero, ?`qué pasa si las posibilidades no son igualmente probables? Digamos que el 75\% tiene posibilidades de sol y el 25\% de probabilidad de lluvia. Si la estación meteorológica te dice que va a llover mañana, entonces tu incertidumbre ha bajado en un factor de 4, \textit{i.e.} $\log_2(4)=2$ que serían 2 bits de información. La reducción de la incertidumbre es sólo la inversa de la probabilidad del evento, en este caso la inversa del 25\% ($\frac{1}{4}$) es 4. Ahora $\log(\frac{1}{x})=-\log(x)$, por lo que la ecuación para calcular el número de bits simplifica a $-\log_2(0.25)$. 
 
 %$$ H = n \log S$$
 %
@@ -2151,7 +2260,11 @@ dónde:
 
 Ahora, si la estación meteorológica te dice que mañana estará soleado, entonces tu incertidumbre no ha bajado mucho. ?`Cuánta información vas a obtener de la estación meteorológica, en promedio? Bueno, hay un 75\% de probabilidades de que sea soleado mañana, así que eso es lo que la estación meteorológica te diría y eso es $0.41$ bits de información. Luego hay un 25\% de probabilidades de que llueva, en cuyo caso la estación meteorológica te lo dirá, y esto te dará 2 bits de información. Así que en promedio, si calculamos $0.75\cdot 0.41 + 0.25 \cdot 2 = 0.81$, \textit{i.e.} obtenemos $0.81$ bits de información de la estación meteorológica, todos los días. Así que lo que acabamos de calcular se llama \textbf{entropía}. Para finalizar hagamos el mismo cálculo para la fig.~\ref{fig:geron2}: $(0.6)(-\log_2(0.6))+(0.2)(-\log_2(0.2))+(0.1)(-\log_2(0.1))-(0.1)(-\log_2(0.1))=1.57$, es decir que de los 3 bits enviados obtenemos el 52\% de la información. 
 
-La entropía es una buena medida de lo inciertos que son los acontecimientos y de manera más formal la definimos como la medida de información de una sola variable aleatoria. La idea de una variable aleatoria en este contexto se refiere a la interpretación probabilística: cada uno de los posibles resultados de la variable tiene una probabilidad definida de ocurrencia y el valor asociado con el resultado es aleatorio. Matemáticamente la definimos:
+La entropía es una buena medida de lo inciertos que son los acontecimientos y de manera más formal la definimos como la medida de información de una sola variable aleatoria. 
+
+\clearpage
+
+La idea de una variable aleatoria en este contexto se refiere a la interpretación probabilística: cada uno de los posibles resultados de la variable tiene una probabilidad definida de ocurrencia y el valor asociado con el resultado es aleatorio. Matemáticamente la definimos:
 
 Si $X$ puede tomar los valores $\{x_1, \dots, x_n\}$ y $p(x)$ es la probabilidad asociada con esos valores dado $x \in X$, la entropía se define como:
 
@@ -2170,6 +2283,8 @@ En general, el investigador ignora la distribución de probabilidad real de cada
 	
 	Matemáticamente, la información es proporcional a la inversa de la función de probabilidad del evento, $\log_2 \frac{1}{p1}$. Por tanto, la \textbf{información} es un evento que induce a los agentes racionales a cambiar sus creencias y expectativas sobre una situación particular, con las restricciones de la nueva información. 
 	
+\clearpage	
+	
 	En el ejemplo anterior, los eventos muy probables (una serie plana de datos) brindan poca información a los agentes, mientras que los resultados de baja probabilidad (un aumento repentino en el valor) brindan más información que cambiará sus creencias sobre el proceso detrás de los datos. 
 
 \item La \textbf{incertidumbre} es algo posible pero desconocido. Es posible que tirando un dado consigamos el número cinco, pero tirar un dado no implica obtener el número cinco. Tenemos incertidumbre sobre el número cinco, pero no lo tendríamos para el número 214 en un dado de seis caras porque es un evento imposible. 
@@ -2186,7 +2301,11 @@ La teoría de la información y el concepto de entropía proporcionan una forma 
 
 El resultado de un experimento contiene la cantidad de información $H(p)$, o dicho de otra manera, $H(p)$ es una medida de la incertidumbre sobre un evento específico antes de observarlo.
 
-Como podemos ver en la fig.~\ref{fig:entropy}, la entropía depende de la cantidad de aleatoriedad representada por $p$, donde la situación $p = \frac{1}{2}$ es aleatoria desde una perspectiva probabilística y da una entropía máxima $H=1$. Con la definición de Shannon, eventos con alto o baja probabilidad no contribuyen mucho al valor de la medida, como se muestra en el gráfico para valores de $p =0$ o $p=1$.
+Como podemos ver en la fig.~\ref{fig:entropy}, la entropía depende de la cantidad de aleatoriedad representada por $p$, donde la situación $p = \frac{1}{2}$ es aleatoria desde una perspectiva probabilística y da una entropía máxima $H=1$.
+
+\clearpage
+
+Con la definición de Shannon, eventos con alto o baja probabilidad no contribuyen mucho al valor de la medida, como se muestra en el gráfico para valores de $p =0$ o $p=1$.
 
 \end{itemize}
 
@@ -2200,6 +2319,8 @@ Como podemos ver en la fig.~\ref{fig:entropy}, la entropía depende de la cantid
 
 En el apartado anterior definimos la entropía como una medida para cuantificar la información de un mensaje que es válida de forma general, independientemente del proceso que lo genera.
 
+\hfill
+
 \textbf{Tipos de procesos}
 \begin{itemize}[noitemsep, topsep=2pt]
 	\item \textbf{Procesos estocásticos:} sucesión de variables aleatorias relacionadas entre sí por una regla de evolución, representando un sistema que evoluciona con el tiempo. 
@@ -2207,6 +2328,8 @@ En el apartado anterior definimos la entropía como una medida para cuantificar 
 \end{itemize}
 
 La cuestión de evaluar la aleatoriedad de una serie de datos es, por tanto, una cuestión de caracterizar el sistema como estocástico o determinista. Más precisamente, en qué medida los datos se comportan como estocásticos y cuánto determinismo existe; estaríamos hablando de grados de aleatoriedad. 
+
+\clearpage
 
 Si no hay un proceso determinista subyacente al analizar una serie particular de datos, implicará una verificación del movimiento aleatorio más estricto. Sin embargo, si hay ciclos, tendencias y patrones, entonces la serie de datos no sería totalmente aleatoria. Será necesario cuantificar tanto la situación totalmente aleatoria como los diferentes grados de aleatoriedad de forma inequívoca. En el caso particular de los procesos estocásticos, el interés no radica en medir la entropía total sino en medir la entropía del proceso, es decir, cómo cambia la entropía de la serie a lo largo del tiempo. 
 
@@ -2223,6 +2346,8 @@ La formulación para el análisis de la complejidad de un sistema fue desarrolla
 
 El número de puntos necesarios para caracterizar correctamente un sistema dinámico está en el rango $[10^d,  30^d]$, donde $d$ es la dimensión del sistema. Por lo tanto, se requiere una gran cantidad de datos para caracterizar completamente incluso los sistemas de baja dimensión. 
 
+\clearpage
+
 $\textrm{ApEn}$ es un parámetro que mide la correlación, persistencia o regularidad en el sentido de que los valores bajos de \textbf{ApEn} reflejan que el sistema es muy persistente, repetitivo y predictivo, con patrones aparentes que se repiten a lo largo de la serie, mientras que los valores altos significan independencia entre los datos, un número bajo de patrones repetidos y aleatoriedad. Esta definición coincide con la intuición de que los sistemas que tienen una probabilidad más aleatoria tienen mayor entropía, como se ve en las secciones anteriores, siendo sistemas estocásticos puros aquellos que tenían una tasa de entropía más alta (número máximo de bits dado un alfabeto).
 
 En los sistemas binarios, el valor máximo de ApEn sería el registro 2, y un valor inferior al indicado que la serie en análisis contiene patrones que se repiten y, por lo tanto, no es totalmente aleatorio.
@@ -2234,6 +2359,8 @@ En el algoritmo $\textrm{ApEn}$, debemos seleccionar un par $(m, r)$ como parám
 $\textrm{ApEn}$ no intenta reconstruir toda la dinámica, sino que sólo discrimina de una manera estadísticamente válida, y a cambio, podemos deshacernos de los límites m → ∞ y r → 0, haciendo que el enfoque sea adecuado para el análisis de datos. Veremos cómo elegir los valores de $m$  y $r$ para calcular $\textrm{ApEn}$, pero es apropiado comprender cómo afectan esos cambios al sistema. 
 
 Si tenemos $m$ más alto y $r$ más pequeño describiremos detalles de parámetros más nítidos (probabilísticos). Sin embargo, al tratar con procesos estocásticos, el análisis de probabilidades condicionales hace que grandes valores de $m$ o valores mínimos de $r$ produzcan estimaciones estadísticamente deficientes.
+
+\clearpage
 
 Formalmente, el algoritmo para determinar la entropía aproximada de una secuencia es el siguiente:
 
@@ -2300,6 +2427,8 @@ En este paso hay que tener cuidado ya que tenemos que calcular el valor absoluto
   	\end{center}
 \end{figure}
 
+\clearpage
+
 De forma similar calculamos:
 $$d[x(1),x(1)] = max \{[u(1)-u(1),u(2)-u(2)]\} = max\{0,0\}=0<r \Rightarrow \texttt{MATCH}$$
 $$d[x(1),x(3)] = max \{[u(1)-u(3),u(2)-u(4)]\} = max\{4,5\}=5>r \Rightarrow \texttt{NO MATCH}$$
@@ -2320,7 +2449,11 @@ Recordemos que la notación indica $C_i^m(r)$:
 Ahora procedemos a realizar la sumatoria de los logaritmos de los coeficientes calculados anteriormente como se indica en la ecuación \ref{eqn:apen_1}:
 $$\phi^2(3)=\frac{1}{50} \sum_{i=1}^{50} \log(C_i^2(3)) \approx -1.0982$$
 
-Sin embargo todavía es necesario realizar estos cálculos para $m=3$ ya que como se indica en la ecuación \ref{eqn:apen_2} necesitamos $\phi^{m+1}(r)$. Repetimos la operación de módulo de la resta entre bloques, solo que ahora debemos decidir el mayor entre 3 resultados y comparar ese resultado con $r$ para ver si es \texttt{MATCH}. Se computa a continuación:
+Sin embargo todavía es necesario realizar estos cálculos para $m=3$ ya que como se indica en la ecuación \ref{eqn:apen_2} necesitamos $\phi^{m+1}(r)$. 
+
+\clearpage
+
+Repetimos la operación de módulo de la resta entre bloques, solo que ahora debemos decidir el mayor entre 3 resultados y comparar ese resultado con $r$ para ver si es \texttt{MATCH}. Se computa a continuación:
 
 \begin{align*}
    C_1^3(3)&=\frac{17}{49} 	\\
@@ -2395,6 +2528,8 @@ $A^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} A_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 
 
 Por lo tanto, $B^m(r)$ es la probabilidad de que dos secuencias sean similares para los puntos $m$ (posibles), mientras que $A^m(r)$ es la probabilidad de que dos secuencias sean similares para $m+1$ puntos (coincidencias). Puesto que el número de coincidencias es siempre menor o igual que el número de vectores posibles, la relación $A^m(r)/B^m(r)$ es una probabilidad condicional menor que la unidad. 
+
+\clearpage
 
 El parámetro \textbf{entropía de muestra} se define como $SampEn(m, r) = \lim_{N\to\infty}  \{− \log[ A^m(r)/B^m(r)]\}$, valor que se estima a partir de la estadística $SampEn(m,r,N)=−\log[A^m(r)/B^m(r)]$. 
 
@@ -2491,6 +2626,8 @@ Además los defectos se categorizan según la gravedad (\texttt{GVD}) del mismo 
 	\item \texttt{V3}: imperceptibles (para nuestro análisis serán descartados).
 \end{itemize}
 
+\clearpage
+
 \subsubsection{Tipo}
 A su vez los defectos están categorizados por familia o tipo de defectos:
 
@@ -2578,7 +2715,7 @@ Si verificamos el origen de los datos nos percataremos que casi la totalidad de 
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.7\textwidth]{audidist.png}
+	\includegraphics[width=0.55\textwidth]{audidist.png}
   	\caption{Distribución de los defectos según \texttt{AUDI}.}
   	\label{fig:distaudi}
   	\end{center}
@@ -2588,7 +2725,7 @@ No obstante, no se debe perder el propósito el cual es el pronostico de la cant
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.5\textwidth]{tesis_51.png}
+	\includegraphics[width=0.45\textwidth]{tesis_51.png}
   	\caption{Distribución de los defectos según gravedad.}
   	\label{fig:distgvd}
   	\end{center}
@@ -2598,7 +2735,7 @@ La fig.~\ref{fig:distgvddpto} nos muestra que los defectos principalmente ocurre
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.7\textwidth]{tesis_53.png}
+	\includegraphics[width=0.61\textwidth]{tesis_53.png}
   	\caption{Distribución de los defectos por \texttt{DPTO}.}
   	\label{fig:distgvddpto}
   	\end{center}
@@ -2608,7 +2745,7 @@ La fig.~\ref{fig:distgvdtype} resume que casi 7 decimos de los defectos totales 
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.7\textwidth]{tesis_55.png}
+	\includegraphics[width=0.61\textwidth]{tesis_55.png}
   	\caption{Distribución de los defectos por \texttt{TIPO}.}
   	\label{fig:distgvdtype}
   	\end{center}
@@ -2624,15 +2761,19 @@ Mediante un mapa de calor (fig.~\ref{fig:heatmapdptotype}) se cruzaron las carac
   	\end{center}
 \end{figure}
 
+\clearpage
+
 Pese a esto no se debe creer que aunque una combinación tenga una gran cantidad de defectos, la mayoría de estos serán \texttt{V1}. La fig.~\ref{fig:heatmapfractionv1} nos muestra la densidad de \texttt{V1} sobre el total de defectos, permitiéndonos establecer que determinadas combinaciones de \texttt{TIPO} y \texttt{DPTO} son más probables que sean \texttt{V1} (incluso algunas poseen valores considerablemente más altos que las demás).
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=1\textwidth]{tesis_58.png}
+	\includegraphics[width=0.8\textwidth]{tesis_58.png}
   	\caption{Fracción de \texttt{V1} por cantidad de defectos.}
   	\label{fig:heatmapfractionv1}
   	\end{center}
 \end{figure}
+
+\clearpage
 
 El análisis visual más revelador es el de la figura~\ref{fig:defectsperday}. El 19 de marzo de 2020 se decretó la cuarentena debido a la pandemia provocada por el virus \textit{SARS-CoV-2}, por tanto no se fabricaron vehículos. Los defectos registrados durante esa fecha y el reinicio de la producción en junio se deben a la recuperación de vehículos por retoques. Por esto para que el flujo de los datos hacía el modelo sea continuo solo se tomará desde junio a diciembre (6 meses).
 
@@ -2644,6 +2785,8 @@ El análisis visual más revelador es el de la figura~\ref{fig:defectsperday}. E
   	\end{center}
 \end{figure}
 
+\clearpage
+
 Aún así, no podemos notar un patrón especifico debido al ruido, por consiguiente incrementamos la ventana de tiempo a una semana (fig.~\ref{fig:defectsperweek}). Afortunadamente para nuestro modelo (aunque la escala del eje de ordenadas es logarítmico) la cantidad de defectos \texttt{V2} sigue la curva de \texttt{V1} de forma muy similar. Esto es positivo ya que podemos intuir que existe una correlación entre los mismos del cúal nuestro modelo podrá obtener provecho.
 
 \begin{figure}[H]
@@ -2654,6 +2797,8 @@ Aún así, no podemos notar un patrón especifico debido al ruido, por consiguie
   	\end{center}
 \end{figure}
 
+\clearpage
+
 Si al gráfico anterior lo desglosamos por auditoria y gravedad (fig.~\ref{fig:defectsperaudigvdweek}) veremos que en las demás auditorias que no sean \texttt{DPU} no hay patrones claros definidos, una de las causas es la baja densidad de datos disponibles.
 
 \begin{figure}[H]
@@ -2663,6 +2808,8 @@ Si al gráfico anterior lo desglosamos por auditoria y gravedad (fig.~\ref{fig:d
   	\label{fig:defectsperaudigvdweek}
   	\end{center}
 \end{figure}
+
+\clearpage
 
 \subsubsection{\href{https://github.com/GeraCollante/tesis-icomp-machinelearning/blob/main/DataImputation.ipynb}{\color{blue}Imputación de datos}}
  
@@ -2683,6 +2830,8 @@ Como se observa en la fig.~\ref{fig:missingvalue}, los datos faltantes no son de
 Dado que el proceso de imputación no es crítico, se optó por utilizar la librería \textit{sk-learn} (en lugar de redes neuronales) que nos provee de algoritmos ya implementados. Además nos permite a través de \textit{pipelines} realizar un preprocesamiento de los datos para posteriormente entrenar al modelo.
 
 Luego de revisar los valores faltantes se decidió utilizar como estimador diversos tipos de clasificadores para así seleccionar el de mejor rendimiento, para posteriormente rellenar los valores.
+
+\clearpage
 
 Los siguientes clasificadores fueron seleccionados:
 
@@ -2713,6 +2862,8 @@ Una iteración de \texttt{KFCV} se realiza de la siguiente manera:
 	\item Luego, se entrena un modelo en el \textit{trainset} y se evalúa su precisión en el \textit{testset}. 
 	\item El entrenamiento y la evaluación del modelo se repiten $K$ veces, y cada uno de los $K$ subconjuntos se utiliza exactamente una vez como \textit{trainset}.
 \end{enumerate}
+
+\clearpage
 
 En la fig.~\ref{fig:kfolds} se ejemplifica parte del proceso.
 
@@ -2755,6 +2906,8 @@ En la fig.~\ref{fig:corrmatrix} pondremos atención sobre las dos \textit{featur
 	\item \texttt{UET}: aquí las relaciones están mucho más difusas, por tanto usaremos \textit{features} que estén en las filas a las cuales queremos predecir su \texttt{UET}. Por tanto se seleccionó \texttt{ELE}, \texttt{INC}, \texttt{LOC}, \texttt{GVD} y \texttt{TIPO}.
 \end{itemize}
 
+\clearpage
+
 En nuestro caso debido a que todas las \textit{features} son de tipo categoría usamos la codificación \texttt{one-hot encoder}, como observamos en la fig.~\ref{fig:sklearn}.
 
 \begin{figure}[H]
@@ -2768,6 +2921,14 @@ En nuestro caso debido a que todas las \textit{features} son de tipo categoría 
 \textbf{Predicción de \texttt{TIPO}}
 
 El tiempo de ejecución se considera un parámetro importante debido a que si nuestro \textit{dataset} creciera y poseemos el mismo poder de cómputo quizás deberíamos optar por entrenar un modelo que dé un buen rendimiento por poco tiempo de entrenamiento, \textit{e.g.} \texttt{DTC} (fig.~\ref{fig:modeltxtipo}).
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tipotimes.png}
+  	\caption{Gráfico de caja del rendimiento de cada modelo para \texttt{TIPO}.}
+  	\label{fig:modeltxtipo}
+  	\end{center}
+\end{figure}
 
 \begin{table}[H]
 \centering
@@ -2786,14 +2947,6 @@ El tiempo de ejecución se considera un parámetro importante debido a que si nu
 \label{tab:classifiers-table}
 \end{table}
 
-\begin{figure}[H]
-	\begin{center}
-	\includegraphics[width=1\textwidth]{tipotimes.png}
-  	\caption{Gráfico de caja del rendimiento de cada modelo para \texttt{TIPO}.}
-  	\label{fig:modeltxtipo}
-  	\end{center}
-\end{figure}
-
 Los resultados de rendimiento de cada modelo se presentan en el cuadro~\ref{tab:classifiers-table} y los interpretaremos de manera visual en la fig.~\ref{fig:boxplotmodeltype}. Hay una leve ventaja de \texttt{RandomForestClassifier} por sobre los demás modelos, así que será el seleccionado para imputar los datos faltantes de \texttt{TIPO}.
 
 \begin{figure}[H]
@@ -2804,6 +2957,8 @@ Los resultados de rendimiento de cada modelo se presentan en el cuadro~\ref{tab:
   	\end{center}
 \end{figure}
 
+\clearpage
+
 \textbf{Predicción de \texttt{UET}}
 
 Utilizando un \textit{miniset} (\textit{i.e.} una fracción de nuestro \textit{dataset}) se fueron probando diferentes \textit{features} para nuestro modelo (debido a que las pruebas requieren menor tiempo de cálculo y se supone que la muestra representa al menos la mayor parte del \textit{dataset}). Tener en cuenta que para que este enfoque funcione es necesario setear el \texttt{random-state} de las funciones con una \textit{seed} que es un número entero, el propósito de esto es quitar el componente de azar de los modelos y poder realizar las pruebas sobre los mismos datos.
@@ -2813,6 +2968,14 @@ Los mejores rendimientos se obtenían con \texttt{ELE}, \texttt{INC} y \texttt{L
 Una vez más \texttt{DTC} logra la mejor relación entre tiempo de entrenamiento y rendimiento como detallamos en la fig.~\ref{fig:timesmodeluet}. Si nos basamos en rendimiento, \texttt{RFC} es superior (fig.~\ref{fig:perfmodeluet}).
 
 Finalmente imputaremos los datos en nuestro dataset con el mejor clasificador para cada \textit{feature}, materializando la idea de completar los datos faltantes.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{tesis_71.png}
+  	\caption{Gráfico de caja del rendimiento de cada modelo para \texttt{TIPO}.}
+  	\label{fig:timesmodeluet}
+  	\end{center}
+\end{figure}
 
 \begin{table}[H]
 \centering
@@ -2833,19 +2996,13 @@ Finalmente imputaremos los datos en nuestro dataset con el mejor clasificador pa
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=1\textwidth]{tesis_71.png}
-  	\caption{Gráfico de caja del rendimiento de cada modelo para \texttt{TIPO}.}
-  	\label{fig:timesmodeluet}
-  	\end{center}
-\end{figure}
-
-\begin{figure}[H]
-	\begin{center}
 	\includegraphics[width=1\textwidth]{tesis_72.png}
   	\caption{Gráfico de caja del rendimiento de cada modelo para \texttt{TIPO}.}
   	\label{fig:perfmodeluet}
   	\end{center}
 \end{figure}
+
+\clearpage
 
 \subsubsection{\href{https://github.com/GeraCollante/tesis-icomp-machinelearning/blob/main/DataFormatting.ipynb}{\color{blue}Formateo de datos}}
 
@@ -2873,6 +3030,8 @@ Por esta razón se tomarán las siguientes consideraciones:
 	\item quitar horarios no laborales.
 \end{itemize}
 
+\clearpage
+
 En la Fig.~\ref{fig:graf_inter_antes} donde aplicamos la función escalón, notamos los huecos que tenemos en nuestra serie, por ello se aplicarán diversas funciones sobre la misma para obtener la serie continua deseada.
 
 \begin{figure}[H]
@@ -2882,6 +3041,8 @@ En la Fig.~\ref{fig:graf_inter_antes} donde aplicamos la función escalón, nota
   	\label{fig:graf_inter_antes}
   	\end{center}
 \end{figure}
+
+\clearpage
 
 Una vez aplicado los filtros necesarios obtenemos la siguiente serie de la Fig.~\ref{fig:graf_cantdef_desp}. En la Fig.~\ref{fig:graf_inter_desp} si bien siguen apareciendo ceros, aparecen en menmor cantidad siendo originados en horarios de producción mínima como el horario de inicio y finalización.
 
@@ -2971,6 +3132,8 @@ dónde:
 
 Sin embargo esta métrica no nos será de utilidad ya que si alguno de los valores reales es $0$ (como sucede) entonces el valor será incalculable por la división por $0$. 
 
+\clearpage
+
 \subsubsection{\texttt{MASE}}
 En el pronóstico de series temporales, el \texttt{MASE} es el error medio absoluto escalado (\textit{Mean Absolute Scaled Error}). Es una métrica para determinar la efectividad de los pronósticos generados a través de un algoritmo al comparar las predicciones con el resultado de un enfoque de pronóstico ingenuo o \textit{naive forecast}. \citep{MASE}
 
@@ -2999,18 +3162,20 @@ Para determinar la efectividad de un algoritmo de pronóstico, el \texttt{MASE} 
 \end{enumerate}
 
 \textbf{Características}
-\begin{itemize}[noitemsep, topsep=2pt]
+\begin{itemize}%[noitemsep, topsep=2pt]
 	\item \texttt{MASE} da una indicación de la eficacia del algoritmo de pronóstico con respecto a un \textit{naive forecast}. Un valor mayor a uno indica que el algoritmo está funcionando mal en comparación al \textit{naive forecast}.
 
 	\item \texttt{MASE} es inmune al problema que enfrenta \texttt{MAPE} cuando la salida de la serie de tiempo real en cualquier paso de tiempo es cero. Sin embargo, se observa que para una serie de tiempo con todos los valores iguales a cero en todos los pasos, la salida de \texttt{MASE} tampoco se definirá, pero tales series de tiempo no son realistas.
 	
-	\item \texttt{MASE} es independiente de la escala del pronóstico, ya que se define utilizando la proporción de errores en el pronóstico. Esto significa que los valores de \texttt{MASE} serán similares si pronosticamos series de tiempo de alto valor, como el número de paquetes de tráfico de Internet que cruzan un router por hora, en comparación con el número de peatones que cruzan un semáforo ocupado cada hora.
+	\clearpage	
+	
+	\item \texttt{MASE} es independiente de la escala del pronóstico, ya que se define utilizando la proporción de errores. Esto significa que los valores de \texttt{MASE} serán similares si pronosticamos series de tiempo de alto valor, como el número de paquetes de tráfico de Internet que cruzan un router por hora, en comparación con el número de peatones que cruzan un semáforo ocupado cada hora.
 \end{itemize}
 
 \subsection{\textit{Framework}}
 
 Al momento de definir el \textit{framework} de \textit{Machine Learning} podemos encontrar 2 alternativas que se disputan el mayor porcentaje del mercado:
-\begin{itemize}
+\begin{itemize}[noitemsep, topsep=2pt]
 	\item \textit{TensorFlow}: es una biblioteca de código abierto para aprendizaje automático a través de un rango de tareas, y desarrollado por \textit{Google} para satisfacer sus necesidades de sistemas capaces de construir y entrenar redes neuronales para detectar y descifrar patrones y correlaciones, análogos al aprendizaje y razonamiento usados por los humanos. Usualmente se utiliza como \textit{back-end} de otro \textit{framework} llamado \textit{Keras} que posee una API más amigable con el usuario.
 	\item \textit{PyTorch}: es una biblioteca de aprendizaje automático​ de código abierto basada en la biblioteca de \textit{Torch}, utilizado para aplicaciones que implementan cosas como visión artificial y procesamiento de lenguajes naturales, principalmente desarrollado por el Laboratorio de Investigación de Inteligencia Artificial​ de \textit{Facebook}.
 \end{itemize}
@@ -3059,6 +3224,8 @@ En la figura~\ref{fig:layer_types} podemos observar las capas disponibles para c
   	\label{fig:layer_types}
   	\end{center}
 \end{figure}
+
+\clearpage
 
 Detallaremos los hiperpárametros que será posible \textit{tunear} de cada capa.
 
@@ -3155,7 +3322,7 @@ Recordar que la métrica \texttt{val\_loss} será aplicada sobre el set de valid
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=1\textwidth]{tvt_pollution.png}
+	\includegraphics[width=0.9\textwidth]{tvt_pollution.png}
   	\caption{\textit{Dataset} de contaminación del aire.}
   	\label{fig:tvt_pollution}
   	\end{center}
@@ -3170,7 +3337,7 @@ Y definiremos \texttt{HORIZON} como al horizonte de pronóstico, \textit{i.e.} l
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.9\textwidth]{time-shift.pdf}
+	\includegraphics[width=0.55\textwidth]{time-shift.pdf}
   	\caption{Desplazamiento temporal visualizado.}
   	\label{fig:shift_explain}
   	\end{center}
@@ -3187,7 +3354,7 @@ Veremos en una perspectiva más amplia el funcionamiento de nuestro modelo para 
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.75\textwidth]{unihorizon-model.pdf}
+	\includegraphics[width=0.46\textwidth]{unihorizon-model.pdf}
   	\caption{Modelo de horizonte único.}
   	\label{fig:unihorizon_model}
   	\end{center}
@@ -3201,7 +3368,7 @@ Debemos contar con dos capas \texttt{encoder} y \texttt{decoder}, donde una se e
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=1\textwidth]{multihorizon-model.pdf}
+	\includegraphics[width=0.9\textwidth]{multihorizon-model.pdf}
   	\caption{Modelo de horizonte múltiple.}
   	\label{fig:multihorizon_model}
   	\end{center}
@@ -3233,6 +3400,8 @@ Además cuando veamos los resultados de los modelos de horizonte único notaremo
 \label{tab:multi-horizon-results}
 \end{table}
 
+\clearpage
+
 \subsubsection{Resultados}
 Se entrenaron los 4 modelos principales (posteriormente se mostrarán los resultados de la \texttt{CNN} causal dilatada, ya que requiere un tratamiento diferente). Los siguientes hiper-parámetros se seleccionaron luego de varios ensayos donde se comprobó que como valores estándar tenían un rendimiento aceptable:
 \begin{itemize}[noitemsep, topsep=2pt]
@@ -3254,6 +3423,8 @@ Se obtuvieron los resultados de la fig.~\ref{fig:training_plot}. Los saltos que 
   	\end{center}
 \end{figure}
 
+\clearpage
+
 Para el entrenamiento de modelos compuestos exclusivamente de capas \texttt{CNN} dilatadas causales se utilizaron los siguientes hiper-parámetros:
 \begin{itemize}[noitemsep, topsep=2pt]
 	\item \texttt{KERNEL\_SIZE}=$2$
@@ -3261,11 +3432,11 @@ Para el entrenamiento de modelos compuestos exclusivamente de capas \texttt{CNN}
 	\item \texttt{dilation\_rate}=$i^2$ dónde $i \in \mathbb{N}: 1 \leq i \leq 8$.
 \end{itemize}
 
-En la fig.~\ref{fig:train_cnn} representamos , en las cuáles fuimos variando en cada modelo el valor de \texttt{dilation\_rate}.
+En la fig.~\ref{fig:train_cnn} representamos cada uno de los entrenamientos de los modelos, en los cuáles fuimos variando en cada modelo el valor de \texttt{dilation\_rate}.
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=1\textwidth]{train_cnn.png}
+	\includegraphics[width=0.9\textwidth]{train_cnn.png}
   	\caption{Resultados de entrenamiento de los modelos \texttt{CNN}.}
   	\label{fig:train_cnn}
   	\end{center}
@@ -3299,7 +3470,7 @@ En la tabla~\ref{tab:metrics-models} y en la fig.~\ref{fig:mase_per_model} verif
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.75\textwidth]{mase_per_model.png}
+	\includegraphics[width=0.65\textwidth]{mase_per_model.png}
   	\caption{\texttt{MASE} por modelo.}
   	\label{fig:mase_per_model}
   	\end{center}
@@ -3314,6 +3485,8 @@ Para una mejor visualización de los resultados, en la fig.~\ref{fig:fore_best_m
   	\label{fig:fore_best_model}
   	\end{center}
 \end{figure}
+
+\clearpage
 
 \subsection{Ajuste de hiperparámetros}
 
@@ -3371,6 +3544,8 @@ La librería se compone de diversas clases y métodos que nos permitirán ajusta
 
 Sirve como contenedor de hiperparámetros, una instancia de \texttt{HyperParameters} contiene información sobre el espacio de búsqueda y los valores actuales de cada hiperparámetro.
 
+\clearpage
+
 Además nos provee diversos métodos para decidir de que manera queremos explorar el espacio de búsqueda de un determinado hiperparámetro:
 
 \begin{itemize}[noitemsep, topsep=2pt]
@@ -3402,6 +3577,8 @@ Su propósito es realizar la búsqueda de hiperparámetros en el espacio de bús
 		\item \texttt{hyperband\_iterations}: el número de veces que se iterará sobre el algoritmo \textit{Hyperband} completo. Una iteración ejecutará aproximadamente $s_{max}(\log_{\eta} s_{max})^2$ épocas acumulativas en todas las pruebas (notación tomada de la sección \ref{hyperband}). Se recomienda establecer esto en un valor tan alto como esté dentro de su presupuesto de recursos.
 	\end{itemize}
 \end{itemize}
+
+\clearpage
 
 \subsubsection{Espacio de búsqueda}
 Para cada tipo de modelo se definió un espacio de búsqueda determinado en función a su arquitectura.
@@ -3444,6 +3621,8 @@ for lr in [1e-2, 1e-3, 1e-4]:
 	model_lr = lr
 \end{python}
 
+\clearpage
+
 \textbf{\texttt{CNNRNN}}
 
 Se realizó una configuración mixta de los hiperparámetros de las otras arquitecturas, dónde la única novedad es la búsqueda en los hiperparámetros de la capa \texttt{MaxPooling1D}.
@@ -3475,6 +3654,8 @@ for i in range(8,256,16):
 for lr in [1e-2, 1e-3, 1e-4]:
 	model_lr = lr
 \end{python}
+
+\clearpage
 
 \subsubsection{Resultados \textit{dataset} polución}
 
@@ -3523,7 +3704,7 @@ Ya definido el espacio de búsqueda de los modelos, se procede a la búsqueda de
 
 Se pondrá atención en los rendimientos por arquitectura de ambos algoritmos de ajuste de hiperparámetros utilizados discriminando los análisis por las dos métricas propuestas (\texttt{MAE} y \texttt{MASE}). 
 
-\hfill
+\clearpage
 
 \textbf{\texttt{MAE}}
 
@@ -3548,6 +3729,8 @@ algo/model & \texttt{CNN} & \texttt{CNNGRU} & \texttt{CNNLSTM} & \texttt{GRU} & 
   	\label{fig:algo_comparison_mae}
   	\end{center}
 \end{figure}
+
+\clearpage
 
 \textbf{\texttt{MASE}}
 
@@ -3575,6 +3758,8 @@ algo/model & \texttt{CNN} & \texttt{CNNGRU} & \texttt{CNNLSTM} & \texttt{GRU} & 
   	\end{center}
 \end{figure}
 
+\clearpage
+
 En la fig.~\ref{fig:best_model_hp} podemos notar la excelente precisión del modelo al predecir los instantes \texttt{t+1}, convaleciendo de manera visual el análisis realizado.
 
 \begin{figure}[H]
@@ -3590,16 +3775,14 @@ Para destacar la utilidad del ajuste de hiperparámetros recordemos la tabla~\re
 \subsubsection{Conclusión}
 Si bien el ajuste de hiperparámetros es más costoso computacionalmente que el entrenamiento de los modelos, si la necesidad radica en obtener el mejor modelo posible con nuestros recursos definitivamente es un paso indispensable.
 
+\clearpage
+
 \subsubsection{Resultados \textit{dataset} FSI}
 Los mismos procedimientos realizados sobre nuestra \textit{dummy data} serán aplicados a nuestro \textit{dataset} de \texttt{FSI}.
 
 Los modelos obtenidos sin búsqueda de hiperparámetros arrojan los resultados de la tabla~\ref{tab:score_table_fsi} que son interpretados visualmente en la fig.~\ref{fig:mase_per_model_fsi}. Si comparamos los gráficos entre ambos \textit{datasets}, tenemos un rendimiento 8 veces peor en promedio (\texttt{MAE}) que con el \textit{dataset} de polución, esto claramente repercutirá en la precisión de pronóstico de nuestros modelos.
 
-El mejor modelo con un \texttt{MASE} de 0.626 es \texttt{CNN-16} seguido de cerca por \texttt{CNNGRU}. Se observa que los modelos \texttt{LSTM} funcionan peor que los demás pero no podemos sacar conclusiones claras aún.
-
-De la fig.~\ref{fig:best_model_fsi} notamos que a nuestro modelo no tiene problemas en predecir mínimos pero le es casi imposible predecir máximos debido a los cambios abruptos de la serie temporal.
-
-\begin{table}[]
+\begin{table}[H]
 \centering
 \begin{tabular}{lcc}
 \hline
@@ -3623,11 +3806,15 @@ De la fig.~\ref{fig:best_model_fsi} notamos que a nuestro modelo no tiene proble
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.75\textwidth]{mase_per_model_fsi.png}
+	\includegraphics[width=0.63\textwidth]{mase_per_model_fsi.png}
   	\caption{\texttt{MASE} por modelo con \textit{dataset} FSI.}
   	\label{fig:mase_per_model_fsi}
   	\end{center}
 \end{figure}
+
+El mejor modelo con un \texttt{MASE} de 0.626 es \texttt{CNN-16} seguido de cerca por \texttt{CNNGRU}. Se observa que los modelos \texttt{LSTM} funcionan peor que los demás pero no podemos sacar conclusiones claras aún.
+
+De la fig.~\ref{fig:best_model_fsi} notamos que a nuestro modelo no tiene problemas en predecir mínimos pero le es casi imposible predecir máximos debido a los cambios abruptos de la serie temporal.
 
 \begin{figure}[H]
 	\begin{center}
@@ -3700,7 +3887,7 @@ algo/model & \texttt{CNN} & \texttt{CNNGRU} & \texttt{CNNLSTM} & \texttt{GRU} & 
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.8\textwidth]{model_vs_algo_hp_mae_fsi.png}
+	\includegraphics[width=0.67\textwidth]{model_vs_algo_hp_mae_fsi.png}
   	\caption{Comparación de algoritmos de ajuste de hiperpárametros por modelo y arquitectura utilizando como métrica \texttt{MAE}.}
   	\label{fig:algo_comparison_mae_fsi}
   	\end{center}
@@ -3724,7 +3911,7 @@ algo/model & \texttt{CNN} & \texttt{CNNGRU} & \texttt{CNNLSTM} & \texttt{GRU} & 
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.8\textwidth]{model_vs_algo_hp_mase_fsi.png}
+	\includegraphics[width=0.67\textwidth]{model_vs_algo_hp_mase_fsi.png}
   	\caption{Comparación de algoritmos de ajuste de hiperpárametros por modelo y arquitectura utilizando como métrica \texttt{MASE} para el \textit{dataset} FSI.}
   	\label{fig:algo_comparison_mase_fsi}
   	\end{center}
@@ -3750,6 +3937,8 @@ Como mencionamos anteriormente, para evitar la saturación en nuestra red variar
 	\item \textit{Scaler}: algoritmo de preprocesamiento de datos cuyo objetivo usualmente es lograr un \textit{dataset} más homogéneo y sin \textit{outliers}.
 	\item Factor de escala ($s_f$): simplemente multiplicaremos toda la red por este valor para obtener amplitudes menores.
 \end{itemize}
+
+\clearpage
 
 \textit{Scikit-learn} nos provee de varios \textit{scalers} pero seleccionamos los siguientes:
 \begin{itemize}[noitemsep, topsep=2pt]
@@ -3806,6 +3995,8 @@ Los resultados son esclarecedores, si bien seguimos sin llegar a los picos ahora
 \subsubsection{Conclusión}
 No siempre aplicar ajuste de hiperparámetros nos dará resultados mejores a los originales, ya que esto dependerá de cada serie temporal a pronosticar. Pero si intuimos lo que puede estar sucediendo en la red podemos desarrollar soluciones innovadoras.
 
+\clearpage
+
 \subsection{\href{https://github.com/GeraCollante/tesis-icomp-machinelearning/blob/main/EntropyModel.ipynb}{\color{blue}Entropía}}
 Intentaremos encontrar una causa al dispar rendimiento entre nuestro \textit{dataset} de polución del aire y el de defectos. Para ello haremos uso de lo revisado en la sección~\ref{sec:entropy}, dónde mencionamos que la entropía de los datos influye directamente en la capacidad de predicción de nuestros modelos. Mientras más entropía tengan los datos, más difícil será que el modelo pueda aprender correctamente sus patrones, si es que los hubiere.
 
@@ -3859,7 +4050,9 @@ La forma escalonada se debe a la baja densidad de datos en comparación al otro 
 \end{figure}
 
 \subsubsection{Comparación de \textit{datasets}}
-Tomaremos el mayor resultado de cada $m$ de cada modelo y algoritmo, conformando la tabla \ref{tab:dataset_comparison}. Interpretaremos estos valores a través de la fig.~\ref{fig:en_fsi}, que nos muestra que según $\textrm{ApEn}$ ambas series temporales muestran una entropía similar, cosa que podemos desmentir al visualizar los ploteos de cada una. Sin embargo, $\textrm{SampEn}$ nos ayuda a exponer de manera empírica que la entropía de la serie temporal de FSI es mayor a la de polución. En este caso $\textrm{SampEn}$ funcionó mejor que $\textrm{ApEn}$ a la hora de comparar la entropía de ambas series temporales.
+Tomaremos el mayor resultado de cada $m$ de cada modelo y algoritmo, conformando la tabla \ref{tab:dataset_comparison}. Interpretaremos estos valores a través de la fig.~\ref{fig:en_fsi}, que nos muestra que según $\textrm{ApEn}$ ambas series temporales muestran una entropía similar, cosa que podemos desmentir al visualizar los ploteos de cada una. 
+
+Sin embargo, $\textrm{SampEn}$ nos ayuda a exponer de manera empírica que la entropía de la serie temporal de FSI es mayor a la de polución. En este caso $\textrm{SampEn}$ funcionó mejor que $\textrm{ApEn}$ a la hora de comparar la entropía de ambas series temporales.
 
 \begin{table}[H]
 \centering
@@ -3889,7 +4082,7 @@ Tomaremos el mayor resultado de cada $m$ de cada modelo y algoritmo, conformando
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=1\textwidth]{fsi_vs_pollution.png}
+	\includegraphics[width=0.7\textwidth]{fsi_vs_pollution.png}
   	\caption{Gráfico de la entropía del \textit{dataset} FSI.}
   	\label{fig:en_fsi}
   	\end{center}
@@ -3897,10 +4090,36 @@ Tomaremos el mayor resultado de cada $m$ de cada modelo y algoritmo, conformando
 
 \clearpage
 
-\section{Conclusión}
-Ha sido un extenso camino dónde exploramos una vasta cantidad de conceptos y herramientas referidas al \textit{Machine Learning}, en el cual los obstáculos que fueron surgiendo nos obligaron a utilizar el ingenio para sortearlos. Valiosos conocimientos fueron adquiridos y con seguridad en un futuro serán beneficiosos para mi carrera profesional.
+\section{Conclusiones}
+El proceso de construcción del sistema de predicción de defectos, requirió el estudio y selección de las técnicas de inteligencia artificial apropiadas para la ejecución del proyecto, las cuales luego de un cuidadoso estudio se identificaron que las más aptas eran redes neuronales de dos tipos: convolucionales y recurrentes.
 
-El pronóstico de series temporales es un campo aún en proceso de exploración, a pesar de ello se procuró hacer uso de los algoritmos y técnicas más avanzadas para lograr los mejores resultados posibles. No obstante y con absoluta certeza nuevos mecanismos serán desarrollados, por tanto será labor del desarrollador avizorar hacía donde se dirige el estado del arte para perfeccionarse y estar a la vanguardia tecnológica en pro de ser un mejor profesional.
+La recolección de datos significó una ardua tarea ya que los mismos se encontraban dispersos en diversas fuentes. Con el análisis de datos, se identificaron que se montaron un total de 10780 vehículos, con una media de 19.6 defectos. Del total un 14.7\% pertenece a defectos graves y el resto a defectos leves. Por otro lado, se identificó que el departamento con mayor cantidad de defectos con más del 50\% es \texttt{PINTURA} y dentro de las familias fue \texttt{ASPECTO} con casi un 70\%. Por lo cual se distingue una gran correlación entre estas dos variables.
+
+La mayor proporción de defectos graves fue en la combinación \texttt{MONTAJE}-\texttt{FALTANTES}, denotando que la cantidad de defectos no está íntimamente relacionado con la gravedad de los mismos.
+
+Las técnicas de inteligencia artificial evaluadas originalmente si bien no fueron seleccionadas para el modelo definitivo, fueron de utilidad para imputar datos faltantes en las columnas \texttt{TIPO} y \texttt{UET} con una precisión del 99.73\% y 79.74\% respectivamente.
+
+Se especificó la arquitectura para cada modelo y las métricas para su evaluación. Cada modelo se entrenó con datos de prueba y datos objetivo para contrastar y verificar su correcta ejecución. El mínimo error obtenido para los datos de prueba utilizando como métrica \texttt{MASE} arrojó como resultado 27.75\% para un modelo convolucional-recurrente. Visualmente se constata que el modelo es capaz de predecir con exactitud los valores objetivo. Para los datos objetivo el error crece a 62.6\% siendo esto reflejado en los gráficos. 
+
+Se aplicó búsqueda de hiperparámetros a cada modelo para acceder a la máxima eficacia posible, limitando cada configuración a un espacio de búsqueda predefinido. El modelo convolucional-causal a través de hiperparámetros obtenidos mediante búsqueda bayesiana disminuyó el error a 20.80\% en los datos de prueba.
+
+Los modelos para los datos objetivo pese a que diversas estrategias fueron puestas a prueba en el preprocesamiento de datos solo lograron reducir el error en un pequeño porcentaje. El modelo recurrente con un \textit{scaler} \texttt{PowerTransformer} obtuvo el mejor desempeño con un error equivalente a 57.5\%.
+
+\clearpage
+
+Si bien los modelos de redes neuronales son potentes para el pronostico de series temporales, es factible que su rendimiento se vea afectado por la calidad de los datos. Un modo de estimar este aspecto es a través del cómputo de la entropía de la serie temporal, que nos brinda indicios de la condición de nuestros datos sin preocuparse por su origen. Consecuentemente se comprobó que la entropía en los datos objetivo era superior a la de los datos de prueba.
+
+El despliegue del modelo se enfrentaba a diversos inconvenientes técnicos. Uno de ellos fue la incapacidad de disponibilizar los datos en tiempo real debido a la necesidad de implementar sistemas de bases de datos de mayor accesibilidad y rendimiento. Inclusive era imprescindible construir una nueva infraestructura para soportar el \textit{pipeline} de datos, incurriendo en costos que la organización no consideraba solventar. En base a los puntos considerados previamente, desde una etapa temprana se determinó que este documento revestiría carácter de investigación.
+
+Para posibles trabajos futuros se sugiere tener en cuenta las siguientes recomendaciones:
+
+\begin{enumerate}[noitemsep, topsep=2pt]
+	\item Explorar en mayor profundidad el preprocesamiento de los datos constatando la repercusión de estos cambios en el desempeño del modelo.
+	\item Si la organización lo requiere, incluir metadata externa a nuestros datos originales para así obtener un \textit{dataset} más diverso.
+	\item Experimentar con otras herramientas \textit{open-source} disponibles para el pronóstico de series temporales.
+\end{enumerate}
+
+Desde un punto de vista funcional, los resultados han sido satisfactorios para el comitente, ya que los modelos cuentan con rendimientos adecuados para la naturaleza del problema abordado. En lo personal todo el recorrido a través del campo \textit{Machine Learning} ha sido muy satisfactorio, adquiriendo habilidades sobre herramientas muy valoradas profesionalmente.
 
 \clearpage
 
