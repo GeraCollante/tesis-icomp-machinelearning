@@ -32,7 +32,7 @@
 \useunder{\uline}{\ul}{}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
-\author{Gerardo A. COLLANTE \\ email: \href{mailto:gerardo.collante@unc.edu.ar}{gerardo.collante@unc.edu.ar} \\ cel: 54 (03574) 650490}
+\author{Gerardo A. COLLANTE \\ Matrícula: 39.022.782 \\ Email: \href{mailto:gerardo.collante@unc.edu.ar}{gerardo.collante@unc.edu.ar} \\ Cel: 54 (03574) 650490}
 
 \begin{document}
 
@@ -48,9 +48,9 @@
 	\par\vspace{0.5cm}
 	\vspace{0.5cm}
 	{\scshape\Large Proyecto Final Integrador\par}
-	\vspace{1.5cm}
+	\vspace{1cm}
 	{\large\bfseries ``Predicción de cantidad de defectos graves en vehículos utilitarios en planta automotriz'' \par}
-	\vspace{1.5cm}
+	\vspace{1cm}
 	%{\Large\bfseries Gerardo A. COLLANTE\par}
 	
 	\normalsize\@author\space
@@ -59,7 +59,8 @@
 	%{\normalsize \textbf{Correo institucional}: gerardo.collante@unc.edu.ar}
 	%{\normalsize \textbf{Matrícula}: 39.022.782}
 	
-	\vfill
+	%\vfill
+	\vspace{1cm}
 	\textbf{Supervisor}\par
 	Dr. Ing.~Orlando \textsc{Micolini}
 
@@ -99,7 +100,7 @@
 
 El \textit{machine learning} se ha erigido como un campo más en el mundo de las tecnologías de la información, sumado a su vertiginoso crecimiento y amparado bajo la constante mejora del \textit{hardware} ha hecho que su popularidad se dispare.
 
-Más allá del todo el \textit{marketing} que envuelve a la tecnología, es innegable que los años venideros y mejoras en todos los campos serán en gran parte a la IA. Por tanto en búsqueda de mejorar profesionalmente emprendí este proyecto para a través de la práctica y la teoría obtener las herramientas necesarias para poder aspirar a un puesto como ingeniero de inteligencia artificial una vez finalizada mi etapa universitaria.
+Más allá del todo el \textit{marketing} que envuelve a la tecnología, es innegable que una gran proporción de  las mejoras en todos los campos se deberán al avance de la inteligencia artificial en cada uno de ellos. Por tanto en búsqueda de mejorar profesionalmente emprendí este proyecto para a través de la práctica y la teoría obtener las herramientas necesarias para poder aspirar a un puesto como ingeniero de inteligencia artificial una vez finalizada mi etapa universitaria.
 
 \clearpage
 
@@ -111,7 +112,7 @@ Crear un modelo de \textit{Machine Learning} cuyo fin será el pronóstico de la
 \begin{itemize}
 	\item \textbf{Clasificación de modelos de inteligencia artificial}
 	
-	Uno de los objetivos que tiene el arquitectura de computadoras es formar alumnos en el campo de la IA aplicada. Evaluar los diversos algoritmos disponibles de \textit{Machine Learning}, explorando todas las posibilidades en aras de identificar el modelo que mejor se adapte al problema a afrontar.
+	Uno de los objetivos que tiene el Laboratorio de Arquitectura de Computadoras es formar alumnos en el campo de la IA aplicada. Evaluar los diversos algoritmos disponibles de \textit{Machine Learning}, explorando todas las posibilidades en aras de identificar el modelo que mejor se adapte al problema a afrontar.
 	
 	\item \textbf{Redes neuronales \textit{feedforward}, convolucionales y recurrentes}
 	
@@ -127,7 +128,7 @@ Crear un modelo de \textit{Machine Learning} cuyo fin será el pronóstico de la
 	
 	\item \textbf{Entropía}
 	
-	Calcular de forma teórica la entropía de una serie temporal con la finalidad de cuantificar la cantidad de información.
+	Calcular de forma teórica la entropía de una serie de datos con la finalidad de cuantificar su aleatoriedad sin ser relevante su origen.
 	
 	\item \textbf{Desarrollo}
 	
@@ -169,7 +170,7 @@ Esta definición nos da la idea de que la IA es un sistema reactivo, que reaccio
   	\end{center}
 \end{figure}
 
-Por tanto el Aprendizaje Automático es la generación de un modelo de predicción de salida a partir de grandes cantidades de datos de entrada, realizando un tratamiento de los mismos a través de diferentes etapas bien definidas, como se pueden apreciar en la Fig.~\ref{fig:flowchartml.}, las cuales iremos desarrollando en diferentes secciones.
+Por tanto el Aprendizaje Automático es la generación de un modelo de predicción de salida a partir de grandes cantidades de datos de entrada, realizando un tratamiento de los mismos a través de varias etapas. La industria se ha encargado de definir agrupar las tareas de estas etapas en 3 roles como se pueden observar en la Fig.~\ref{fig:flowchartml.}, las cuáles se irán desarrollando en diferentes secciones.
 
 Es importante destacar la independencia del aprendizaje automático al momento de tomar decisiones a partir de los datos proporcionados sin intervención externa, es decir que no hay una especificación de reglas que dictan cómo deben ser tomadas estas decisiones. A su vez, los modelos obtenidos a partir de los algoritmos de \textit{Machine Learning} deben tener la capacidad de predecir a partir de nuevos datos, nunca antes procesados por el modelo, a esto se lo conoce como \textbf{generalización}. 
 
@@ -184,8 +185,6 @@ Para lograr este objetivo se aplican técnicas tales como normalización, reesca
 El aprendizaje supervisado es el enfoque más utilizado y comprendido para el aprendizaje automático, siendo ideal para tareas donde el modelo necesita predecir resultados. Implica una entrada y salida para cada pieza de datos en su \textit{dataset}. Por ejemplo, una entrada podría ser una imagen y la salida podría ser la respuesta a ``?`es esto un gato?''.
 
 Cada una de estas piezas de datos que alimentan el modelo se denominan \textit{features} (características), que son esencialmente una propiedad individual medible como puede ser la edad o el peso de una persona.
-
-\clearpage
 
 En el aprendizaje supervisado siempre hay una distinción entre el conjunto de entrenamiento o \textit{training} para el cual se nos proporciona la etiqueta (o \textit{label}), y el conjunto de prueba para el cual la etiqueta debe ser inferida. 
 
@@ -340,7 +339,7 @@ Enumeramos en la Fig.~\ref{fig:proconsreduxdim.} las ventajas y desventajas de l
 
 \subsubsection{\textit{Clustering}}
 
-El \textit{clustering} es una técnica que conceptualmente es simple de comprender, consiste agrupar objetos con características similares. Por lo tanto, obtenemos diferentes grupos llamados clústers, donde en cada uno de ellos están contenidos los datos que son más similares entre ellos que con los que pertenecen a otros clústers, obteniendo de esta forma una útil subdivisión del \textit{dataset}. Como no suele tenerse conocimiento sobre los datos, es decir no están etiquetados, esta técnica pertenece al Aprendizaje no Supervisado.
+El \textit{clustering} es una técnica que conceptualmente es simple de comprender, consiste en agrupar objetos con características similares. Por lo tanto, obtenemos diferentes grupos llamados clústers, donde en cada uno de ellos están contenidos los datos que son más similares entre ellos que con los que pertenecen a otros clústers, obteniendo de esta forma una útil subdivisión del \textit{dataset}. Como no suele tenerse conocimiento sobre los datos, es decir no están etiquetados, esta técnica pertenece al Aprendizaje no Supervisado.
 
 El algoritmo más simple de \textit{clustering} es K-means, el cual funciona para agrupar datos que se distribuyen en formas esféricas, si se usa la distancia euclídea. y a su vez hay que proporcionar la cantidad k de grupos en los cuales queremos distribuir el \textit{dataset}, por ello se debe tener un conocimiento previo de cuantos clúster se espera tener. 
 Otras alternativas pueden ser, realizar \textit{clustering} jerárquico o \textit{clustering} basados en densidades.
@@ -365,7 +364,7 @@ En cambio DBSCAN (\textit{Density-based Spatial Clustering of Applications with 
   	\end{center}
 \end{figure}
 
-Enumeramos en la Fig.~\ref{fig:proconsreduxdim.} las ventajas y desventajas de los algoritmos disponibles para esta tarea.
+Enumeramos en la Fig.~\ref{fig:proconsclustering.} las ventajas y desventajas de los algoritmos disponibles para esta tarea.
 
 \begin{figure}[H]
 	\begin{center}				
@@ -463,11 +462,10 @@ Nuestros cerebros están compuestos por aproximadamente 10 mil millones de neuro
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.6\textwidth]{019.png}
-  	\caption{Estructura de una neurona biológica.}
+  	\caption{Estructura de una neurona biológica. \citep{neurona_wiki}}
   	\label{fig:realneuron}
   	\end{center}
 \end{figure}
-
 
 Cada neurona recibe entradas electroquímicas de otras neuronas en sus dendritas. Si estas entradas eléctricas son lo suficientemente potentes como para activar la neurona, entonces la neurona activada transmite la señal a lo largo de su axón, transmitiéndola a las dendritas de otras neuronas. Estas neuronas unidas también pueden activarse, continuando así el proceso de transmitir el mensaje.
 La conclusión clave aquí es que el disparo de una neurona es una operación binaria: la neurona se dispara o no se dispara. No hay diferentes "grados" de disparo. En pocas palabras, una neurona solo se disparará si la señal total recibida en el soma excede un umbral dado.
@@ -513,7 +511,7 @@ Por ello se presentan en la Figura \ref{fig:typesfactivation} diferentes tipos d
 	\includegraphics[width=1\textwidth]{021.png}
   	\caption{\textbf{Arriba-izquierda}: Función escalón. \textbf{Arriba-derecha}: Función sigmoidea. \textbf{Medio-izquierda}: Tangente hiperbólica. \textbf{Medio-derecha}: activación ReLU (función activación más usada en \textit{Deep Learning}).
  \textbf{Abajo-izquierda}: Leaky ReLU, variante de ReLU que permite valores negativos. \textbf{Abajo-derecha}:
-ELU, otra variante de ReLU que obtiene mejor performance que Leaky ReLU.}
+Lineal, la primer función utilizada.}
   	\label{fig:typesfactivation}
   	\end{center}
 \end{figure}
@@ -563,7 +561,7 @@ Si bien hay muchas, muchas arquitecturas NN diferentes, la arquitectura más com
   	\end{center}
 \end{figure}
 
-En este tipo de arquitectura, solo se permite una conexión entre los nodos de los nodos en la capa $i$ a los nodos en la capa $i + 1$ (de ahí el término \textit{feedforward}). No hay conexiones hacia atrás o entre capas permitidas. Cuando las redes de retroalimentación incluyen conexiones de retroalimentación (conexiones de salida que retroalimentan las entradas) se denominan redes neuronales recurrentes.
+En este tipo de arquitectura, solo se permite una conexión entre los nodos; de los nodos en la capa $i$ a los nodos en la capa $i + 1$ (de ahí el término \textit{feedforward}). No hay conexiones hacia atrás o entre capas permitidas. Cuando las redes de retroalimentación incluyen conexiones de retroalimentación (conexiones de salida que retroalimentan las entradas) se denominan redes neuronales recurrentes.
 
 Para describir una red \textit{feedforward}, normalmente usamos una secuencia de enteros para depositar rápida y concisamente el número de nodos en cada capa. Por ejemplo, la red en la Figura 10.5 anterior es una red de alimentación directa 3-2-3-2:
 
@@ -612,7 +610,7 @@ J(\Theta)=\frac{\|\hat{y}-y\|^2}{2}
 \end{equation}
 Esta función se conoce como error al cuadrado . Simplemente tomamos la diferencia entre la salida real $y$ y la salida predicha $\hat{y}$ elevamos al cuadrado ese valor (de ahí el nombre) y lo dividimos entre 2.
 
-Una de las principales razones para preferir el error al cuadrado en lugar del error absoluto es que el error al cuadrado es diferenciable en todas partes , mientras que el error absoluto no lo es (su derivada no está definida en 0).
+Una de las principales razones para preferir el error al cuadrado en lugar del error absoluto es que el error al cuadrado es diferenciable en todas partes mientras que el error absoluto no lo es (su derivada no está definida en 0).
 
 Además, los beneficios de la cuadratura incluyen:
 \begin{itemize}[noitemsep, topsep=2pt]
@@ -721,7 +719,7 @@ Lo que veremos en esta sección es el flujo de gradientes a lo largo de la líne
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.65\textwidth]{024.png}
-  	\caption{Las activaciones se propagan hacía adelante, pero los gradientes fluyen hacía atrás.}
+  	\caption{Flujo de cálculo de las variables.}
   	\label{fig:back}
   	\end{center}
 \end{figure}
@@ -732,7 +730,7 @@ Primero descubrimos la derivada parcial de la salida $y$ con respecto a la varia
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.65\textwidth]{025.png}
+	\includegraphics[width=0.8\textwidth]{025.png}
   	\caption{Representación de grafo simple.}
   	\label{fig:func}
   	\end{center}
@@ -835,7 +833,7 @@ Se demostró desde un punto de vista matemático el concepto de \textit{backprop
 El descenso de gradiente puede ser excepcionalmente lento en datasets muy grandes ya que en cada iteración se requiere calcular una predicción por cada punto en nuestro \textit{dataset} de entrenamiento, antes que actualicemos nuestra matriz de pesos.
 
 En cambio lo que se utiliza es una variante de éste, el descenso de gradiente estocástico o \textit{Stochastic Gradient Descent (SGD)}.
-El SGD es una simple modificación del algoritmo de descenso de gradiente estándar que computa el gradiente y actualiza la matriz de pesos $W$ en pequeños lotes o \textit{batches} de datos de entrenamiento, en vez del \textit{dataset} entero. Mientras esta modificación nos lleva a actualizaciones más " ruidosas", también nos permite tomar más pasos a lo largo del gradiente, llevando en ultima instancia a una convergencia más rápida y sin afectar negativamente a la pérdida y precisión del modelo.
+El SGD es una simple modificación del algoritmo de descenso de gradiente estándar que computa el gradiente y actualiza la matriz de pesos $W$ en pequeños lotes o \textit{batches} de datos de entrenamiento, en vez del \textit{dataset} entero. Mientras esta modificación nos lleva a actualizaciones más "ruidosas", también nos permite tomar más pasos a lo largo del gradiente, llevando en ultima instancia a una convergencia más rápida y sin afectar negativamente a la pérdida y precisión del modelo.
 
 En lugar de calcular nuestro gradiente en todo el conjunto de datos, en su lugar muestreamos nuestros datos, produciendo un lote. Evaluamos el gradiente en el lote y actualizamos nuestra matriz de peso $W$. Desde una perspectiva de implementación, también tratamos de aleatorizar nuestras muestras de entrenamiento antes de aplicar SGD ya que el algoritmo es sensible a los lotes.
 
@@ -856,18 +854,18 @@ En general, el tamaño del mini lote no es un hiperparámetro por el que deberí
 El sobreajuste o \textit{overfitting} y la falta de ajuste o \textit{underfitting} \cite{quora} es muy importante para saber si el modelo predictivo está generalizando bien los datos o no. Un buen modelo debe poder generalizar bien los datos.
 
 \begin{figure}[H]
-	\begin{center}				
-	\includegraphics[width=0.8\textwidth]{026.png}
+	\begin{center}
+	\includegraphics[width=1\textwidth]{026.png}
   	\caption{Distintas representaciones del ajuste en un mismo modelo.}
   	\label{fig:fitting}
   	\end{center}
 \end{figure}
 
-En la Figura \ref{fig:fitting} \textbf{Izquierda} el modelo está sobreajustado, \textit{i.e.} cuando funciona bien en el ejemplo de entrenamiento pero no funciona bien en datos no vistos. A menudo es el resultado de un modelo excesivamente complejo y ocurre porque el modelo está memorizando la relación entre el ejemplo de entrada (a menudo llamado $X$) y la variable objetivo (a menudo llamada $y$) o, por lo tanto, no puede generalizar bien los datos. El modelo de sobreajuste predice el objetivo en el conjunto de datos de entrenamiento con mucha precisión.
+En la Figura \ref{fig:fitting} (derecha) el modelo está sobreajustado, \textit{i.e.} cuando funciona bien en el ejemplo de entrenamiento pero no funciona bien en datos no vistos. A menudo es el resultado de un modelo excesivamente complejo y ocurre porque el modelo está memorizando la relación entre el ejemplo de entrada (a menudo llamado $X$) y la variable objetivo (a menudo llamada $y$) o, por lo tanto, no puede generalizar bien los datos. El modelo de sobreajuste predice el objetivo en el conjunto de datos de entrenamiento con mucha precisión.
 
-En cambio en la Figura \ref{fig:fitting} \textbf{Derecha} se dice que el modelo predictivo tiene bajo-ajuste, si funciona mal en los datos de entrenamiento. Esto sucede porque el modelo no puede capturar la relación entre el ejemplo de entrada y la variable objetivo. Podría deberse a que el modelo es demasiado simple, es decir, las características de entrada no son lo suficientemente expresivas como para describir bien la variable objetivo. El modelo con bajo-ajuste no predice los objetivos en los conjuntos de datos de entrenamiento con mucha precisión.
+En cambio en la Figura \ref{fig:fitting} (izquierda) se dice que el modelo predictivo tiene bajo-ajuste, si funciona mal en los datos de entrenamiento. Esto sucede porque el modelo no puede capturar la relación entre el ejemplo de entrada y la variable objetivo. Podría deberse a que el modelo es demasiado simple, es decir, las características de entrada no son lo suficientemente expresivas como para describir bien la variable objetivo. El modelo con bajo-ajuste no predice los objetivos en los conjuntos de datos de entrenamiento con mucha precisión.
 
-Un buen modelo debe ser como el de la Figura \ref{fig:fitting} \textbf{Medio} que posee una buena precisión en su conjunto de datos de entrenamiento pero a su vez también tiene una buena \textit{performance} con datos que no haya visto.
+Un buen modelo debe ser como el de la Figura \ref{fig:fitting} (medio) que posee una buena precisión en su conjunto de datos de entrenamiento pero a su vez también tiene una buena \textit{performance} con datos que no haya visto.
 
 \clearpage
 
@@ -1002,11 +1000,11 @@ donde $u$ y $v$ abarcan todos los subíndices posibles para $a_{uv}$ y $b_{x-u+1
 
 Así como notamos que el algoritmo para la convolución 1D no era tan complejo como su definición formal, lo mismo sucede para la convolución 2D pero extrapolando el mecanismo a una dimensión más.
 
-En la Fig.~\ref{fig:conv2d} \citep{andrianaivo2019architecture} analizamos el procedimiento. Se debe centrar el kernel $K$ sobre el primer valor a calcular, para luego realizar las respectivas multiplicaciones y luego guardarlas en la matriz de salida $O$, de esta manera iremos iterando de derecha a izquierda y de arriba hacia abajo toda la matriz $I$.
+En la Fig.~\ref{fig:conv2d} \citep{andrianaivo2019architecture} analizamos el procedimiento. Se debe centrar el kernel $K$ sobre el primer valor a calcular, para luego realizar las respectivas multiplicaciones y luego guardarlas en la matriz de salida $O$, de esta manera iremos iterando de izquierda a derecha y de arriba hacia abajo toda la matriz $I$.
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.4\textwidth]{convolution2d.jpg}
+	\includegraphics[width=0.5\textwidth]{convolution2d.png}
   	\caption{Vectores de convolución bidimensional con kernel $3 \times 3$.}
   	\label{fig:conv2d}
   	\end{center}
@@ -1016,7 +1014,7 @@ Consideremos la Fig.~\ref{fig:conv2dimg} \citep{Saha2020Oct}, tenemos una imagen
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.70\textwidth]{imgrgb.png}
+	\includegraphics[width=0.45\textwidth]{imgrgb.png}
   	\caption{Imagen RGB $4 \times 4 \times 3$.}
   	\label{fig:conv2dimg}
   	\end{center}
@@ -1094,7 +1092,7 @@ Una capa o filtro puede tener varios \textit{kernels} que al convolucionar con e
   	\end{center}
 \end{figure}
 
-La diferencia entre filtro y \textit{kernel} es un poco complicada. A veces, se usan indistintamente, lo que podría crear confusiones. Esencialmente, estos dos términos tienen una sutil diferencia. Un "\textit{kernel}" se refiere a una matriz 2D de pesos. El término "filtro" se refiere a estructuras 3D de varios \textit{kernels} apilados juntos. Para un filtro 2D, el filtro es igual que el kernel. Pero para un filtro 3D y la mayoría de las convoluciones en el aprendizaje profundo, un filtro es una colección de \textit{kernels} (fig.~\ref{fig:layer-kernel}). Cada \textit{kernel} es único, enfatizando diferentes aspectos del canal de entrada.
+La línea que divide filtro y \textit{kernel} es un poco difusa. A veces, se usan indistintamente, lo que podría crear confusiones. Esencialmente, estos dos términos tienen una sutil diferencia. Un "\textit{kernel}" se refiere a una matriz 2D de pesos. El término "filtro" se refiere a estructuras 3D de varios \textit{kernels} apilados juntos. Para un filtro 2D, el filtro es igual que el kernel. Pero para un filtro 3D y la mayoría de las convoluciones en el aprendizaje profundo, un filtro es una colección de \textit{kernels} (fig.~\ref{fig:layer-kernel}). Cada \textit{kernel} es único, enfatizando diferentes aspectos del canal de entrada.
 
 \clearpage
 
@@ -1214,7 +1212,7 @@ En el núcleo de \textit{WaveNet} se encuentra la \textbf{capa de convolución c
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.8\textwidth]{causal-conv.png}
-  	\caption{Paso de la información a través de la capa de convolución causal dilatada.}
+  	\caption{Paso de la información a través de la capa de convolución causal dilatada. \citep{wavenet2}}
   	\label{fig:causal-conv}
   	\end{center}
 \end{figure}
@@ -1226,7 +1224,7 @@ Para asegurarnos de no hacer trampa de esta manera, ajustamos nuestro diseño de
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=1\textwidth]{stackcausal-conv.png}
-  	\caption{Visualización de una pila de capas causales convoluciones.}
+  	\caption{Visualización de una pila de capas causales convoluciones. \citep{wavenet2}}
   	\label{fig:stackcausal-conv}
   	\end{center}
 \end{figure}
@@ -1236,7 +1234,7 @@ Las convoluciones causales proporcionan la herramienta adecuada para manejar el 
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=1\textwidth]{dilated-conv.png}
-  	\caption{Visualización de una pila de capas causales convoluciones dilatadas.}
+  	\caption{Visualización de una pila de capas causales convoluciones dilatadas. \citep{wavenet2}}
   	\label{fig:dilated-conv}
   	\end{center}
 \end{figure}
@@ -1252,7 +1250,7 @@ En la figura~\ref{fig:dilated-conv}, puede ver cómo ahora solo necesitamos 4 ca
 \clearpage
 
 \section{Redes neuronales recurrentes}
-Anteriormente hemos visto cómo las redes neuronales o convolucionales nos permiten clasificar un dato, por ejemplo una palabra, un sonido, o una imagen, pero tienen un inconveniente, y es que cuando tenemos una secuencia de datos (\textit{e.g.} una secuencia de palabras o una secuencia de imágenes) este tipo de arquitecturas no pueden procesar ese tipo de datos. 
+Anteriormente hemos visto cómo las redes neuronales ó convolucionales nos permiten clasificar un dato, por ejemplo una palabra, un sonido, o una imagen, pero tienen un inconveniente, y es que cuando tenemos una secuencia de datos (\textit{e.g.} una secuencia de palabras o una secuencia de imágenes) este tipo de arquitecturas no pueden procesar ese tipo de datos. 
 
 Las Redes Neuronales Recurrentes \textit{(RNN)} \citep{karpathy:rnn} resuelven este inconveniente, porque son capaces de procesar diferentes tipos de secuencias, como textos, conversaciones, vídeos, música, y además de eso no sólo clasifican los datos como lo hacen las redes neuronales o convolucionales, sino que también poseen la capacidad de generar nuevas secuencias.
 
@@ -1274,12 +1272,12 @@ Las \textit{RNN} resuelven los inconvenientes expresados anteriormente, pues pue
 Para ello este tipo de redes usan el concepto de recurrencia: para generar la salida, que también se conoce como activación, la red usa no sólo la entrada actual sino la activación generada en la iteración previa. En pocas palabras, las redes neuronales recurrentes usan un cierto tipo de memoria para generar la salida deseada. 
 
 \subsection{Arquitecturas} \label{rnnarchitecture}
-Existen diversas arquitecturas disponibles para estas redes como observamos en la Figura~\ref{fig:rnnarch} \cite{karpathy:rnn}, donde cada rectángulo es un vector y cada fecha representa funciones. Los vectores de entrada están en rojo, los vectores de salida están en azul y los vectores verdes mantienen el estado de la \textit{RNN}.
+Existen diversas arquitecturas disponibles para estas redes como observamos en la Figura~\ref{fig:rnnarch}, donde cada rectángulo es un vector y cada fecha representa funciones. Los vectores de entrada están en rojo, los vectores de salida están en azul y los vectores verdes mantienen el estado de la \textit{RNN}.
 
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=1\textwidth]{rnnarch.jpg}
-  	\caption{Tipos de arquitecturas para una \textit{RNN}.}
+  	\caption{Tipos de arquitecturas para una \textit{RNN}. \cite{karpathy:rnn}}
   	\label{fig:rnnarch}
   	\end{center}
 \end{figure}
@@ -1311,12 +1309,12 @@ Además, las \textit{RNN} combinan el vector de entrada con su vector de estado 
 
 \subsection{Funcionamiento}
 
-Consideremos la Figura~\ref{fig:rnnunit} \citep{olahlstm}, aquí podemos observar como se define de manera gráfica una unidad funcional de una \textit{RNN} denominada $A$, que toma una entrada $x_t$ y genera un valor $h_t$.
+Consideremos la Figura~\ref{fig:rnnunit}, aquí podemos observar como se define de manera gráfica una unidad funcional de una \textit{RNN} denominada $A$, que toma una entrada $x_t$ y genera un valor $h_t$.
 
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.2\textwidth]{tesis_27.png}
-  	\caption{Unidad funcional de \textit{RNN}.}
+  	\caption{Unidad funcional de \textit{RNN}. \citep{olahlstm}}
   	\label{fig:rnnunit}
   	\end{center}
 \end{figure}
@@ -1328,7 +1326,7 @@ Una red neuronal recurrente se puede considerar como múltiples copias de la mis
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=0.9\textwidth]{tesis_28.png}
-  	\caption{Una \textit{RNN} desenrrollada.}
+  	\caption{Una \textit{RNN} desenrrollada. \citep{olahlstm}}
   	\label{fig:rnnunrolled}
   	\end{center}
 \end{figure}
@@ -1342,7 +1340,7 @@ En la Figura~\ref{fig:rnnunitv2} se observa que en cada instante de tiempo la re
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.5\textwidth]{rnnunitv2.png}
-  	\caption{Unidad funcional \textit{RNN} detallada.}
+  	\caption{Unidad funcional \textit{RNN} detallada. \citep{olahlstm}}
   	\label{fig:rnnunitv2}
   	\end{center}
 \end{figure}
@@ -1383,7 +1381,7 @@ Concretamente, codificaremos cada carácter en un vector usando la codificación
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.6\textwidth]{tesis_29.png}
-  	\caption{Unidad funcional \textit{RNN} detallada.}
+  	\caption{Visualización del flujo de información a través de una \textit{RNN}. \citep{karpathy:rnn}}
   	\label{fig:rnnexample}
   	\end{center}
 \end{figure}
@@ -1403,12 +1401,12 @@ Luego podemos realizar una actualización de parámetros, que empuja cada peso u
 Luego, repetimos este proceso una y otra vez hasta que la red converge y sus predicciones son finalmente consistentes con los datos de entrenamiento en el sentido de que los caracteres correctos siempre se predicen a continuación.
 
 \subsection{Entrenamiento}
-Para entrenar una \textit{RNN}, el truco simplemente es desenrrollarla a través del tiempo y simplemente usar \textit{backpropagation} (estrategia que recibe el nombre de \textit{backpropagation} a través del tiempo (\textit{BPTT})) como observamos en la Fig.~\ref{fig:BPTT} \citep{geron}.
+Para entrenar una \textit{RNN}, el truco simplemente es desenrrollarla a través del tiempo y simplemente usar \textit{backpropagation} (estrategia que recibe el nombre de \textit{backpropagation} a través del tiempo (\textit{BPTT})) como observamos en la Fig.~\ref{fig:BPTT}.
 
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.6\textwidth]{tesis_40.png}
-  	\caption{\textit{Backpropagation} a través del tiempo.}
+  	\caption{\textit{Backpropagation} a través del tiempo.\citep{geron}}
   	\label{fig:BPTT}
   	\end{center}
 \end{figure}
@@ -1424,12 +1422,12 @@ Finalmente los parámetros del modelo son actualizadas usando los gradientes cal
 
 Otra forma de alimentar una \textit{RNN} podría ser a través de las palabras individuales de una oración, dado que esto se realiza de forma secuencial, debemos proveerle de una palabra a la vez.
 
-En el ejemplo de la Fig.~\ref{fig:rnnvanishing1} intentaremos predecir la intención del usuario tomando como entrada la oración \texttt{"What time is it?"}. \citep{phi:rnn}.
+En el ejemplo de la Fig.~\ref{fig:rnnvanishing1} intentaremos predecir la intención del usuario tomando como entrada la oración \texttt{"What time is it?"}\citep{phi:rnn}.
 
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.5\textwidth]{vanishing1.png}
-  	\caption{\textit{RNN} siendo alimentada con las palabras de la oración.}
+  	\caption{\textit{RNN} siendo alimentada con las palabras de la oración. \citep{phi:rnn}}
   	\label{fig:rnnvanishing1}
   	\end{center}
 \end{figure}
@@ -1445,22 +1443,20 @@ En el ejemplo de la Fig.~\ref{fig:rnnvanishing1} intentaremos predecir la intenc
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.6\textwidth]{vanishing2.png}
-  	\caption{Predicción de la \textit{RNN}.}
+  	\caption{Predicción de la \textit{RNN}.\citep{phi:rnn}}
   	\label{fig:rnnvanishing2}
   	\end{center}
 \end{figure}
 
-Pero prestemos atención a la Fig.~\ref{fig:rnnvanishing3}. Es posible que haya notado la irregular distribución de colores en los estados ocultos. Eso es para ilustrar un inconveniente con los \textit{RNN} conocido como memoria a corto plazo, causado por el problema del desvanecimiento del gradiente, que también prevalece en otras arquitecturas de redes neuronales. A medida que el RNN procesa más pasos, tiene problemas para retener información de los pasos anteriores. 
+Pero prestemos atención a la Fig.~\ref{fig:rnnvanishing3}. Es posible que haya notado la irregular distribución de colores en los estados ocultos. Eso es para ilustrar un inconveniente con los \textit{RNN} conocido como memoria a corto plazo, causado por el problema del desvanecimiento del gradiente, que también prevalece en otras arquitecturas de redes neuronales. A medida que el RNN procesa más pasos, tiene problemas para retener información de los pasos anteriores.
 
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.2\textwidth]{vanishin3.png}
-  	\caption{Estado oculto final de la \textit{RNN}.}
+  	\caption{Estado oculto final de la \textit{RNN}.\citep{phi:rnn}}
   	\label{fig:rnnvanishing3}
   	\end{center}
 \end{figure}
-
-La memoria a corto plazo es 
 
 Como puede ver, la información de la palabra \texttt{"What"} y \texttt{"time"} es casi inexistente en el último paso. La memoria a corto plazo y el desvanecimiento del gradiente se deben a la naturaleza del algoritmo de \textit{back-propagation}.
 
@@ -1511,7 +1507,7 @@ La clave de los \texttt{LSTM} es el estado de la celda, la línea horizontal que
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=1\textwidth]{lstm1.png}
-  	\caption{Celda de estado.}
+  	\caption{Celda de estado. \citep{olahlstm}}
   	\label{fig:lstm1}
   	\end{center}
 \end{figure}
@@ -1525,7 +1521,7 @@ El primer paso es decidir qué información vamos a eliminar del estado de la ce
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.5\textwidth]{lstm2.png}
-  	\caption{Puerta del olvido.}
+  	\caption{Puerta del olvido. \citep{olahlstm}}
   	\label{fig:lstm2}
   	\end{center}
 \end{figure}
@@ -1539,7 +1535,7 @@ El siguiente paso es decidir qué nueva información almacenaremos en el estado 
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.5\textwidth]{lstm3.png}
-  	\caption{Puerta de entrada.}
+  	\caption{Puerta de entrada. \citep{olahlstm}}
   	\label{fig:lstm3}
   	\end{center}
 \end{figure}
@@ -1560,7 +1556,7 @@ Ahora es el momento de actualizar el estado de la celda anterior, $C_{(t-1)}$, a
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.5\textwidth]{lstm4.png}
-  	\caption{Actualización de la celda.}
+  	\caption{Actualización de la celda. \citep{olahlstm}}
   	\label{fig:lstm4}
   	\end{center}
 \end{figure}
@@ -1572,7 +1568,7 @@ $$C_{(t)} = f_{(t)} \otimes C_{(t-1)} + i_{(t)} \otimes g_{(t)}$$
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.5\textwidth]{lstm5.png}
-  	\caption{Puerta de salida.}
+  	\caption{Puerta de salida. \citep{olahlstm}}
   	\label{fig:lstm5}
   	\end{center}
 \end{figure}
@@ -1606,7 +1602,7 @@ Otra variante popular es la celda \texttt{GRU} (Unidad Recurrente Cerrada, \text
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.5\textwidth]{gru2.png}
-  	\caption{Celda \texttt{GRU}.}
+  	\caption{Celda \texttt{GRU}. \citep{olahlstm}}
   	\label{fig:lstm5}
   	\end{center}
 \end{figure}
@@ -1629,12 +1625,12 @@ $$h_{(t)}=z_{(t)} \otimes h_{(t-1)} + (1-z_{(t)}) \otimes g_{(t)}$$
 
 \subsection{Secuencias de entradas y salida}
 
-Si bien en la Sección~\ref{rnnarchitecture} ya desglosamos los diferentes tipos de arquitecturas que puede tener una \textit{RNN}, sería de utilidad ahora que ya poseemos un marco teórico aceptable describirlas un poco más y ejemplificar en que casos sería provechosa su utilización. Tomaremos como referencia la Figura~\ref{fig:rnnnets} \citep{geron}.
+Si bien en la Sección~\ref{rnnarchitecture} ya desglosamos los diferentes tipos de arquitecturas que puede tener una \textit{RNN}, sería de utilidad ahora que ya poseemos un marco teórico aceptable describirlas un poco más y ejemplificar en que casos sería provechosa su utilización. Tomaremos como referencia la Figura~\ref{fig:rnnnets}.
 
 \begin{figure}[H]
 	\begin{center}				
 	\includegraphics[width=0.80\textwidth]{tesis_42.png}
-  	\caption{\textbf{Superior-izquierda}: \textit{seq-to-seq}. \textbf{Superior-derecha}: \textit{sec-to-vector}. \textbf{Inferior-izquierda}: \textit{vector-to-sec}. \textbf{Inferior-derecha}: \textit{encoder-decoder}.}
+  	\caption{\textbf{Superior-izquierda}: \textit{seq-to-seq}. \textbf{Superior-derecha}: \textit{sec-to-vector}. \textbf{Inferior-izquierda}: \textit{vector-to-sec}. \textbf{Inferior-derecha}: \textit{encoder-decoder}. \citep{geron}}
   	\label{fig:rnnnets}
   	\end{center}
 \end{figure}
@@ -1704,7 +1700,7 @@ Este algoritmo también sufre el problema de la dimensionalidad para alcanzar un
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=1\textwidth]{grid_vs_search_v3.png}
+	\includegraphics[width=1\textwidth]{grid_vs_search_v4.png}
   	\caption{Comparación de \textit{Grid Search} vs \textit{Random Search}.}
   	\label{fig:grid_vs_search}
   	\end{center}
@@ -1733,7 +1729,7 @@ Construyamos un ejemplo hipotético de la función objetivo $c(x)$, o el costo d
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.7\textwidth]{bayes_opt_1.png}
+	\includegraphics[width=0.7\textwidth]{bayes_opt_1_v2.png}
   	\caption{Representación gráfica de la función $c(x)$.}
   	\label{fig:cx}
   	\end{center}
@@ -1743,7 +1739,7 @@ La optimización bayesiana aborda esta tarea mediante un método conocido como o
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.8\textwidth]{bayes_opt_2.png}
+	\includegraphics[width=0.8\textwidth]{bayes_opt_2_v2.png}
   	\caption{Función subrogada.}
   	\label{fig:bayes2}
   	\end{center}
@@ -1753,8 +1749,8 @@ Basándonos en la función subrogada, podemos identificar qué puntos son mínim
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.8\textwidth]{bayes_opt_3.png}
-  	\caption{Función subrogada.}
+	\includegraphics[width=0.8\textwidth]{bayes_opt_3_v2.png}
+  	\caption{Actualización de función subrogada.}
   	\label{fig:bayes3}
   	\end{center}
 \end{figure}
@@ -1774,7 +1770,7 @@ La función subrogada generalmente está representada por \textbf{procesos gauss
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=0.8\textwidth]{bayes_opt_4.png}
-  	\caption{Varias funciones generadas por procesos gaussianos para cuatro puntos de datos.}
+  	\caption{Varias funciones generadas por procesos gaussianos para cuatro puntos de datos. \citep{Ye2020Oct}}
   	\label{fig:bayes4}
   	\end{center}
 \end{figure}
@@ -1782,7 +1778,7 @@ La función subrogada generalmente está representada por \textbf{procesos gauss
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=0.8\textwidth]{bayes_opt_5.png}
-  	\caption{Las funciones agregadas.}
+  	\caption{Las funciones agregadas. \citep{Ye2020Oct}}
   	\label{fig:bayes5}
   	\end{center}
 \end{figure}
@@ -1832,7 +1828,7 @@ La función objetivo real es una función fija. Supongamos que se parece a la fi
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.7\textwidth]{bayes_opt_6.png}
+	\includegraphics[width=0.7\textwidth]{bayes_opt_6_v2.png}
   	\caption{Función objetivo real.}
   	\label{fig:bayes6}
   	\end{center}
@@ -1842,7 +1838,7 @@ Dado que calcular la métrica de nuestro modelo es costoso, digamos que solo ten
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.7\textwidth]{bayes_opt_7.png}
+	\includegraphics[width=0.7\textwidth]{bayes_opt_7_v2.png}
   	\caption{Muestras de la función objetivo real.}
   	\label{fig:bayes7}
   	\end{center}
@@ -1852,7 +1848,7 @@ Usando estas 10 muestras, necesitamos construir un modelo subrogado (también ll
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.55\textwidth]{bayes_opt_8.png}
+	\includegraphics[width=0.7\textwidth]{bayes_opt_8_v2.png}
   	\caption{Modelo subrogado.}
   	\label{fig:bayes8}
   	\end{center}
@@ -1870,7 +1866,7 @@ En la fig.~\ref{fig:bayes9} abajo, el tono verde es la función de adquisición 
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.50\textwidth]{bayes_opt_9.png}
+	\includegraphics[width=0.7\textwidth]{bayes_opt_9_v2.png}
   	\caption{\textbf{Arriba}: modelo subrogado. \textbf{Abajo:} función de adquisición.}
   	\label{fig:bayes9}
   	\end{center}
@@ -1917,14 +1913,14 @@ La secuencia se desarrolla de la siguiente manera:
 	\item Repita hasta alcanzar el número máximo de iteraciones. Al final, se devuelve el historial de (hiperparámetro, puntuación de función objetiva real). Tenga en cuenta que el último registro no es necesariamente el mejor puntaje logrado. Tendría que ordenar la puntuación para encontrar el mejor hiperparámetro.
 \end{itemize}
 
-En la (fig.~\ref{fig:rs_vs_bo}) \citep{automl-bohb} advertimos que tanto al inicio de la optimización bayesiana como de búsqueda aleatoria no hay mejoras. La optimización bayesiana necesita tiempo para la construcción de un buen modelo que conduzca a configuraciones de mejor rendimiento. Por tanto una vez que aumentamos los presupuestos, el modelo recopila cada vez más información sobre el espacio de búsqueda, lo que genera ventajas sobre la búsqueda aleatoria.
+En la fig.~\ref{fig:rs_vs_bo} advertimos que tanto al inicio de la optimización bayesiana como de búsqueda aleatoria no hay mejoras. La optimización bayesiana necesita tiempo para la construcción de un buen modelo que conduzca a configuraciones de mejor rendimiento. Por tanto una vez que aumentamos los presupuestos, el modelo recopila cada vez más información sobre el espacio de búsqueda, lo que genera ventajas sobre la búsqueda aleatoria \citep{automl-bohb}.
 
 %Ya que la Optimización Bayesiana necesita tiempo para construir un buen modelo que conducirá a configuraciones de mejor rendimiento, en su versión básica, se comporta de manera similar a la búsqueda aleatoria al principio. Sin embargo, con el aumento de los presupuestos,  (fig.~\ref{fig:rs_vs_bo}). \citep{automl-bohb}
 
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=1\textwidth]{comparison_rs_bo.png}
-  	\caption{Rendimiento de Búsqueda Aleatoria \textit{vs} Optimización Bayesiana.}
+  	\caption{Rendimiento de Búsqueda Aleatoria \textit{vs} Optimización Bayesiana. \citep{automl-bohb}}
   	\label{fig:rs_vs_bo}
   	\end{center}
 \end{figure}
@@ -2116,7 +2112,7 @@ Es importante clasificar nuestra serie temporal en alguna de estos dos ya que lo
 
 \subsubsection{Horizonte de pronóstico}
 
-El horizonte de pronóstico es el período de tiempo en el futuro para el cual se nos propusimos predecir. Estos generalmente varían desde horizontes de pronóstico a corto plazo (menos de tres meses) hasta horizontes a largo plazo (más de dos años).
+El horizonte de pronóstico es el período de tiempo en el futuro para el cual nos propusimos predecir. Estos generalmente varían desde horizontes de pronóstico a corto plazo (menos de tres meses) hasta horizontes a largo plazo (más de dos años).
 
 Sin embargo eso es una cuestión relativa a como fueron medidos los datos de nuestro \textit{dataset} (segundos, minutos, horas, días, etc). Dado que nuestro \textit{dataset} está indexado según la marca de tiempo (\textit{timestamp}) nosotros podemos decidir cuantos pasos hacía adelante vamos a realizar nuestra predicción.
 
@@ -2731,7 +2727,7 @@ Debido a la estructura jerárquica de la usina, si tenemos definido la UET a la 
 Una vez realizadas estas operaciones \textit{dataset} se encuentra en condiciones para su análisis.
 
 \subsubsection{\href{https://github.com/GeraCollante/tesis-icomp-machinelearning/blob/main/DataPlottingAndAnalysis.ipynb}{\color{blue}Análisis y visualización de datos}}
-Para obtener una perspectiva más amplia del problema de a tratar es conveniente analizar los datos disponibles. El \textit{dataset} se compone de $229934$ filas que cada una representa un defecto y 17 columnas.
+Para obtener una perspectiva más amplia del problema a tratar es conveniente analizar los datos disponibles. El \textit{dataset} se compone de $229934$ filas que cada una representa un defecto y 17 columnas.
 
 Algunas estadísticas \textit{grosso modo}, que podemos obtener:
 
@@ -2943,7 +2939,7 @@ En nuestro caso debido a que todas las \textit{features} son de tipo categoría 
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=0.45\textwidth]{tesis_74.png}
-  	\caption{Gráfico de caja del rendimiento de cada modelo para \texttt{TIPO}.}
+  	\caption{Gráfico de barras del rendimiento de cada modelo para \texttt{TIPO}.}
   	\label{fig:sklearn}
   	\end{center}
 \end{figure}
@@ -3074,7 +3070,7 @@ En la Fig.~\ref{fig:graf_inter_antes} donde aplicamos la función escalón, nota
 
 \clearpage
 
-Una vez aplicado los filtros necesarios obtenemos la siguiente serie de la Fig.~\ref{fig:graf_cantdef_desp}. En la Fig.~\ref{fig:graf_inter_desp} si bien siguen apareciendo ceros, aparecen en menmor cantidad siendo originados en horarios de producción mínima como el horario de inicio y finalización.
+Una vez aplicado los filtros necesarios obtenemos la siguiente serie de la Fig.~\ref{fig:graf_cantdef_desp}. En la Fig.~\ref{fig:graf_inter_desp} si bien siguen apareciendo ceros, aparecen en menor cantidad siendo originados en horarios de producción mínima como el horario de inicio y finalización.
 
 \begin{figure}[H]
 	\begin{center}
@@ -3140,7 +3136,7 @@ Los modelos serán creados combinando las diferentes capas que se han definido c
 
 \subsection{Métricas}
 
-Es importante definir métricas para determinar el rendimiento de nuestro modelo de una manera empírica, más allá de que nuestro modelos serán entrenados utilizando como métrica de pérdida \texttt{MAE} (error absoluto medio).
+Es importante definir métricas para determinar el rendimiento de nuestro modelo de una manera empírica, más allá de que nuestros modelos serán entrenados utilizando como métrica de pérdida \texttt{MAE} (error absoluto medio).
 
 \subsubsection{\texttt{MAPE}}
 
@@ -3207,7 +3203,7 @@ Para determinar la efectividad de un algoritmo de pronóstico, el \texttt{MASE} 
 Al momento de definir el \textit{framework} de \textit{Machine Learning} podemos encontrar 2 alternativas que se disputan el mayor porcentaje del mercado:
 \begin{itemize}[noitemsep, topsep=2pt]
 	\item \textit{TensorFlow}: es una biblioteca de código abierto para aprendizaje automático a través de un rango de tareas, y desarrollado por \textit{Google} para satisfacer sus necesidades de sistemas capaces de construir y entrenar redes neuronales para detectar y descifrar patrones y correlaciones, análogos al aprendizaje y razonamiento usados por los humanos. Usualmente se utiliza como \textit{back-end} de otro \textit{framework} llamado \textit{Keras} que posee una API más amigable con el usuario.
-	\item \textit{PyTorch}: es una biblioteca de aprendizaje automático​ de código abierto basada en la biblioteca de \textit{Torch}, utilizado para aplicaciones que implementan cosas como visión artificial y procesamiento de lenguajes naturales, principalmente desarrollado por el Laboratorio de Investigación de Inteligencia Artificial​ de \textit{Facebook}.
+	\item \textit{PyTorch}: es una biblioteca de aprendizaje automático​ de código abierto basada en la biblioteca de \textit{Torch}, utilizado para aplicaciones del campo de la visión artificial y del procesamiento natural del lenguaje, principalmente desarrollado por el Laboratorio de Investigación de Inteligencia Artificial​ de \textit{Facebook}.
 \end{itemize}
 
 Los datos recopilados por la página \textit{PapersWithCode} \citep{trendsML} en la fig.~\ref{fig:fw_market} nos muestra una clara tendencia de los investigadores a preferir \textit{PyTorch} sobre los demás \textit{frameworks}.
@@ -3790,7 +3786,7 @@ algo/model & \texttt{CNN} & \texttt{CNNGRU} & \texttt{CNNLSTM} & \texttt{GRU} & 
 
 \clearpage
 
-En la fig.~\ref{fig:best_model_hp} podemos notar la excelente precisión del modelo al predecir los instantes \texttt{t+1}, convaleciendo de manera visual el análisis realizado.
+En la fig.~\ref{fig:best_model_hp} podemos notar la excelente precisión del modelo al predecir los instantes \texttt{t+1}, justificando de manera visual el análisis realizado.
 
 \begin{figure}[H]
 	\begin{center}
