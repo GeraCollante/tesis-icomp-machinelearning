@@ -40,9 +40,8 @@
 
 \makeatletter
 \begin{titlepage}
-	
+		
 	{\scshape\LARGE Universidad Nacional de Córdoba \par}
-	%\vspace{1cm}
 	{\Large Facultad de Ciencias Exactas, Físicas y Naturales \par}
 	\vspace{0.5cm}
 	\centering
@@ -53,21 +52,18 @@
 	\vspace{1cm}
 	{\large\bfseries ``Predicción de cantidad de defectos graves en vehículos utilitarios en planta automotriz'' \par}
 	\vspace{0.5cm}
-	
+		
 	\textbf{Anexo}
 	\vspace{0.5cm}
-	
+		
 	\normalsize\@author\space
-	
-	%\vfill
-	
+		
 	\vspace{0.5cm}
 	\textbf{Supervisor}\par
 	Dr. Ing.~Orlando \textsc{Micolini}
-
+	
 	\vfill
-
-% Bottom of the page
+	
 	{\large \today\par}
 \end{titlepage}
 
@@ -78,9 +74,9 @@
 \section{Inteligencia Artificial}
 
 \begin{quote}
-  La \textit{Inteligencia Artificial (Artificial Intelligence)} se define como el estudio de los "agentes inteligentes", i.e. cualquier dispositivo que perciba su entorno y tome medidas que maximicen sus posibilidades de lograr con éxito sus objetivos.
-  
-  \hfill \citet{poole1998}
+	La \textit{Inteligencia Artificial (Artificial Intelligence)} se define como el estudio de los "agentes inteligentes", i.e. cualquier dispositivo que perciba su entorno y tome medidas que maximicen sus posibilidades de lograr con éxito sus objetivos.
+	  
+	\hfill \citet{poole1998}
 \end{quote}
 
 Esta definición nos da la idea de que la IA es un sistema reactivo, que reacciona a cambios externos y actúa en consecuencia.
@@ -88,9 +84,9 @@ Esta definición nos da la idea de que la IA es un sistema reactivo, que reaccio
 \subsection{Aprendizaje automático} \label{machinelearning}
 
 \begin{quote}
-  El \textit{aprendizaje automático (Machine Learning)} es el estudio científico de algoritmos y modelos estadísticos que los sistemas informáticos utilizan para realizar una tarea específica sin utilizar instrucciones explícitas, sino que se basan en patrones e inferencia. Es visto como un subcampo de inteligencia artificial. Los algoritmos de aprendizaje automático crean un modelo matemático basado en datos de muestra, conocidos como "datos de entrenamiento", para hacer predicciones o decisiones sin ser programado explícitamente para realizar la tarea.
-  
-  \hfill \citet{bishop2006pattern}
+	El \textit{aprendizaje automático (Machine Learning)} es el estudio científico de algoritmos y modelos estadísticos que los sistemas informáticos utilizan para realizar una tarea específica sin utilizar instrucciones explícitas, sino que se basan en patrones e inferencia. Es visto como un subcampo de inteligencia artificial. Los algoritmos de aprendizaje automático crean un modelo matemático basado en datos de muestra, conocidos como "datos de entrenamiento", para hacer predicciones o decisiones sin ser programado explícitamente para realizar la tarea.
+	  
+	\hfill \citet{bishop2006pattern}
 \end{quote}
 
 Es importante destacar la independencia del aprendizaje automático al momento de tomar decisiones a partir de los datos proporcionados sin intervención externa, es decir que no hay una especificación de reglas que dictan cómo deben ser tomadas estas decisiones. A su vez, los modelos obtenidos a partir de los algoritmos de \textit{Machine Learning} deben tener la capacidad de predecir a partir de nuevos datos, nunca antes procesados por el modelo, a esto se lo conoce como \textbf{generalización}. 
@@ -124,29 +120,29 @@ Un \textit{outlier} puede ser considerado como un dato atípico en un dataset o 
 Tipos de entornos en los que se produce la detección de anomalías:
 \begin{itemize}[noitemsep, topsep=2pt]
 	\item AD supervisada:
-	\begin{itemize}[noitemsep, topsep=2pt]
-		\item Las etiquetas están disponibles, tanto para casos normales como para casos anómalos.
-		\item En cierto modo, similar a minería de clases poco comunes o clasificación no balanceada.
-	\end{itemize}
+	      \begin{itemize}[noitemsep, topsep=2pt]
+	      	\item Las etiquetas están disponibles, tanto para casos normales como para casos anómalos.
+	      	\item En cierto modo, similar a minería de clases poco comunes o clasificación no balanceada.
+	      \end{itemize}
 	\item AD semi-supervisada (detección de novedades, \textit{Novelty Detection})
-	\begin{itemize}[noitemsep, topsep=2pt]
-		\item Durante el entrenamiento, solo tenemos datos normales.
-		\item El algoritmo aprende únicamente usando los datos normales.
-	\end{itemize}
+	      \begin{itemize}[noitemsep, topsep=2pt]
+	      	\item Durante el entrenamiento, solo tenemos datos normales.
+	      	\item El algoritmo aprende únicamente usando los datos normales.
+	      \end{itemize}
 	\item AD no supervisada (detección de \textit{outliers}, \textit{Outlier Detection})
-	\begin{itemize}[noitemsep, topsep=2pt]
-		\item No hay etiquetas y el conjunto de entrenamiento tiene datos normales y datos anómalos.
-		\item Asume que los datos anómalos son poco frecuentes.
-		\item Algunos ejemplos típicos de detección de anomalías pueden ser, cuando se quiere detectar intrusos en tráfico de red o bien detectar acciones fraudulentas en transacciones con tarjetas de crédito.
-	\end{itemize}
+	      \begin{itemize}[noitemsep, topsep=2pt]
+	      	\item No hay etiquetas y el conjunto de entrenamiento tiene datos normales y datos anómalos.
+	      	\item Asume que los datos anómalos son poco frecuentes.
+	      	\item Algunos ejemplos típicos de detección de anomalías pueden ser, cuando se quiere detectar intrusos en tráfico de red o bien detectar acciones fraudulentas en transacciones con tarjetas de crédito.
+	      \end{itemize}
 \end{itemize}
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=1\textwidth]{tesis_11.png}
-  	\caption{Ventajas y desventajas de los algoritmos de detección de anomalías.}
-  	\label{fig:proconsanomaly.}
-  	\end{center}
+		\includegraphics[width=1\textwidth]{tesis_11.png}
+		\caption{Ventajas y desventajas de los algoritmos de detección de anomalías.}
+		\label{fig:proconsanomaly.}
+	\end{center}
 \end{figure}
 
 \subsubsection{Reducción de dimensionalidad }
@@ -159,10 +155,10 @@ Uno de los modelos más conocidos y que requieren menor costo computacional es \
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.7\textwidth]{tesis_12.png}
-  	\caption{Reducción de dimensionalidad de 3D a 2D.}
-  	\label{fig:reduxdimension.}
-  	\end{center}
+		\includegraphics[width=0.7\textwidth]{tesis_12.png}
+		\caption{Reducción de dimensionalidad de 3D a 2D.}
+		\label{fig:reduxdimension.}
+	\end{center}
 \end{figure}
 
 En la Fig.~\ref{fig:reduxdimension.} \cite{trejoml} se muestra un ejemplo de cómo la reducción de dimensionalidad facilita la visualización de un dataset de alta dimensionalidad en una proyección de 1, 2 o 3 dimensiones.
@@ -171,10 +167,10 @@ Enumeramos en la Fig.~\ref{fig:proconsreduxdim.} las ventajas y desventajas de l
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=1\textwidth]{tesis_15.png}
-  	\caption{Pro y contras de algoritmos de reducción de dimensionalidad.}
-  	\label{fig:proconsreduxdim.}
-  	\end{center}
+		\includegraphics[width=1\textwidth]{tesis_15.png}
+		\caption{Pro y contras de algoritmos de reducción de dimensionalidad.}
+		\label{fig:proconsreduxdim.}
+	\end{center}
 \end{figure}
 
 \clearpage
@@ -190,30 +186,30 @@ En \textit{clustering} jerárquico, vemos como resultado un dendograma, es decir
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.6\textwidth]{tesis_16.png}
-  	\caption{Dendograma generado por \textit{clustering} jerárquico.}
-  	\label{fig:dendogram.}
-  	\end{center}
+		\includegraphics[width=0.6\textwidth]{tesis_16.png}
+		\caption{Dendograma generado por \textit{clustering} jerárquico.}
+		\label{fig:dendogram.}
+	\end{center}
 \end{figure}
 
 En cambio DBSCAN (\textit{Density-based Spatial Clustering of Applications with Noise}), divide el \textit{dataset} buscando las regiones densas de puntos, como podemos observar claramente en Fig.~\ref{fig:DBSCAN.}. Con esta técnica, tampoco especificamos el número de parámetros a priori, sino que se establecen hiperparámetros adicionales, como lo son la cantidad mínima de puntos y un radio $\epsilon$, para lograr un óptimo funcionamiento.
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.6\textwidth]{tesis_17.png}
-  	\caption{Clustering basado en densidades.}
-  	\label{fig:DBSCAN.}
-  	\end{center}
+		\includegraphics[width=0.6\textwidth]{tesis_17.png}
+		\caption{Clustering basado en densidades.}
+		\label{fig:DBSCAN.}
+	\end{center}
 \end{figure}
 
 Enumeramos en la Fig.~\ref{fig:proconsclustering.} las ventajas y desventajas de los algoritmos disponibles para esta tarea.
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=1\textwidth]{tesis_34.png}
-  	\caption{Pros y contras de los algoritmos de \textit{clustering}.}
-  	\label{fig:proconsclustering.}
-  	\end{center}
+		\includegraphics[width=1\textwidth]{tesis_34.png}
+		\caption{Pros y contras de los algoritmos de \textit{clustering}.}
+		\label{fig:proconsclustering.}
+	\end{center}
 \end{figure}
 
 \clearpage
@@ -223,36 +219,36 @@ En la Fig.~\ref{fig:maindiagram.} obtenemos una vista general sobre que hacer co
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=1\textwidth]{maindiagram.png}
-  	\caption{Diagrama general de algoritmos de aprendizaje supervisado y no supervisado.}
-  	\label{fig:maindiagram.}
-  	\end{center}
+		\includegraphics[width=1\textwidth]{maindiagram.png}
+		\caption{Diagrama general de algoritmos de aprendizaje supervisado y no supervisado.}
+		\label{fig:maindiagram.}
+	\end{center}
 \end{figure}
 
 \subsubsection{Algoritmos no supervisados}
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.8\textwidth]{dimreduxdiagram.png}
-  	\caption{Diagrama general de los algoritmos de reducción de dimensión.}
-  	\label{fig:dimreduxdiagram.}
-  	\end{center}
+		\includegraphics[width=0.8\textwidth]{dimreduxdiagram.png}
+		\caption{Diagrama general de los algoritmos de reducción de dimensión.}
+		\label{fig:dimreduxdiagram.}
+	\end{center}
 \end{figure}
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.9\textwidth]{clusteringdiagram.png}
-  	\caption{Diagrama general de los algoritmos de \textit{clustering}.}
-  	\label{fig:clusteringdiagram.}
-  	\end{center}
+		\includegraphics[width=0.9\textwidth]{clusteringdiagram.png}
+		\caption{Diagrama general de los algoritmos de \textit{clustering}.}
+		\label{fig:clusteringdiagram.}
+	\end{center}
 \end{figure}
 
 \begin{figure}[H]
 	\begin{center}				
-	\includegraphics[width=0.9\textwidth]{anomalydiagram.png}
-  	\caption{Diagrama general de los algoritmos de detección de anomalías.}
-  	\label{fig:anomalydiagram.}
-  	\end{center}
+		\includegraphics[width=0.9\textwidth]{anomalydiagram.png}
+		\caption{Diagrama general de los algoritmos de detección de anomalías.}
+		\label{fig:anomalydiagram.}
+	\end{center}
 \end{figure}
 
 \clearpage
@@ -260,7 +256,7 @@ En la Fig.~\ref{fig:maindiagram.} obtenemos una vista general sobre que hacer co
 \setcounter{page}{13}
 
 \begin{landscape}
-	
+		
 	\begin{table}[]
 		\centering
 		\begin{tabularx}{\hsize}{|X|X|X|}
@@ -269,82 +265,84 @@ En la Fig.~\ref{fig:maindiagram.} obtenemos una vista general sobre que hacer co
 			\hline
 			\textit{Naive Bayes}   & 
 			- No necesita una gran cantidad de datos de entrenamiento. 
-			
+						
 			- Rápido. & 
 			- Supone que cada característica es independiente. 
-			
+						
 			- Sufre al tener características irrelevantes.
 			\\ \hline
 			Regresión logística      & 
 			- Rara vez existe sobreajuste. 
-			
+						
 			- Rápido de entrenar. & 
 			- Es muy difícil lograr que se ajuste a datos no lineales. 
-			
+						
 			-Los valores atípicos alteran la precisión del modelo. 
-			
+						
 			\\ \hline
 			\textit{KNN}           & 
 			- Eficaz en \textit{datasets} de varias clases. 
-			
+						
 			- Entrenamiento rápido. & 
 			- La dimensionalidad del \textit{dataset} merma el rendimiento.
-			
+						
 			- Lento en inferencia. 
 			\\ \hline
 			Árbol de decisión 
-			
+						
 			\textit{(Decision Tree)} & 
 			- Robusto en muestras con ruido. 
-			
+						
 			- Fácil interpretación. 
-			
+						
 			- Resuelve problemas no lineales. & 
 			- Cuando hay muchas etiquetas de clases, los cálculos pueden ser complejos. 
-			
+						
 			- Puede sufrir sobreajuste. 
 			\\ \hline
 			Clasificador de bosque aleatorio 
-			
+						
 			\textit{(Random Forest Classifier)} & 
 			- No sufre sobreajuste como el árbol de decisión. 
-			
+						
 			- Funciona muy bien en grandes \textit{datasets}. 
-			
+						
 			- Maneja automáticamente los valores faltantes. & 
 			- Consume mucho tiempo y recursos computacionales.
-			
+						
 			- Difícil de interpretar.
-			
+						
 			- Se debe elegir la cantidad adecuada de árboles.
 			\\ \hline
 			Máquinas de vectores de soporte 
-			
+						
 			\textit{(Support Vector Machines)}  & 
 			- Eficaz en espacios de gran dimensión.
-			
+						
 			- Puede manejar soluciones no lineales.
-			
+						
 			- Robusto al ruido.
 			& 
 			- Lento para entrenarse con grandes conjuntos de datos. 
-			
+						
 			- Ineficaz si las clases se superponen.
-			
+						
 			- Se debe elegir correctamente la función de \textit{kernel}.
-			
+						
 			- Difícil de interpretar al aplicar \textit{kernels} no lineales.
 			\\ \hline
 		\end{tabularx}
 		\caption{Pros y contras de cada algoritmo supervisado.}
 		\label{tab:pro-cons-supervised}
 	\end{table}
-	
+		
 \end{landscape}
 
 
 \begin{landscape}
-	
+
+	\setcounter{page}{15}
+		
 	\begin{table}[]
 		\centering
 		\begin{tabularx}{\hsize}{|X|X|X|}
@@ -353,60 +351,60 @@ En la Fig.~\ref{fig:maindiagram.} obtenemos una vista general sobre que hacer co
 			\hline
 			\textit{Ridge}   & 
 			- El costo computacional no es mayor que otros algoritmos.
-			
+						
 			- Permite evitar el sobreajuste. & 
 			- Se necesita una excelente selección del hiperpaŕametro $\alpha$. 
-			
+						
 			- Incrementa el sesgo.
 			\\ \hline
 			\textit{LASSO}      & 
 			- Evita el sobreajuste. 
-			
+						
 			- Selecciona características tendiendo a que sus coeficientes sean 0. & 
 			- Las características seleccionadas tienen demasiado sesgo. 
-			
+						
 			- Si tenemos $n$ datos y $p$ características, \textit{LASSO} solo selecciona como máximo $n$ características. 
-			
+						
 			- El rendimiento de la inferencia es peor que para \textit{Ridge}.
-			
+						
 			\\ \hline
 			\textit{ElasticNet}           & 
 			- Eficaz con muestras de gran dimensión.
-			 & 
+			& 
 			- Alto costo computacional en comparación a \textit{LASSO} o \textit{Ridge}.
 			\\ \hline
 			\textit{KNN Regressor} & 
 			- No tiene período de entrenamiento.
-			
+						
 			- Fácil interpretación.
-			
+						
 			- Permite agregar datos al modelo sin inconvenientes en la precisión del algoritmo.
 			&
 			- La dimensionalidad del \textit{dataset} influye mucho en el rendimiento.
-			
+						
 			- Es sensible a datos ruidosos, valores faltantes y \textit{outliers}.
-			
+						
 			- En grandes \textit{datasets} se vuelve muy alto el costo computacional para calcular distancias.			
-			
+						
 			\\ \hline
 			Regresor de árbol de decisión
-			
+						
 			\textit{(Decision Tree Regressor)} & 
 			- No sufre sobreajuste como el árbol de decisión.
-			
+						
 			- Funciona muy bien en grandes \textit{datasets}. 
-			
+						
 			- Maneja automáticamente los valores faltantes. & 
 			- Al trabajar con variables continuas, se pierde mucha información al categorizar.
-			
+						
 			- Necesita variables correlacionadas.
-			
+						
 			- Alto tiempo de entrenamiento.
-			
+						
 			- Se puede volver demasiado complejo.
 			\\ \hline
 			Máquinas de vectores de soporte 
-			
+						
 			\textit{(Support Vector Machines)}  & 
 			- Útil cuando las clases no son linealmente separables.
 			& 
@@ -416,12 +414,10 @@ En la Fig.~\ref{fig:maindiagram.} obtenemos una vista general sobre que hacer co
 		\caption{Pros y contras de cada algoritmo supervisado.}
 		\label{tab:pro-cons-supervised}
 	\end{table}
-	
+		
 \end{landscape}
 
 \bibliography{tesis}{}
 \bibliographystyle{unsrtnat}
-%\bibliographystyle{ieeetr}
-%\bibliographystyle{plainnat}
 
 \end{document}
