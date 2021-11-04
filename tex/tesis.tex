@@ -29,7 +29,6 @@
 \usepackage[numbered]{bookmark} % Para que figure las secciones en el PDF
 \graphicspath{ {img/} }
 \usepackage[normalem]{ulem}
-\usepackage{lscape}
 \useunder{\uline}{\ul}{}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
@@ -51,13 +50,18 @@
 	{\scshape\Large Proyecto Final Integrador\par}
 	\vspace{1cm}
 	{\large\bfseries ``Predicción de cantidad de defectos graves en vehículos utilitarios en planta automotriz'' \par}
-	\vspace{1cm}
+
+	\vspace{0.25cm}
+	
+	\href{https://github.com/GeraCollante/tesis-icomp-machinelearning}{\color{blue}Enlace al repositorio}
+	
+	\vspace{0.7cm}
 	%{\Large\bfseries Gerardo A. COLLANTE\par}
 			
 	\normalsize\@author\space
 			
 	%\vfill
-	\vspace{1cm}
+	\vspace{0.7cm}
 	\textbf{Supervisor}\par
 	Dr. Ing.~Orlando \textsc{Micolini}
 		
@@ -91,6 +95,12 @@
 
 \tableofcontents
 
+\clearpage
+\section{Motivación}
+Las motivaciones para el desarrollo de este proyecto pueden separarse en dos. Por un lado aquellas relacionadas al producto en sí, destacamos la posibilidad de brindar una solución en un entorno industrial y por consiguiente de alto impacto tanto a nivel técnico como económico. Además será de gran valor a nuestro perfil profesional el hecho de crear software de calidad dentro de un ambiente laboral.
+
+Por el otro lado, una vasta cantidad de campos científicos están obteniendo avances sustanciales debido al uso de algoritmos de inteligencia artificial. Más allá del marketing que envuelve a la materia, es indudable que su implementación está impactando de forma directa en diversos sectores sin limitarse exclusivamente a la tecnologías de la información. En consecuencia la posibilidad de adquirir las competencias necesarias para desempeñarme como ingeniero en algún área de la inteligencia artificial fue un incentivo adicional a la hora de iniciar este proyecto.
+
 %\section{Motivación}
 %
 %El \textit{machine learning} se ha erigido como un campo más en el mundo de las tecnologías de la información, sumado a su vertiginoso crecimiento y amparado bajo la constante mejora del \textit{hardware} ha hecho que su popularidad se dispare.
@@ -101,7 +111,7 @@
 \section{Introducción}
 El presente trabajo se desarrolla en una fábrica automotriz en el marco laboral de pasante en el departamento de Calidad Fabricación.
 
-Uno de los enfoques de la industria automovilística para mejorar la calidad de sus productos consiste en disminuir la cantidad de fallas por vehículo. Para lograr este objetivo se recopilan los defectos de cada vehículo para realizar diversos análisis y así aplicar estrategias para reducir el impacto de los mismos en la producción. No obstante estos procesos cuya meta es mitigar la cantidad de defectos presentan serias dificultades lo que impide obtener el máximo provecho de estos datos. Se consensuó con la compañía realizar un análisis con la finalidad de optimizar la ganancia a partir de estos datos.
+Uno de los enfoques de la industria automovilística para mejorar la calidad de sus productos consiste en disminuir la cantidad de fallas por vehículo. Para lograr este objetivo se recopilan los defectos de cada vehículo para realizar diversos análisis y así aplicar estrategias para reducir el impacto de los mismos en la producción. No obstante estos procesos cuya meta es reducir la cantidad de defectos presentan serias dificultades lo que impide obtener el máximo provecho de estos datos. Se consensuó con la compañía realizar un análisis con la finalidad de obtener valor transformando estos datos en información, lo que permitirá tomar acciones anticipadas para mitigar los defectos o su tiempo de reparación.
 
 Debido a las tareas realizadas en la jornada laboral, se poseía conocimiento de la naturaleza de los datos. Por tanto se planteó el diseño de un sistema de inteligencia artificial cuyo fin es obtener en tiempo real la cantidad de defectos graves. Los beneficios que surgen de esta propuesta son tangibles en ahorros para la compañía ya que permite mejorar la planificación en diversos procesos.
 
@@ -918,8 +928,6 @@ Consideremos la Fig.~\ref{fig:conv2dimg} \citep{Saha2020Oct}, tenemos una imagen
 	\end{center}
 \end{figure}
 
-\clearpage
-
 Si consideramos la totalidad de la imagen como un prisma donde la profundidad corresponde a cada canal de color, podemos ver en la figura~\ref{fig:kernelmove} el movimiento que realiza el kernel (con forma de cubo) a través del volumen del prisma.
 
 \begin{figure}[H]
@@ -932,13 +940,16 @@ Si consideramos la totalidad de la imagen como un prisma donde la profundidad co
 
 \subsubsection{\textit{Padding}}
 
-Un problema a abordar al aplicar la convolución es que tendemos a perder píxeles en el perímetro de nuestra imagen (o vector). Dado que normalmente usamos núcleos pequeños, para cualquier convolución dada, es posible que solo perdamos unos pocos píxeles, pero esto puede sumarse a medida que aplicamos muchas capas convolucionales sucesivas. Una solución sencilla a este problema es agregar píxeles adicionales de relleno (\textit{padding}) alrededor del límite de nuestra imagen de entrada, aumentando así el tamaño efectivo de la imagen. Normalmente, establecemos los valores de los píxeles adicionales en cero. \citep{padding}
+Un problema a abordar al aplicar la convolución es que tendemos a perder píxeles en el perímetro de nuestra imagen (o vector). Dado que normalmente usamos núcleos pequeños, para cualquier convolución dada, es posible que solo perdamos unos pocos píxeles, pero esto puede sumarse a medida que aplicamos muchas capas convolucionales sucesivas. 
+
+\clearpage
+Una solución sencilla a este problema es agregar píxeles adicionales de relleno (\textit{padding}) alrededor del límite de nuestra imagen de entrada, aumentando así el tamaño efectivo de la imagen. Normalmente, establecemos los valores de los píxeles adicionales en cero. \citep{padding}
 
 En la figura~\ref{fig:padding}, rellenamos una entrada de $3 \times 3$, aumentando su tamaño a $5 \times 5$. La salida correspondiente aumenta entonces a una matriz de $4 \times 4$.
 
 \begin{figure}[H]
 	\begin{center}				
-		\includegraphics[width=0.57\textwidth]{conv-pad.png}
+		\includegraphics[width=0.50\textwidth]{conv-pad.png}
 		\caption{Relleno o \textit{padding}.}
 		\label{fig:padding}
 	\end{center}
@@ -1000,8 +1011,6 @@ Una capa o filtro puede tener varios \textit{kernels} que al convolucionar con e
 
 La línea que divide los conceptos de filtro y \textit{kernel} es un poco difusa. A veces, se usan indistintamente, lo que podría crear confusiones. Esencialmente, estos dos términos tienen una sutil diferencia. Un "\textit{kernel}" se refiere a una matriz 2D de pesos. El término "filtro" se refiere a estructuras 3D de varios \textit{kernels} apilados juntos. Para un filtro 2D, el filtro es igual que el kernel. Pero para un filtro 3D y la mayoría de las convoluciones en el aprendizaje profundo, un filtro es una colección de \textit{kernels} (fig.~\ref{fig:layer-kernel}). Cada \textit{kernel} es único, enfatizando diferentes aspectos del canal de entrada.
 
-\clearpage
-
 El funcionamiento de la capa convolucional se resume en pensar en cada uno de los $K$ \textit{kernels} deslizándose a través del vector de entrada, computando un producto de Hadamard, sumando cada uno de sus valores y luego almacenando el valor generado en un mapa 2D de activación. En la figura~\ref{fig:conv-mechanism} se puede observar una visualización de la secuencia.
 
 \begin{figure}[H]
@@ -1021,8 +1030,6 @@ Luego de aplicar los $K$ filtros al vector de entrada, ahora tenemos $K \times 2
 		\label{fig:k-maps}
 	\end{center}
 \end{figure}
-
-\clearpage
 
 Cada entrada en el volumen de salida es, por tanto, una salida de una neurona que "observa" sólo una pequeña región de la entrada. De esta manera, la red "aprende" los filtros que se activan cuando ven un tipo específico de característica en una ubicación espacial determinada en el volumen de entrada.
 
@@ -1067,8 +1074,6 @@ Cabe destacar que \texttt{MAXPOOL} también actúa como supresor de ruido ya que
 
 Las capas de normalización por lotes o \textit{Batch Normalization} (\texttt{BN}), como su nombre indica, se utilizan para normalizar las activaciones de un volumen de entrada determinado antes de pasarlo a la siguiente capa de la red.
 
-\clearpage
-
 Por lo general, para entrenar una red neuronal, realizamos un preprocesamiento de los datos de entrada, por ejemplo, normalizar todos los datos para que se parezcan a una distribución normal (es decir, media cero y una varianza unitaria). Algunas razones para realizar esto puede ser prevenir la saturación temprana de funciones de activación no lineales como la función sigmoidea, asegurar que todos los datos de entrada estén en el mismo rango de valores, etc. \citep{bn}
 
 Pero el problema aparece en las capas intermedias porque la distribución de las activaciones cambia constantemente durante el entrenamiento. Esto ralentiza el proceso de entrenamiento porque cada capa debe aprender a adaptarse a una nueva distribución en cada paso del entrenamiento. Este problema se conoce como \textbf{cambio de covariables interno}.
@@ -1092,8 +1097,6 @@ $$ \bar{x_i} = \frac{x_i - \mu_{\beta}}{\sqrt{\sigma_{\beta}^2+\epsilon}} $$
 Establecemos $1e-7 \leq \epsilon \leq 0$ para evitar sacar la raíz cuadrada de cero. Aplicar esta ecuación implica que las activaciones que salen de una capa \texttt{BN} tendrán una media y una varianza unitaria aproximadamente cero (es decir, centrada en cero).
 Reemplazamos el mini-lote $\mu_{\beta}$ y $\sigma_{\beta}$ con promedios de $\mu_{\beta}$ y $\sigma_{\beta}$ calculados durante el proceso de entrenamiento. Esto asegura que podemos pasar vectores a través de nuestra red y aún así obtener predicciones precisas sin ser sesgados por $\mu_{\beta}$ y $\sigma_{\beta}$ del mini-lote final pasado a través de la red en el momento del entrenamiento. 
 
-\clearpage
-
 La \texttt{BN} también tiene el beneficio adicional de ayudar a "estabilizar" el entrenamiento, lo que permite una mayor variedad de tasas de aprendizaje y fortalezas de regularización. Esto no alivia la necesidad de ajustar estos parámetros, por supuesto, pero le facilitará la vida al hacer que la tasa de aprendizaje y la regularización sean menos volátiles y más fáciles de ajustar. También tenderá a notar pérdidas finales más bajas y una curva de pérdida más estable en sus redes.
 
 \subsubsection{\textit{Dropout}}
@@ -1102,8 +1105,8 @@ El \textit{dropout} (\texttt{DO}) es en realidad una forma de regularización qu
 La razón está en reducir el sobreajuste alterando de forma explicita la arquitectura de la red en tiempo de entrenamiento. La desconexión aleatoria de las conexiones garantiza que ningún nodo de la red sea responsable de la activación cuando se le presenta un patrón determinado. El \texttt{DO} garantiza que haya múltiples nodos redundantes que se activarán cuando se les presenten entradas similares (lo que a su vez ayuda a que nuestro modelo a generalizar).
 
 \begin{figure}[H]
-	\begin{center}				
-		\includegraphics[width=1\textwidth]{tesis_46.png}
+	\begin{center}
+		\includegraphics[width=0.9\textwidth]{tesis_46.png}
 		\caption{\textbf{Izquierda:} Dos capas \texttt{FC} sin \texttt{DO}. \textbf{Derecha:} Las mismas dos capas luego de realizar \textit{dropout} sobre la mitad de las conexiones.}
 		\label{fig:type-pooling}
 	\end{center}
@@ -1112,6 +1115,8 @@ La razón está en reducir el sobreajuste alterando de forma explicita la arquit
 \subsection{\textit{WaveNet} y capas convolucionales causales dilatadas}
 
 \textit{WaveNet} es una red neuronal profunda para generar audio muestra a muestra. La arquitectura de este modelo permite aprovechar las eficiencias de las capas de convolución al mismo tiempo que alivia el desafío de aprender las dependencias a largo plazo en una gran cantidad de pasos de tiempo (más de 1000) \citep{wavenet2}.
+
+Se optó por estudiar este modelo dado que funciona con series temporales y trata de anticipar patrones de comportamiento causados por patrones de comportamiento previos, lo que se puede correlacionar con la naturaleza de los datos a tratar.
 
 En el núcleo de \textit{WaveNet} se encuentra la \textbf{capa de convolución causal dilatada} (figura~\ref{fig:causal-conv}), que le permite tratar adecuadamente el orden temporal y manejar las dependencias a largo plazo sin una explosión en la complejidad del modelo. \citep{wavenet}
 
@@ -1144,8 +1149,6 @@ Las convoluciones causales proporcionan la herramienta adecuada para manejar el 
 		\label{fig:dilated-conv}
 	\end{center}
 \end{figure}
-
-\clearpage
 
 En lugar de cometer ese error, \textit{WaveNet} utiliza \textbf{convoluciones dilatadas}, que permiten que el campo receptivo aumente exponencialmente en función de la profundidad de la capa de convolución. 
 
@@ -1211,15 +1214,13 @@ Además, las \textit{RNN} combinan el vector de entrada con su vector de estado 
 
 \textbf{Si entrenar redes neuronales es optimización sobre funciones, entrenar redes recurrentes es optimización sobre programas.}
 
-\clearpage
-
 \subsection{Funcionamiento}
 
 Consideremos la figura~\ref{fig:rnnunit}, aquí podemos observar como se define de manera gráfica una unidad funcional de una \textit{RNN} denominada $A$, que toma una entrada $x_t$ y genera un valor $h_t$.
 
 \begin{figure}[H]
 	\begin{center}				
-		\includegraphics[width=0.2\textwidth]{tesis_27.png}
+		\includegraphics[width=0.17\textwidth]{tesis_27.png}
 		\caption{Unidad funcional de \textit{RNN}. \citep{olahlstm}}
 		\label{fig:rnnunit}
 	\end{center}
@@ -1238,8 +1239,6 @@ Una red neuronal recurrente se puede considerar como múltiples copias de la mis
 \end{figure}
 
 Esta naturaleza en cadena revela que las redes neuronales recurrentes están íntimamente relacionadas con secuencias y listas. En su esencia una \textit{RNN} se parece demasiado a una \textit{FFNN}, excepto que también tiene conexiones hacía atrás.
-
-\clearpage
 
 En la figura~\ref{fig:rnnunitv2} se observa que en cada instante de tiempo la red tiene realmente dos entradas y dos salidas. Las entradas son el dato actual, $x_t$ y la activación anterior, $a_{t-1}$, mientras que las salidas son la predicción actual, $y_t$, y la activación actual, $a_t$. Esta activación también recibe el nombre de \textit{hidden state} o estado oculto.
 
@@ -1272,8 +1271,6 @@ Es posible entrenar una \textit{RNN} con una gran cantidad de texto y le pedirem
 
 Como ejemplo práctico, suponga que solo tenemos un vocabulario de cuatro letras posibles \texttt{helo} y queremos entrenar a un \textit{RNN} en la secuencia de entrenamiento \texttt{hello}. 
 
-\clearpage
-
 Esta secuencia de entrenamiento es de hecho una fuente de 4 ejemplos de entrenamiento separados: 
 \begin{enumerate}[noitemsep, topsep=2pt]
 	\item La probabilidad de \texttt{e} probablemente debería estar dado el contexto de \texttt{h}.
@@ -1295,8 +1292,6 @@ Concretamente, codificaremos cada carácter en un vector usando la codificación
 En la Fig.~\ref{fig:rnnexample} observamos un ejemplo de \textit{RNN} con capas de entrada y salida de 4 dimensiones y una capa oculta de 3 unidades (neuronas). Las activaciones en el pase hacia adelante cuando el \textit{RNN} recibe los caracteres \texttt{"hell"} como entrada. La capa de salida contiene los pesos que el \textit{RNN} asigna al siguiente carácter (el vocabulario es \texttt{"h, e, l, o"}); Queremos que los números verdes sean altos y los números rojos bajos.
 
 Por ejemplo, vemos que en el primer paso de tiempo cuando el \textit{RNN} vio el carácter \texttt{"h"} asignó un peso de $1.0$ a la siguiente letra que era \texttt{"h"}, $2.2$ a la letra \texttt{"e"}, $-3.0$ a \texttt{"l"} y $4.1$ a "o". 
-
-\clearpage
 
 Dado que en nuestros datos de entrenamiento (la cadena \texttt{"hello"}) el siguiente carácter correcto es \texttt{"e"}, nos gustaría aumentar su peso (verde) y disminuir los pesos de todas las demás letras (rojo). 
 
@@ -1398,15 +1393,15 @@ Los \texttt{LSTM} y \texttt{GRU} funcionan esencialmente como los \textit{RNN}, 
 
 Si consideramos la celda \texttt{LSTM} como una caja negra, aparenta ser idéntica a una \textit{RNN} excepto que su estado se divide en dos vectores: $h_{(t)}$ y $c_{(t)}$ ("c" se mantiene por celda). Es posible pensar a $h_{(t)}$ como un estado de corto plazo y a $c_{(t)}$ como un estado de largo plazo.
 
+El diagrama completo del \texttt{LSTM} lo podemos observar en la Fig.\ref{fig:lstmcell}, pero vamos a ir paso a paso analizando cada una de las partes que lo componen.
+
 \begin{figure}[H]
 	\begin{center}				
-		\includegraphics[width=1\textwidth]{lstmcell5.png}
+		\includegraphics[width=0.95\textwidth]{lstmcell5.png}
 		\caption{Celda \texttt{LSTM}.}
 		\label{fig:lstmcell}
 	\end{center}
 \end{figure}
-
-El diagrama completo del \texttt{LSTM} lo podemos observar en la Fig.\ref{fig:lstmcell}, pero vamos a ir paso a paso analizando cada una de las partes que lo componen.
 
 La clave de los \texttt{LSTM} es el estado de la celda, la línea horizontal que atraviesa la parte superior de la Fig.~\ref{fig:lstm1}. El estado de la celda es como una cinta transportadora. Corre directamente a lo largo de toda la cadena, con solo algunas interacciones lineales menores. Es muy fácil que la información fluya sin cambios.
 
@@ -1478,8 +1473,6 @@ $$C_{(t)} = f_{(t)} \otimes C_{(t-1)} + i_{(t)} \otimes g_{(t)}$$
 		\label{fig:lstm5}
 	\end{center}
 \end{figure}
-
-\clearpage
 
 Finalmente, tenemos que decidir qué vamos a producir. Esta salida se basará en el estado de nuestra celda, pero será una versión filtrada. Primero, ejecutamos una capa sigmoidea que denominaremos \textbf{puerta de salida} que decide qué partes del estado de la celda vamos a generar. Luego, colocamos el estado de la celda a través de $tanh$ (para presionar los valores entre $-1$ y $1$) y lo multiplicamos por la salida de la puerta, de modo que solo produzcamos las partes que decidimos.
 
@@ -1558,7 +1551,6 @@ Por el contrario, puede alimentar la red con una sola entrada en el primer paso 
 Por último, podría tener una red de secuencia a vector, llamada \textit{encoder}, seguida de una red de vector a secuencia, llamada \textit{decoder} (consulte la red de la parte inferior derecha). Por ejemplo, esto se puede utilizar para traducir una oración de un idioma a otro. Alimentaría la red con una oración en un idioma, el \textit{encoder} convertiría esta oración en una representación de vector único y luego el \textit{decoder} decodificaría este vector en una oración en otro idioma. Este modelo de dos pasos, llamado \textit{encoder-decoder}, funciona mucho mejor que intentar traducir sobre la marcha con un único \textit{RNN} secuencia a secuencia (red \textbf{Superior-izquierda}), ya que las últimas palabras de una oración pueden afectan las primeras palabras de la traducción, por lo que debe esperar hasta que haya escuchado la oración completa antes de traducirla.
 
 \clearpage
-
 \section{Optimización de hiperparámetros} \label{tuning-hp}
 Los parámetros que definen la arquitectura del modelo se denominan hiperparámetros y, por lo tanto, este proceso de búsqueda de la arquitectura del modelo ideal se denomina ajuste de hiperparámetros o \textit{hyperparameters tuning}. \citep{Koehrsen2018Jul}
 
@@ -1664,8 +1656,6 @@ Basándonos en la función subrogada, podemos identificar qué puntos son mínim
 En cada iteración, continuamos examinando la función subrogada actual, aprendemos más sobre las áreas de interés mediante el muestreo y actualizamos la función. Tenga en cuenta que la función subrogada se expresará matemáticamente de una manera significativamente menos costosa de evaluar (por ejemplo, $y=x$ es una aproximación de una función más costosa, $y = arcsin \left( \frac{1-cos^2x}{sen x} \right)$ dentro de un cierto rango).
 
 Después de un cierto número de iteraciones, estamos destinados a llegar a un mínimo global, a menos que la forma de la función sea muy irregular (en el sentido de que tiene grandes oscilaciones hacia arriba y hacia abajo) por tanto se debería hacer más foco sobre los datos que en la optimización.
-
-\clearpage
 
 Este enfoque no hace ninguna suposición sobre la función (excepto que es optimizable en primer lugar), no requiere información sobre derivadas y es capaz de utilizar el razonamiento de sentido común mediante el uso ingenioso de una función de aproximación continuamente actualizada. La costosa evaluación de nuestra función objetivo original no es un problema en absoluto.
 
@@ -1780,7 +1770,9 @@ En la fig.~\ref{fig:bayes9} abajo, el tono verde es la función de adquisición 
 
 Luego de usar una función de adquisición para determinar el siguiente hiperparámetro, se obtiene la puntuación de la función objetiva real de este nuevo hiperparámetro. Dado que el modelo subrogado se entrena en $P(y|x)$, la adición de un nuevo punto de datos actualiza el modelo subrogado.
 
-Ahora se deben repetir los pasos anteriores hasta que se alcance el tiempo máximo o la iteración máxima. Ahora posee una aproximación precisa de la función objetivo real y puede encontrar fácilmente el mínimo global de las muestras evaluadas en el pasado para así completar la optimización bayesiana.
+\clearpage
+
+Ahora se deben repetir los pasos anteriores hasta que se alcance el tiempo máximo o la iteración máxima. En este punto se posee una aproximación precisa de la función objetivo real y puede encontrar fácilmente el mínimo global de las muestras evaluadas en el pasado para así completar la optimización bayesiana.
 
 Finalmente vamos a desglosar el siguiente pseudo-código propuesto en \textit{"Algorithms for Hyper-Parameter Optimization"} \citep{smbo}.
 
@@ -1814,8 +1806,6 @@ La secuencia se desarrolla de la siguiente manera:
 	\item Línea 5: Incluya el par (hiperparámetro $x^*$, puntuación de función objetivo real) en el historial de otras muestras.
 	\item Línea 6: entrene el modelo subrogado utilizando el último historial de muestras.
 	      	      	
-	      \clearpage	
-	      	      	
 	\item Repita hasta alcanzar el número máximo de iteraciones. Al final, se devuelve el historial de (hiperparámetro, puntuación de función objetiva real). Tenga en cuenta que el último registro no es necesariamente el mejor puntaje logrado. Tendría que ordenar la puntuación para encontrar el mejor hiperparámetro.
 \end{itemize}
 
@@ -1833,9 +1823,7 @@ En la fig.~\ref{fig:rs_vs_bo} advertimos que tanto al inicio de la optimización
 
 \subsubsection{Reducciones sucesivas a la mitad}
 Definamos un par de conceptos que nos serán útiles para plasmar la idea. 
-Al conjunto de valores para cada hiperparámetro se denomina configuración. Se entiende por presupuesto a la cantidad de recursos disponibles, ya sea para entrenar un modelo una determinada cantidad de épocas (\textit{epochs}) o probar diversas configuraciones del mismo (\textit{trials)}. 
-
-\clearpage
+Al conjunto de valores para cada hiperparámetro se denomina configuración. Se entiende por presupuesto a la cantidad de recursos disponibles, ya sea para entrenar un modelo una determinada cantidad de épocas (\textit{epochs}) o probar diversas configuraciones del mismo (\textit{trials)}.
 
 En la práctica las configuraciones prometedoras tienden a obtener puntuaciones más altas en relación con las peores, incluso en las primeras etapas del proceso. A este hecho se aferran los algoritmos de sucesivas reducciones a la mitad \textit{SuccessiveHalving}.
 
@@ -1858,9 +1846,9 @@ La secuencia se ejemplifica en la fig.~\ref{fig:sh} donde cada línea paralela a
 	\end{center}
 \end{figure}
 
-En lugar de perder mucho tiempo de entrenamiento en configuraciones que no nos llevarán a ninguna parte, \textit{SuccessiveHalving} los descarta lo antes posible. Por lo tanto, se puede asignar más tiempo de entrenamiento, es decir, recursos, a modelos más potencialmente valiosos.
-
 \clearpage
+
+En lugar de perder mucho tiempo de entrenamiento en configuraciones que no nos llevarán a ninguna parte, \textit{SuccessiveHalving} los descarta lo antes posible. Por lo tanto, se puede asignar más tiempo de entrenamiento, es decir, recursos, a modelos más potencialmente valiosos.
 
 Sin embargo, el \textit{Successive Halving} sufre lo que se denomina el \textit{trade-off} $n$ \textit{vs} $B/n$ \citep{Bissuel2019Apr}, dónde:
 \begin{itemize}[noitemsep, topsep=2pt]
@@ -1916,7 +1904,7 @@ Ahí es donde entra en juego \textit{Hyperband}, que es básicamente una \textit
 
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[width=0.9\textwidth]{hyperband_algo.png}
+		\includegraphics[width=1\textwidth]{hyperband_algo.png}
 		\caption{Secuencia de algoritmo de \textit{SucessiveHalving}.}
 		\label{fig:hyper_algo}
 	\end{center}
@@ -1932,15 +1920,12 @@ Dentro del algoritmo:
 
 Dado que la mayoría de estos valores están redondeados, esperamos que sean fracciones, no números enteros exactos. La fórmula de $\eta$ está diseñada para consumir tanto presupuesto como sea posible en cada bucle de \textit{Hyperband}.
 
+\clearpage
+
 En el cuadro~\ref{tab:hyper-epochs-trials}, se observa que el algoritmo de \textit{HyperBand} se ejecutará dividiendo a la mitad sucesivamente en 5 asignaciones de recursos. $s=4$ comienza su primera ronda con $81$ \textit{trials}, ofreciendo a cada uno una única época y luego descarta de forma iterativa $\frac{2}{3}$ de los intentos hasta que queda uno y se entrena durante $81$ épocas. En $s=0$, el algoritmo \textit{Hyperband} básicamente está ejecutando una búsqueda aleatoria con  5 pruebas, cada uno entrenado en el número máximo de épocas.
 
-%\begin{figure}[H]
-%	\begin{center}
-%		\includegraphics[width=0.58\textwidth]{hyper_trials_vs_epochs.png}
-%		\caption{Cantidad de épocas y pruebas a medida que avanza el algoritmo.}
-%		\label{fig:hyper_epochs_trials}
-%	\end{center}
-%\end{figure}
+\setcounter{table}{2}
+
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|l|cc|cc|cc|cc|cc|}
@@ -2057,8 +2042,6 @@ Se refiere a la actualización del modelo para dar nuevos pronósticos.
 
 En el caso de observaciones no uniformes, es posible que se requiera un formato de datos específico al ajustar algunos modelos para que las observaciones sean uniformes a lo largo del tiempo.
 
-\clearpage
-
 \subsection{Modelos disponibles}
 
 Se realizó una investigación de los modelos de \textit{forecasting} disponibles de forma \textit{open-source} y los resultados se reflejan en el Cuadro~\ref{tab:ts-models}. Se realizará una breve síntesis de cada uno de ellos, sin embargo no se puede responder a la pregunta de cual es mejor ya que según el tipo de problema a abordar alguno tendrá mejor rendimiento que el otro.
@@ -2124,11 +2107,15 @@ La conexión entre el contenido de la información y la aleatoriedad proporciona
 \subsubsection{Estadísticas de regularidad} 
 En muchas situaciones, el uso de la palabra aleatorio contrasta con la idea matemática de la aleatoriedad de un número. 
 
-\textit{Chaitin} \citep{chaitin} propuso el experimento de lanzar una moneda 20 veces y escribir un uno si sale cara y un cero si sale cruz. Desde una perspectiva probabilística, el experimento podría producir las siguientes dos series con la misma probabilidad (una sobre $2^{20}$), por lo tanto, considerando ambas series como aleatorias : 
+\textit{Chaitin} \citep{chaitin} propuso el experimento de lanzar una moneda 20 veces y escribir un uno si sale cara y un cero si sale cruz. Desde una perspectiva probabilística, el experimento podría producir las siguientes dos series con la misma probabilidad (una sobre $2^{20}$), por lo tanto, considerando ambas series como aleatorias:
+
+\vfill
 
 A: \texttt{01010101010101010101}
 
 B: \texttt{01101000110111100010}
+
+\vfill
 
 Si bien es cierto que las dos series se han producido aleatoriamente con la misma probabilidad y tienen los mismos valores de media y varianza, es fácil continuar con el patrón descrito en la serie A, pero tendríamos que trabajar más para poder predecir el siguiente número de la serie B. La serie A se construye alternando ceros y unos, mientras que la serie B no tiene un patrón claro. 
 
@@ -2573,8 +2560,6 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 			\item \texttt{V3}: imperceptibles (para nuestro análisis serán descartados).
 		\end{itemize}
 				
-		\clearpage
-				
 		\subsubsection{Tipo}
 		A su vez los defectos están categorizados por familia o tipo de defectos:
 				
@@ -2595,6 +2580,8 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 				
 		\subsubsection{Puntos de reconocimiento de defectos} \label{ptocptj}
 		Los defectos son detectados en diversos puntos de captaje que pueden definir (o no) a que departamento o taller pertenece el defecto con un doble objetivo. En primer lugar para que los vehículos que ya poseen el defecto detectado sean derivados a puntos de retoque para ser reparados. Y en segundo para analizar y ejecutar diversas estrategias con el fin atacar el problema raíz para así erradicar el defecto.
+				
+		\clearpage				
 				
 		Los defectos detectados provienen de las siguientes fuentes de datos:
 		\begin{itemize}[noitemsep, topsep=2pt]
@@ -2651,6 +2638,8 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 		\subsubsection{\href{https://github.com/GeraCollante/tesis-icomp-machinelearning/blob/main/DataPlottingAndAnalysis.ipynb}{\color{blue}Análisis y visualización de datos}}\label{AnalysisVisualization}
 		Para obtener una perspectiva más amplia del problema a tratar es conveniente analizar los datos disponibles. El \textit{dataset} se compone de $229934$ filas que cada una representa un defecto y 17 columnas.
 				
+			\clearpage				
+				
 		Algunas estadísticas \textit{grosso modo}, que podemos obtener:
 				
 		\begin{itemize}[noitemsep, topsep=2pt]
@@ -2663,7 +2652,7 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 				
 		\begin{figure}[H]
 			\begin{center}				
-				\includegraphics[width=0.55\textwidth]{audidist.png}
+				\includegraphics[width=0.45\textwidth]{audidist.png}
 				\caption{Distribución de los defectos según \texttt{AUDI}.}
 				\label{fig:distaudi}
 			\end{center}
@@ -2673,7 +2662,7 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 				
 		\begin{figure}[H]
 			\begin{center}				
-				\includegraphics[width=0.45\textwidth]{tesis_51.png}
+				\includegraphics[width=0.40\textwidth]{tesis_51.png}
 				\caption{Distribución de los defectos según gravedad.}
 				\label{fig:distgvd}
 			\end{center}
@@ -2683,7 +2672,7 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 				
 		\begin{figure}[H]
 			\begin{center}				
-				\includegraphics[width=0.61\textwidth]{tesis_53.png}
+				\includegraphics[width=0.56\textwidth]{tesis_53.png}
 				\caption{Distribución de los defectos por \texttt{DPTO}.}
 				\label{fig:distgvddpto}
 			\end{center}
@@ -2693,7 +2682,7 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 				
 		\begin{figure}[H]
 			\begin{center}				
-				\includegraphics[width=0.61\textwidth]{tesis_55.png}
+				\includegraphics[width=0.56\textwidth]{tesis_55.png}
 				\caption{Distribución de los defectos por \texttt{TIPO}.}
 				\label{fig:distgvdtype}
 			\end{center}
@@ -2709,8 +2698,6 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 			\end{center}
 		\end{figure}
 				
-		\clearpage
-				
 		Pese a esto no se debe creer que aunque una combinación tenga una gran cantidad de defectos, la mayoría de estos serán \texttt{V1}. La fig.~\ref{fig:heatmapfractionv1} nos muestra la densidad de \texttt{V1} sobre el total de defectos, permitiéndonos establecer que determinadas combinaciones de \texttt{TIPO} y \texttt{DPTO} son más probables que sean \texttt{V1} (incluso algunas poseen valores considerablemente más altos que las demás).
 				
 		\begin{figure}[H]
@@ -2720,8 +2707,6 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 				\label{fig:heatmapfractionv1}
 			\end{center}
 		\end{figure}
-				
-		\clearpage
 				
 		El análisis visual más revelador es el de la figura~\ref{fig:defectsperday}. El 19 de marzo de 2020 se decretó la cuarentena debido a la pandemia provocada por el virus \textit{SARS-CoV-2}, por tanto no se fabricaron vehículos. Los defectos registrados durante esa fecha y el reinicio de la producción en junio se deben a la recuperación de vehículos por retoques. Por esto para que el flujo de los datos hacía el modelo sea continuo solo se tomará desde junio a diciembre (6 meses).
 				
@@ -2733,8 +2718,6 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 			\end{center}
 		\end{figure}
 				
-		\clearpage
-				
 		Aún así, no podemos notar un patrón especifico debido al ruido, por consiguiente incrementamos la ventana de tiempo a una semana (fig.~\ref{fig:defectsperweek}). Afortunadamente para nuestro modelo (aunque la escala del eje de ordenadas es logarítmico) la cantidad de defectos \texttt{V2} sigue la curva de \texttt{V1} de forma muy similar. Esto es positivo ya que podemos intuir que existe una correlación entre los mismos del cúal nuestro modelo podrá obtener provecho.
 				
 		\begin{figure}[H]
@@ -2745,8 +2728,6 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 			\end{center}
 		\end{figure}
 				
-		\clearpage
-				
 		Si al gráfico anterior lo desglosamos por auditoria y gravedad (fig.~\ref{fig:defectsperaudigvdweek}) veremos que en las demás auditorias que no sean \texttt{DPU} no hay patrones claros definidos, una de las causas es la baja densidad de datos disponibles.
 				
 		\begin{figure}[H]
@@ -2756,8 +2737,6 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 				\label{fig:defectsperaudigvdweek}
 			\end{center}
 		\end{figure}
-				
-		\clearpage
 				
 		\subsubsection{\href{https://github.com/GeraCollante/tesis-icomp-machinelearning/blob/main/DataImputation.ipynb}{\color{blue}Imputación de datos}}\label{DataImputation}
 				 
@@ -2779,6 +2758,8 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 				
 		Existen varios métodos para calcular un valor de correlación. El más popular es el coeficiente de correlación de \textit{Pearson}. Sin embargo, debe notarse que mide solo la relación lineal entre dos variables. En otras palabras, es posible que no pueda revelar una relación no lineal. El valor de la correlación de \textit{Pearson} varía de $-1$ a $+1$, donde $\pm1$ describe una correlación positiva/negativa perfecta y $0$ significa que no hay correlación. \citep{corrmatrix}
 				
+\clearpage				
+				
 		La matriz de correlación es una matriz simétrica con todos los elementos diagonales iguales a $+1$. Nos gustaría enfatizar que una matriz de correlación solo brinda información sobre la correlación y NO es una herramienta plenamente confiable para estudiar la causalidad. 
 				
 		\begin{figure}[H]
@@ -2795,6 +2776,8 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 			\item \texttt{TIPO}: en este caso notamos que las features \texttt{ELE} y \texttt{INC}, tienen una relación notable con \texttt{TIPO}, por tanto esas serán utilizadas y el resto descartadas.
 			\item \texttt{UET}: aquí las relaciones están mucho más difusas, por tanto usaremos \textit{features} que estén en las filas a las cuales queremos predecir su \texttt{UET}. Por tanto se seleccionó \texttt{ELE}, \texttt{INC}, \texttt{LOC}, \texttt{GVD} y \texttt{TIPO}.
 		\end{itemize}
+		
+		\clearpage
 				
 		\textbf{\textit{Scikit-learn}}
 				
@@ -2972,11 +2955,15 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 			\end{tabular}
 			\caption{Parámetros de algoritmos para predicción de \texttt{TIPO}. Destacados los valores óptimos por columna.}
 			\label{tab:tipo-parameters-algo}
-		\end{table}
+		\end{table}		
+				
+			\clearpage				
 				
 		\textbf{Rendimiento}
 				
-		Exista un salto notable entre los rendimientos obtenidos para la predicción de \texttt{TIPO} con respecto a la de \texttt{UET}. Sugerimos que una razón de esto se debe a la estructura de árbol que posee \texttt{UET} (recordemos que un departamento está compuesto por varios talleres que a su vez poseen múltiples \texttt{UET}s, lo que lleva a una cantidad única de etiquetas superior a la de \texttt{TIPO}). La mayoría de los algoritmos tienen desempeños similares, siendo el óptimo \texttt{BC}.
+		Existe un salto notable entre los rendimientos obtenidos para la predicción de \texttt{TIPO} con respecto a la de \texttt{UET}. 
+		
+		Sugerimos que una razón de esto se debe a la estructura de árbol que posee \texttt{UET} (recordemos que un departamento está compuesto por varios talleres que a su vez poseen múltiples \texttt{UET}s, lo que lleva a una cantidad única de etiquetas superior a la de \texttt{TIPO}). La mayoría de los algoritmos tienen desempeños similares, siendo el óptimo \texttt{BC}.
 				
 		\begin{figure}[H]
 			\begin{center}
@@ -2992,7 +2979,7 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 				
 		\begin{figure}[H]
 			\begin{center}
-				\includegraphics[width=1\textwidth]{training_time_uet.png}
+				\includegraphics[width=0.9\textwidth]{training_time_uet.png}
 				\caption{Tiempo de entrenamiento por algoritmo.}
 				\label{fig:training_time_uet}
 			\end{center}
@@ -3028,19 +3015,11 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 				
 		El paso final antes de alimentar nuestro modelos es obtener rodajas (\textit{slices}) de tiempo con funciones de agregación de tipo \texttt{sum}, \texttt{count}, entre otras de nuestros datos. 
 				
-		\hfill
+		\clearpage				
 				
 		\textbf{Serie temporal univariada}
 				
 		Pero como observamos en la Fig.~\ref{fig:graf_cantdef_antes}, nuestra serie temporal dista mucho de ser continua. Esto es un inconveniente ya que se ha demostrado que a los modelos les cuesta mucho aprender sobre series temporales intermitentes.
-				
-		\begin{figure}[H]
-			\begin{center}
-				\includegraphics[width=1\textwidth]{tesis_78.png}
-				\caption{Gráfico temporal de cantidad de defectos.}
-				\label{fig:graf_cantdef_antes}
-			\end{center}
-		\end{figure}
 				
 		Por esta razón se tomarán las siguientes consideraciones:
 				
@@ -3050,11 +3029,17 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 			\item quitar horarios no laborales.
 		\end{itemize}
 				
-		\clearpage
-				
 		En la Fig.~\ref{fig:graf_inter_antes} donde aplicamos la función escalón, notamos los huecos que tenemos en nuestra serie, por ello se aplicarán diversas funciones sobre la misma para obtener la serie continua deseada.
+		
+		\begin{figure}[]
+			\begin{center}
+				\includegraphics[width=1\textwidth]{tesis_78.png}
+				\caption{Gráfico temporal de cantidad de defectos.}
+				\label{fig:graf_cantdef_antes}
+			\end{center}
+		\end{figure}
 				
-		\begin{figure}[H]
+		\begin{figure}[]
 			\begin{center}
 				\includegraphics[width=1\textwidth]{tesis_79.png}
 				\caption{Gráfico temporal de detección de intermitencia.}
@@ -3062,11 +3047,11 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 			\end{center}
 		\end{figure}
 				
+		Una vez aplicado los filtros necesarios obtenemos la siguiente serie de la Fig.~\ref{fig:graf_cantdef_desp}. 
+		
+		En la Fig.~\ref{fig:graf_inter_desp} si bien siguen apareciendo ceros, aparecen en menor cantidad siendo originados en horarios de producción mínima como el horario de inicio y finalización.
 				
-				
-		Una vez aplicado los filtros necesarios obtenemos la siguiente serie de la Fig.~\ref{fig:graf_cantdef_desp}. En la Fig.~\ref{fig:graf_inter_desp} si bien siguen apareciendo ceros, aparecen en menor cantidad siendo originados en horarios de producción mínima como el horario de inicio y finalización.
-				
-		\begin{figure}[H]
+		\begin{figure}[]
 			\begin{center}
 				\includegraphics[width=1\textwidth]{tesis_80.png}
 				\caption{Gráfico temporal de cantidad de defectos procesado.}
@@ -3074,7 +3059,7 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 			\end{center}
 		\end{figure}
 				
-		\begin{figure}[H]
+		\begin{figure}[]
 			\begin{center}
 				\includegraphics[width=1\textwidth]{tesis_81.png}
 				\caption{Gráfico temporal de detección de intermitencia  procesado.}
@@ -3086,7 +3071,9 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 				
 		El mismo análisis realizado para la serie univariada debe extrapolarse a la cantidad de dimensiones que consideremos necesarias. 
 				
-		En la fig.~\ref{fig:graf_mult_dpto} observamos la cantidad de defectos que luego son desglosados por departamento, lo que nos daría 8 \textit{features}. En la fig.~\ref{fig:graf_mult_tipo} los defectos son desglosados por tipo, lo que nos daría 11 \textit{features}. Lo que resultaría en 19 \textit{features} que van a alimentar nuestro modelo.
+		En la fig.~\ref{fig:graf_mult_dpto} observamos la cantidad de defectos que luego son desglosados por departamento, lo que nos daría 8 \textit{features}. 
+		
+		En la fig.~\ref{fig:graf_mult_tipo} los defectos son desglosados por tipo, lo que nos daría 11 \textit{features}. Lo que resultaría en 19 \textit{features} que van a alimentar nuestro modelo.
 				
 		\begin{figure}[H]
 			\begin{center}
@@ -3147,9 +3134,9 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 				
 		Los ETL son flujos de trabajo automatizados que llevan los datos del punto A al punto B y los transforman a lo largo del camino para mejorar su capacidad de análisis o que se parezcan más a lo que nosotros necesitamos. ETL se refiere a extraer (\textit{Extract}), transformar (\textit{Transform}) y cargar (\textit{Load}) datos. \citep{SeattleDataGuy}
 				
-		En la fase de \textbf{extracción}, los datos a menudo se limitan a ser una instantánea de la base de datos en el momento actual o todos los datos históricos. Cuando extrae sus datos de la base de datos de una aplicación, a menudo los coloca en algún tipo de extracto \texttt{CSV} o \texttt{JSON}. Estos extractos pueden provenir de tablas de bases de datos, APIs, registros, etc.
-				
-		Una vez que los datos se \textbf{transforman}, se \textbf{cargan} en el almacén de datos (\textit{Data Warehouse}).
+		En la fase de \textbf{extracción}, los datos a menudo se limitan a ser una instantánea de la base de datos en el momento actual o todos los datos históricos. Cuando extrae sus datos de la base de datos de una aplicación, a menudo los coloca en algún tipo de extracto \texttt{CSV} o \texttt{JSON}. 
+		
+		Estos extractos pueden provenir de tablas de bases de datos, APIs, registros, etc. Una vez que los datos se \textbf{transforman}, se \textbf{cargan} en el almacén de datos (\textit{Data Warehouse}).
 				
 		\textbf{\textit{Pipelines} de datos \textit{vs} \textit{pipelines} ETL}
 				
@@ -3332,6 +3319,8 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 				
 		\subsection{Arquitecturas} \label{archs}
 		Se define como la arquitectura del modelo a la disposición del mismo en lo que concierne a sus capas y al flujo de la información a través de las mismas.
+				
+				\clearpage				
 				
 		En \textit{Keras} es posible definir un modelo \texttt{Sequential}, lo que significa que cada salida alimentará a la siguiente y no habrá bifurcaciones entre el flujo de los tensores. También se podría resumir que \texttt{Sequential} agrupa una pila lineal de capas, lo que para nuestro propósito es suficiente. Esto se denomina arquitectura de tipo lineal. A modo informativo en \textit{TensorFlow} es posible crear arquitecturas no-lineales que admitan múltiples flujos de datos entre las diferentes capas.
 				
@@ -4338,9 +4327,7 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 			\item El sistema operativo donde vamos a ejecutar nuestra aplicación será \textit{Linux}, más precisamente en la distribución \textit{Ubuntu}. Las razones de la decisión son el mantenimiento y confiabilidad que nos brinda (una de las premisas de la distribución es la estabilidad y realiza lanzamientos en promedio cada dos años).
 			\item En última instancia la predicción puede ser visualizada a través de una página web de un navegador. La idea es que el personal sea reactivo a la hora de atacar los defectos, al detectarlos antes que sucedan.
 		\end{enumerate}
-				
-		\subsection{Conclusión}
-		A través de este hipotético caso revisamos cada una de las etapas que componen este sistema si se decidiera llevarlo a cabo. Así tomamos dimensión que implementar un sistema de esta envergadura requiere de diversos profesionales a fin de poner en marcha cada uno de los procesos necesarios. Esto provocó que la compañía decida no proporcionar los fondos requeridos ya que se exigía de una profunda re-estructuración a nivel técnico y la principal meta es producir vehículos para generar ganancias, pasando la calidad a un plano secundario en el balance final.
+		
 		\clearpage
 				
 		\section{Conclusiones}
@@ -4360,7 +4347,7 @@ $B^m(r) = \frac{1}{N-m} \sum_{i=1}^{N-m} B_i^m (r) = \frac{1}{N-m-1}\frac{1}{N-m
 				
 		Si bien los modelos de redes neuronales son potentes para el pronostico de series temporales, es factible que su rendimiento se vea afectado por la calidad de los datos. Un modo de estimar este aspecto es a través del cómputo de la entropía de la serie temporal, que nos brinda indicios de la condición de nuestros datos sin preocuparse por su origen. Consecuentemente se comprobó que la entropía en los datos objetivo era superior a la de los datos de prueba.
 				
-		El despliegue del modelo se enfrentaba a diversos inconvenientes técnicos. Uno de ellos fue la incapacidad de disponibilizar los datos en tiempo real debido a la necesidad de implementar sistemas de bases de datos de mayor accesibilidad y rendimiento. Inclusive era imprescindible construir una nueva infraestructura para soportar el \textit{pipeline} de datos, incurriendo en costos que la organización no consideraba solventar. En base a los puntos considerados previamente, desde una etapa temprana se determinó que este documento revestiría carácter de investigación.
+		En el despliegue propuesto del modelo se revisó cada una de las etapas que componen un sistema de inteligencia artificial. Así tomamos dimensión que implementar un sistema de esta envergadura requiere de diversos profesionales a fin de poner en marcha cada uno de los procesos necesarios. Se requiere de una profunda re-estructuración a nivel técnico, por lo cual la compañía realizará un análisis de la viabilidad del proyecto para proporcionar los fondos requeridos.
 				
 		Para posibles trabajos futuros se sugiere tener en cuenta las siguientes recomendaciones:
 				
