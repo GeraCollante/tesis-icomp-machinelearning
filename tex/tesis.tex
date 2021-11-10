@@ -96,10 +96,6 @@
 \tableofcontents
 
 \clearpage
-\section{Motivación}
-Las motivaciones para el desarrollo de este proyecto pueden separarse en dos. Por un lado aquellas relacionadas al producto en sí, destacamos la posibilidad de brindar una solución en un entorno industrial y por consiguiente de alto impacto tanto a nivel técnico como económico. Además será de gran valor a nuestro perfil profesional el hecho de crear software de calidad dentro de un ambiente laboral.
-
-Por el otro lado, una vasta cantidad de campos científicos están obteniendo avances sustanciales debido al uso de algoritmos de inteligencia artificial. Más allá del marketing que envuelve a la materia, es indudable que su implementación está impactando de forma directa en diversos sectores sin limitarse exclusivamente a la tecnologías de la información. En consecuencia la posibilidad de adquirir las competencias necesarias para desempeñarme como ingeniero en algún área de la inteligencia artificial fue un incentivo adicional a la hora de iniciar este proyecto.
 
 %\section{Motivación}
 %
@@ -109,6 +105,14 @@ Por el otro lado, una vasta cantidad de campos científicos están obteniendo av
 \clearpage
 
 \section{Introducción}
+
+\subsection{Motivación}
+Las motivaciones para el desarrollo de este proyecto pueden separarse en dos. Por un lado aquellas relacionadas al producto en sí, destacamos la posibilidad de brindar una solución en un entorno industrial y por consiguiente de alto impacto tanto a nivel técnico como económico. Además será de gran valor a nuestro perfil profesional el hecho de crear software de calidad dentro de un ambiente laboral.
+
+Por el otro lado, una vasta cantidad de campos científicos están obteniendo avances sustanciales debido al uso de algoritmos de inteligencia artificial. Más allá del marketing que envuelve a la materia, es indudable que su implementación está impactando de forma directa en diversos sectores sin limitarse exclusivamente a la tecnologías de la información. En consecuencia la posibilidad de adquirir las competencias necesarias para desempeñarme como ingeniero en algún área de la inteligencia artificial fue un incentivo adicional a la hora de iniciar este proyecto.
+
+\subsection{Descripción general}
+
 El presente trabajo se desarrolla en una fábrica automotriz en el marco laboral de pasante en el departamento de Calidad Fabricación.
 
 Uno de los enfoques de la industria automovilística para mejorar la calidad de sus productos consiste en disminuir la cantidad de fallas por vehículo. Para lograr este objetivo se recopilan los defectos de cada vehículo para realizar diversos análisis y así aplicar estrategias para reducir el impacto de los mismos en la producción. No obstante estos procesos cuya meta es reducir la cantidad de defectos presentan serias dificultades lo que impide obtener el máximo provecho de estos datos. Se consensuó con la compañía realizar un análisis con la finalidad de obtener valor transformando estos datos en información, lo que permitirá tomar acciones anticipadas para mitigar los defectos o su tiempo de reparación.
@@ -133,7 +137,7 @@ Cada una de estas áreas abarca diversos procesos, los cuáles se irán desarrol
 	\item \textbf{Despliegue del modelo}\textsuperscript{(7)}: sección~\ref{ModelDeployment}.
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}[]
 	\begin{center}				
 		\includegraphics[width=1\textwidth]{ml-cycle.png}
 		\caption{Arquitectura de un sistema de inteligencia artificial.}
@@ -143,13 +147,11 @@ Cada una de estas áreas abarca diversos procesos, los cuáles se irán desarrol
 
 No obstante para exponer el desarrollo de cada una de estas etapas es imprescindible elaborar un marco teórico que nos brinde contexto y herramientas para afrontar el problema a resolver.
 
-\clearpage
-
-\section{Objetivos}
-\subsection{Objetivos principales}
+\subsection{Objetivos}
+\subsubsection{Objetivos principales}
 Crear un modelo de \textit{Machine Learning} cuyo fin será el pronóstico de la cantidad de defectos graves de las unidades en la línea de producción de una planta automotriz.
 
-\subsection{Objetivos secundarios}
+\subsubsection{Objetivos secundarios}
 
 \begin{itemize}
 	\item \textbf{Clasificación de modelos de inteligencia artificial}
@@ -177,6 +179,85 @@ Crear un modelo de \textit{Machine Learning} cuyo fin será el pronóstico de la
 	      Examinar el problema a afrontar en su contexto, para así determinar los requerimientos del mismo. Posteriormente haciendo uso de las herramientas para manipulación de datos obtener un formato acorde de la serie temporal para alimentar los modelos.
 	      	      	
 \end{itemize}
+
+\subsection{Requerimientos}
+En ingeniería, los requerimientos se utilizan como datos de entrada en la etapa del diseño del producto. Establecen qué debe hacer el sistema, aunque no especifican la manera en que debe hacerlo.
+
+Existen dos tipos de requerimientos:
+\begin{itemize}[noitemsep, topsep=2pt]
+	\item \textbf{Funcionales}: son enunciados acerca de servicios que el sistema debe brindar, su reacción a entradas particulares y comportamiento en situaciones particulares.
+	\item \textbf{No funcionales}: no se refieren directamente a la funcionalidad del sistema sino a las propiedades que emergen de ella como la fiabilidad, la capacidad de almacenamiento, disponibilidad, etc. Suelen aplicarse al sistema como un todo, más que a características específicas del sistema.
+\end{itemize}
+
+Para especificar estos requerimientos se ejecutaron las siguientes etapas:
+\begin{itemize}
+	\item \textbf{Entrevista}:  Se realizó una entrevista con el responsable del departamento Calidad Fabricación en la cuál se planteó la posibilidad de crear este sistema dado el potencial de los datos recabados por la usina. Esta propuesta fue aceptada y se elevó a los superiores para su aprobación debido a materia de confidencialidad.
+	\item \textbf{Investigación del estado del arte}: Se profundizó en el conocimiento sobre las herramientas del campo de la ciencia de datos y \textit{machine-learning}. Esto incluyó el perfeccionamiento del uso de las librerías e investigación sobre algoritmos y modelos de inteligencia artificial, lo que permitió obtener una mejor perspectiva sobre el sistema a desarrollar al conocer las posibilidades y limitaciones del área.
+	\item \textbf{Entrevista cerrada}: Se repitió la primer etapa pero teniendo en cuenta la información recabada en la etapa anterior. Se transmitió el conocimiento adquirido al responsable para alinear los objetivos propuestos, añadiendo nuevas consideraciones y descartando funcionalidades inviables.
+\end{itemize}
+
+\subsubsection{Requerimientos funcionales}
+
+\subsubsection{Requerimientos no funcionales}
+\begin{itemize}
+	\item \textbf{Requerimientos del producto:}
+	\begin{itemize}
+		\item \textbf{Rendimiento:} las diferentes etapas del \textit{pipeline} no deben permitir que el \textit{buffer} de entrada se llene.
+		\item \textbf{Fiabilidad:} debe tener tolerancia a fallos en la entrada de datos (soportar datos imprevistos sin romper el \textit{pipeline})
+		\item \textbf{Usabilidad:} el sistema debe brindar la posibilidad de ser consumido en tiempo real por quien lo requiera en la fábrica.
+		\item \textbf{Proceso de desarrollo:} el sistema será desarrollado en el lenguaje de programación \textit{Python}.
+	\end{itemize}
+	\item \textbf{Requerimientos de la organización:}
+	\begin{itemize}
+		\item \textbf{Requerimientos ambientales:} la compañía define el entorno de operación del sistema.
+	\end{itemize}
+\end{itemize}
+
+\subsection{Riesgos}
+Un riesgo se define como un evento o condición incierta que en caso de ocurrir tendrá consecuencia sobre al menos uno de los requerimientos del proyecto.
+\subsubsection{Tipos de riesgos}
+Se pueden identificar varios tipos de riesgos en un sistema como el que se intenta desarrollar.
+\begin{itemize}[noitemsep, topsep=2pt]
+	\item \textbf{Riesgos de proyecto}: amenazan la planificación del proyecto, principalmente los aspectos relacionados al tiempo.
+	\item \textbf{Riesgos técnicos}: repercuten directamente en la calidad del producto.
+	\item \textbf{Riesgos de negocio}: comprometen la viabilidad del proyecto.
+\end{itemize}
+
+\subsection{Gestión de riesgos}
+Es un enfoque estructurado para \textit{manejar} la incertidumbre ante amenazas a través de una secuencia de actividades que tienen como objetivo reducir los efectos negativos de los riesgos ya sea evadiendolos si es posible o aceptando las consecuencias en el peor de los casos. 
+
+Las etapas que lo componen son las siguientes:
+\begin{enumerate}[noitemsep, topsep=2pt]
+	\item \textbf{Identificación de riesgos}.
+	\item \textbf{Análisis de riesgos}.
+	\item \textbf{Selección de riesgos}.
+	\item \textbf{Elaboración de planes de riesgos}.
+\end{enumerate}
+
+\subsubsection{Identificación de los riesgos}
+Se realizó en base al conocimiento existente sobre los datos y el modelo a desarrollar.
+
+TABLA
+
+\subsubsection{Análisis de riesgos}
+No es posible tratar todos los riesgos existentes por tanto se procederá a cuantificar los mismos para compararlos y priorizar aquellos que se consideren con mayor relevancia para su tratamiento. 
+
+La posibilidad de ocurrencia se medirá de forma continua entre 0 y 1, donde 0 significa que es prácticamente imposible que ocurra y 1 es muy probable. Por otro lado, el impacto se medirá en una escala discreta entre 1 y 4 cuyos niveles representan:
+\begin{enumerate}[noitemsep, topsep=2pt]
+	\item Insignificante.
+	\item Tolerable.
+	\item Importante.
+	\item Muy grave.
+\end{enumerate}
+
+La exposición es el producto entre la probabilidad y el impacto del riesgo, representando con este valor la gravedad del mismo.
+
+TABLA
+
+\subsubsection{Selección de riesgos}
+
+
+\subsubsection{Elaboración de planes de riesgos}
 
 \clearpage
 
